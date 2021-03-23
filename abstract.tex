@@ -1,1 +1,77 @@
-Here goes your crisp little abstract.
+We study approximation algorithms for
+the geometric bin packing problem and its variants.
+In the two-dimensional geometric bin packing problem (2D GBP),
+we are given $n$ rectangular items and we have to compute
+an axis-parallel non-overlapping packing
+of the items into the minimum number of square bins of side length 1.
+2D GBP is an important problem in computer science and operations research
+arising in logistics, resource allocation, and scheduling.
+
+We first study an extension of 2D GBP called the
+\emph{generalized multidimensional bin packing} problem (GVBP).
+Here each item $i$ additionally has $d$ nonnegative weights
+$v_1(i), v_2(i), \ldots, v_d(i)$ associated with it.
+Our goal is to compute an axis-parallel non-overlapping packing of the items into bins so that
+for all $j \in [d]$, the sum of the $j\Th$ weight of items in each bin is at most 1.
+Despite being well studied in practice, surprisingly,
+approximation algorithms for this problem have rarely been explored.
+We first obtain two simple algorithms for GVBP having asymptotic approximation ratios (AARs)
+$6(d+1)$ and $3(1 + \ln(d+1) + \eps)$.
+We then extend the Round-and-Approx (R\&A) framework
+\texorpdfstring{\cite{bansal2014binpacking}}{[Bansal-Khan, SODA'14]}
+to wider classes of algorithms, and show how it can be adapted to GVBP.
+Using more sophisticated techniques, we obtain algorithms for GVBP having
+an AAR of $2(1+\ln((d+4)/2))+\eps$,
+which improves to $2.919+\eps$ for the special case of $d=1$.
+
+Next, we explore approximation algorithms for the $d$-dimensional
+geometric bin packing problem ($d$D GBP).
+Caprara \cite{caprara2008} gave a \emph{harmonic-based} algorithm for $d$D GBP
+having an AAR of $T_{\infty}^{d-1}$ (where $T_{\infty} \approx 1.691$).
+However, their algorithm doesn't allow items to be rotated.
+This is in contrast to some common applications of $d$BP,
+like packing boxes into shipping containers.
+We give approximation algorithms for $d$D GBP when items can be
+orthogonally rotated about all or a subset of axes.
+We first give a fast and simple harmonic-based algorithm,
+called $\fhk$, having an AAR of $T_{\infty}^{d}$.
+We next give a more sophisticated harmonic-based algorithm,
+which we call $\hgapk$, having an AAR of $T_{\infty}^{d-1}(1+\eps)$.
+This gives an AAR of roughly $2.860 + \eps$ for 3BP with rotations,
+which improves upon the best-known AAR of $4.5$.
+In addition, we study the \emph{multiple-choice} bin packing problem
+that generalizes the rotational case.
+Here we are given $n$ sets of $d$-dimensional cuboidal items and we have to
+choose exactly one item from each set and then pack the chosen items.
+Our algorithms $\fhk$ and $\hgapk$ also work for the multiple-choice bin packing problem.
+We also give fast and simple approximation algorithms for the multiple-choice
+versions of $d$D strip packing and $d$D geometric knapsack.
+These algorithms have AARs $T_{\infty}^{d-1}$ and $(1-\eps)3^{-d}$, respectively.
+
+A rectangle is said to be $\delta$-thin if it has
+width at most $\delta$ or height at most $\delta$.
+When $\delta$ is a small constant (i.e., close to 0), we give an APTAS for 2D GBP
+when all rectangles are $\delta$-thin.
+On the other hand, general 2D GBP is APX-hard.
+This shows that hard instances arise due to items
+that are large in both dimensions.
+
+A packing of rectangles into a bin is said to be guillotine-separable iff
+we can use a sequence of end-to-end cuts to separate the items from each other.
+The asymptotic price of guillotinability (APoG) is the maximum
+value of $\opt_G(I)/\opt(I)$ for large $\opt(I)$, where
+$\opt(I)$ and $\opt_G(I)$ are the minimum number of bins and
+the minimum number of guillotine-separable bins, respectively, needed to pack $I$.
+Computing lower and upper bounds on APoG is an important problem,
+since proving an upper bound smaller than 1.5 would beat
+the state-of-the-art algorithm for 2D GBP.
+The best-known lower and upper bounds are
+$4/3$ and $T_{\infty} \approx 1.69103$, respectively.
+We analyze this problem for the special case of $\delta$-thin rectangles,
+where $\delta$ is a small constant (i.e., close to 0).
+We give a roughly $4/3$-asymptotic-approximate algorithm for
+2D GBP for this case, and our algorithm's output is guillotine-separable.
+This proves an upper-bound of roughly $4/3$ on APoG for $\delta$-thin rectangles.
+We also prove a matching lower-bound of $4/3$.
+This shows that hard examples for upper-bounding APoG
+include items that are large in both dimensions.
