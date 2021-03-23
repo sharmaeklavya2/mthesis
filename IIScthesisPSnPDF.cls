@@ -96,10 +96,10 @@
                  linktocpage,
                  pagebackref,
                  colorlinks = true,
-                 linkcolor = blue,
-                 urlcolor  = blue,
-                 citecolor = red,
-                 anchorcolor = green,
+                 linkcolor = {blue!60!black},
+                 urlcolor  = {blue!60!black},
+                 citecolor = {red!60!black},
+                 anchorcolor = {green!60!black},
                  hyperindex = true,
                  hyperfigures
                  ]{hyperref} 
