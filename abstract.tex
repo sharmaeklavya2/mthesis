@@ -26,27 +26,32 @@ which improves to $2.919+\eps$ for the special case of $d=1$.
 
 Next, we explore approximation algorithms for the $d$-dimensional
 geometric bin packing problem ($d$D GBP).
-Caprara \cite{caprara2008} gave a \emph{harmonic-based} algorithm for $d$D GBP
-having an AAR of $T_{\infty}^{d-1}$ (where $T_{\infty} \approx 1.691$).
+Caprara \texorpdfstring{\cite{caprara2008}}{(MOR 2008)}
+gave a \emph{harmonic-based} algorithm for $d$D GBP having an AAR of
+\texorpdfstring{$T_{\infty}^{d-1}$ (where $T_{\infty} \approx 1.691$)}{1.69104^(d-1)}.
 However, their algorithm doesn't allow items to be rotated.
 This is in contrast to some common applications of $d$BP,
 like packing boxes into shipping containers.
 We give approximation algorithms for $d$D GBP when items can be
 orthogonally rotated about all or a subset of axes.
 We first give a fast and simple harmonic-based algorithm,
-called $\fhk$, having an AAR of $T_{\infty}^{d}$.
+called \texorpdfstring{$\fhk$}{fullh\_k}, having an AAR of
+\texorpdfstring{$T_{\infty}^{d}$}{1.69104^d}.
 We next give a more sophisticated harmonic-based algorithm,
-which we call $\hgapk$, having an AAR of $T_{\infty}^{d-1}(1+\eps)$.
+which we call \texorpdfstring{$\hgapk$}{hgap\_k},
+having an AAR of \texorpdfstring{$T_{\infty}^{d-1}(1+\eps)$}{(1+eps)1.69104^(d-1)}.
 This gives an AAR of roughly $2.860 + \eps$ for 3BP with rotations,
 which improves upon the best-known AAR of $4.5$.
 In addition, we study the \emph{multiple-choice} bin packing problem
 that generalizes the rotational case.
 Here we are given $n$ sets of $d$-dimensional cuboidal items and we have to
 choose exactly one item from each set and then pack the chosen items.
-Our algorithms $\fhk$ and $\hgapk$ also work for the multiple-choice bin packing problem.
+Our algorithms \texorpdfstring{$\fhk$}{fullh\_k} and \texorpdfstring{$\hgapk$}{hgap\_k}
+also work for the multiple-choice bin packing problem.
 We also give fast and simple approximation algorithms for the multiple-choice
 versions of $d$D strip packing and $d$D geometric knapsack.
-These algorithms have AARs $T_{\infty}^{d-1}$ and $(1-\eps)3^{-d}$, respectively.
+These algorithms have AARs
+\texorpdfstring{$T_{\infty}^{d-1}$}{1.69104^(d-1)} and $(1-\eps)3^{-d}$, respectively.
 
 A rectangle is said to be $\delta$-thin if it has
 width at most $\delta$ or height at most $\delta$.
@@ -66,7 +71,7 @@ Computing lower and upper bounds on APoG is an important problem,
 since proving an upper bound smaller than 1.5 would beat
 the state-of-the-art algorithm for 2D GBP.
 The best-known lower and upper bounds are
-$4/3$ and $T_{\infty} \approx 1.69103$, respectively.
+$4/3$ and \texorpdfstring{$T_{\infty} \approx 1.69103$}{1.69104}, respectively.
 We analyze this problem for the special case of $\delta$-thin rectangles,
 where $\delta$ is a small constant (i.e., close to 0).
 We give a roughly $4/3$-asymptotic-approximate algorithm for
