@@ -1,5 +1,60 @@
 \chapter{Introduction}
 \label{chap:intro}
 
-I worked on variants of geometric bin-packing
-\cite{aco-gvbp,eku-hdhk,eku-pst,eku-harmonic}.
+\section{Classical Bin Packing Problem}
+
+In the classical bin packing problem, we are given a set $I$ of items.
+Each item $i \in I$ has a size $s(i) \in (0, 1]$ associated with it.
+Our goal is to partition $I$ into the minimum number of bins,
+such that the sum of sizes of items in each bin is at most 1.
+The classical bin packing problem and its generalizations
+have diverse applications in computer science and operations research,
+like packing trucks with a given weight limit,
+allocating jobs to servers,
+allocating memory in computers \cite{handbook-of-combinopt-bp},
+or assigning commercials to station breaks in television programming,
+
+Classical bin packing is known to be NP-hard.
+In fact, deciding whether a set of items can be packed into two bins is NP-complete,
+by a simple reduction from the partition problem.
+Hence, we look at approximation algorithms.
+Let $\opt(I)$ be the minimum number of bins required to pack a set $I$ of items.
+An algorithm $\Acal$ is said to be $\alpha$-approximate iff
+$\Acal$ requires at most $\alpha\opt(I)$ bins to pack $I$.
+
+Since it is NP-complete to decide whether a set of items can be packed into two bins,
+it is NP-hard to obtain a polynomial-time algorithm for bin-packing
+with approximation ratio less than $3/2$.
+(Using the results of D\'osa and Sgall, we can prove that the First-Fit Decreasing algorithm
+is $3/2$-approximate \cite{dosa2013first,dosa2007tight}.)
+However, such a reasoning doesn't rule out the existence of an algorithm
+that uses $\opt(I) + 1$ bins.
+Therefore, we turn our attention to \emph{asymptotic approximation algorithms}.
+\begin{definition}
+An algorithm $\Acal$ is said to be $\alpha$-asymptotic-approximate iff
+$\Acal$ requires at most $\alpha\opt(I) + \beta$ bins
+for some value $\beta \in o(\opt(I))$ (usually, $\beta$ is a constant).
+$\alpha$ is called the asymptotic approximation ratio (AAR) of $\Acal$.
+\end{definition}
+
+An Asymptotic Polynomial-Time Approximation Scheme (APTAS) is an algorithm
+that accepts a parameter $\eps > 0$ and gives an AAR of $1+\eps$.
+The running time for such an algorithm usually increases as $\eps$ decreases.
+
+TODO: define online BP
+
+\subsection{(TODO) Prior Work}
+
+\begin{table}[ht]
+\centering
+\caption{Online Algorithms for bin packing.}
+\begin{tabular}{|l|l|l|}
+\hline Algorithm & Approximation Guarantee &
+\\ \hline Next-Fit & $\le 2\opt(I)$ &
+\\ \hline First-Fit & $\le \floor{1.7\opt(I)}$ & D\'osa and Sgall \cite{dosa2013first}
+%\\ \hline Harmonic$_k$ & $< T_k\opt(I) + k - H(k-1)$ & Lee and Lee \cite{leelee}
+\\ \hline Harmonic$_k$ & $< T_k\opt(I) + k$ & Lee and Lee \cite{leelee}
+\\ \hline
+\end{tabular}
+\label{table:online-1bp}
+\end{table}
