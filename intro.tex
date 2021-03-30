@@ -11,7 +11,7 @@ The classical bin packing problem and its generalizations
 have diverse applications in computer science and operations research,
 like packing trucks with a given weight limit,
 allocating jobs to servers,
-allocating memory in computers \cite{handbook-of-combinopt-bp},
+allocating memory in computers~\cite{handbook-of-combinopt-bp},
 or assigning commercials to station breaks in television programming,
 
 Classical bin packing is known to be NP-hard.
@@ -23,15 +23,15 @@ An algorithm $\Acal$ is said to be $\alpha$-approximate iff
 $\Acal$ requires at most $\alpha\opt(I)$ bins to pack $I$.
 
 Since it is NP-complete to decide whether a set of items can be packed into two bins,
-it is NP-hard to obtain a polynomial-time algorithm for bin-packing
+it is NP-hard to obtain a polynomial-time algorithm for bin packing
 with approximation ratio less than $3/2$.
 (Using the results of D\'osa and Sgall, we can prove that the First-Fit Decreasing algorithm
-is $3/2$-approximate \cite{dosa2013first,dosa2007tight}.)
+is $3/2$-approximate~\cite{dosa2013first,dosa2007tight}.)
 However, such a reasoning doesn't rule out the existence of an algorithm
 that uses $\opt(I) + 1$ bins.
 Therefore, we turn our attention to \emph{asymptotic approximation algorithms}.
 \begin{definition}
-An algorithm $\Acal$ is said to be $\alpha$-asymptotic-approximate iff
+A bin packing algorithm $\Acal$ is said to be $\alpha$-asymptotic-approximate iff
 $\Acal$ requires at most $\alpha\opt(I) + \beta$ bins
 for some value $\beta \in o(\opt(I))$ (usually, $\beta$ is a constant).
 $\alpha$ is called the asymptotic approximation ratio (AAR) of $\Acal$.
@@ -40,21 +40,101 @@ $\alpha$ is called the asymptotic approximation ratio (AAR) of $\Acal$.
 An Asymptotic Polynomial-Time Approximation Scheme (APTAS) is an algorithm
 that accepts a parameter $\eps > 0$ and gives an AAR of $1+\eps$.
 The running time for such an algorithm usually increases as $\eps$ decreases.
+Lueker and Vega~\cite{bp-aptas} gave an APTAS for classical bin packing.
 
-TODO: define online BP
+In the online version of bin packing, the items arrive one-by-one,
+and for each item, we have to immediately and irrevocably pack it into a bin.
+In the online version, the (asymptotic) approximation ratio is also called the
+(asymptotic) \emph{competitive ratio}.
+(The non-online version is called the offline version, i.e., where we can read the
+whole input before we start packing.)
 
-\subsection{(TODO) Prior Work}
+\subsection{Prior Work}
+
+The Next-Fit algorithm~\cite{johnson-thesis} is one of the simplest algorithms
+for the online classical bin packing problem.
+In this algorithm, we start with an empty bin, and designate it as the \emph{open bin}.
+We repeatedly pack items into the open bin till we
+come across an item that doesn't fit in the open bin.
+We then \emph{close} that bin and \emph{open} a new bin and resume.
+Let $s(I)$ denote the sum of sizes of all items in $I$.
+It is easy to prove that Next-Fit uses at most $\ceil{2s(I)}$ bins.
+Since $s(I) \le \opt(I)$, we get that Next-Fit is 2-approximate.
+
+Lee and Lee~\cite{leelee} gave an algorithm for online classical bin packing,
+called the $\operatorname{Harmonic}_k$ algorithm.
+This algorithm takes as input a set $I$ of items and an integer parameter $k \ge 2$.
+The number of bins used by $\operatorname{Harmonic}_k$ to pack $I$ is less than
+$T_k\opt(I) + k$, where $T_k$ is a decreasing function of $k$
+and $T_{\infty} \defeq \lim_{k \to \infty} T_k \approx 1.6910302$.
+
+Many other algorithms have been devised for the online classical bin packing problem.
+See \cref{table:online-1bp} for examples and~\cite{handbook-of-combinopt-bp} for a detailed survey.
+The best algorithm we are aware of is the Advanced Harmonic algorithm by
+Balogh, B\'ek\'esi, D\'osa, Epstein and Levin~\cite{balogh2018}
+that has an AAR of 1.57829.
 
 \begin{table}[ht]
 \centering
 \caption{Online Algorithms for bin packing.}
-\begin{tabular}{|l|l|l|}
-\hline Algorithm & Approximation Guarantee &
-\\ \hline Next-Fit & $\le 2\opt(I)$ &
-\\ \hline First-Fit & $\le \floor{1.7\opt(I)}$ & D\'osa and Sgall \cite{dosa2013first}
-%\\ \hline Harmonic$_k$ & $< T_k\opt(I) + k - H(k-1)$ & Lee and Lee \cite{leelee}
-\\ \hline Harmonic$_k$ & $< T_k\opt(I) + k$ & Lee and Lee \cite{leelee}
-\\ \hline
+\begin{tabular}{ll}
+\toprule Algorithm & Approximation guarantee
+\\ \midrule Next-Fit~\cite{johnson-thesis}
+    & $\le 2\opt(I)$
+\\[\defaultaddspace] First-Fit~\cite{dosa2013first}
+    & $\le \floor{1.7\opt(I)}$
+%\\[\defaultaddspace] \hline Harmonic$_k$~\cite{leelee}
+    %& $< T_k\opt(I) + k - H(k-1)$
+\\[\defaultaddspace] Harmonic$_k$~\cite{leelee}
+    & $< T_k\opt(I) + k$\quad $(T_\infty \approx 1.69103)$
+\\[\defaultaddspace] Advanced Harmonic~\cite{balogh2018}
+    & $\le 1.57829\opt(I) + O(1)$
+\\ \bottomrule
 \end{tabular}
 \label{table:online-1bp}
 \end{table}
+
+Balogh, B\'ek\'esi and Galambos gave a lower bound of $248/161 \approx 1.54037$
+on the asymptotic competitive ratio~\cite{balogh2012new}.
+This bound was recently improved to 1.54278~\cite{balogh2021new},
+which is the best-known lower bound we are aware of.
+See~\cite{handbook-of-combinopt-bp} for a detailed survey on lower bounds.
+
+For the offline version of classical bin packing,
+First-Fit Decreasing (FFD) is a popular algorithm.
+Johnson~\cite{johnson-thesis} showed that the number of bins used by
+FFD is at most $(11/9)\opt(I) + 4$.
+The additive constant $4$ was improved by D\'osa
+to $2/3$, which is tight~\cite{dosa2007tight}.
+
+Lueker and Vega gave the first APTAS for classical bin packing~\cite{bp-aptas}.
+This was later improved upon by Karmarkar and Karp to an algorithm
+that uses at most $\opt(I) + O(\log^2\opt(I))$ bins~\cite{karmarkar-karp}.
+Rothvoss gave an algorithm that uses at most
+$\opt(I) + O(\log\opt(I)\log\log\opt(I))$ bins~\cite{rothvoss2013}.
+Hoberg and Rothvoss gave an algorithm that uses at most
+$\opt(I) + O(\log\opt(I))$ bins~\cite{HobergR17}
+(see \cref{table:offline-1bp}).
+
+\begin{table}[ht]
+\centering
+\caption{Offline Algorithms for bin packing.}
+\begin{tabular}{ll}
+\toprule Algorithm & Approximation guarantee
+\\ \midrule First-Fit Decreasing (FFD)~\cite{dosa2007tight}
+    & $\le \frac{11}{9}\opt(I) + \frac{2}{3}$
+\\[\defaultaddspace] Lueker, Vega~\cite{bp-aptas}
+    & $\le (1+\eps)\opt(I) + O(1/\eps^2)$
+\\[\defaultaddspace] Karmarkar, Karp~\cite{karmarkar-karp}
+    & $\le \opt(I) + O(\log^2\opt(I))$
+\\[\defaultaddspace] Rothvoss~\cite{rothvoss2013}
+    & $\le \opt(I) + O(\log\opt(I)\log\log\opt(I))$
+\\[\defaultaddspace] Hoberg, Rothvoss~\cite{HobergR17}
+    & $\le \opt(I) + O(\log\opt(I))$
+\\ \bottomrule
+\end{tabular}
+\label{table:offline-1bp}
+\end{table}
+
+On the hardness side, to the best of our knowledge,
+an $\opt(I) + 1$ algorithm hasn't yet been proven to not exist.
