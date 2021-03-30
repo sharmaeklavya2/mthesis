@@ -1,14 +1,17 @@
 % use packages
 \usepackage{amssymb,amsmath,amsthm}
-\usepackage{cleveref}
+\usepackage{booktabs}
+% from booktabs import \toprule, \midrule, \bottomrule, \abovetopsep, \defaultaddspace
+\usepackage[capitalize]{cleveref}
+% from cleverref import \cref, \crefname
 \usepackage{algorithm,algpseudocode}
-\usepackage{enumerate}
-\usepackage{mathrsfs}
 \usepackage{xcolor}
-\usepackage{tikz}
 \usepackage{datetime}
 \usepackage{comment}
-\usetikzlibrary{shapes,arrows,trees}
+%\usepackage{enumerate}
+%\usepackage{mathrsfs}
+%\usepackage{tikz}
+%\usetikzlibrary{shapes,arrows,trees}
 
 % Numbered environments
 \newtheorem{remarks}{Remarks}[chapter] %\label{rmk:}
@@ -32,6 +35,7 @@
 % shorthands
 \newcommand*{\Th}{^{\textrm{th}}}
 \let\eps\varepsilon
+\newcommand*{\defeq}{:=}
 
 % math
 \newcommand*{\floor}[1]{\left\lfloor #1 \right\rfloor}
@@ -48,3 +52,5 @@
 \allowdisplaybreaks[1]
 \newdateformat{monthyeardate}{\monthname[\THEMONTH], \THEYEAR}
 \newcommand{\blankpage}{\newpage\thispagestyle{empty}\mbox{}\newpage}
+\abovetopsep=4pt
+\defaultaddspace=0.4em
