@@ -35,7 +35,7 @@ archivePrefix={arXiv},
 primaryClass={cs.DS}
 }
 
-% 1BP ==========================================================================
+% 1D packing ===================================================================
 
 @incollection{handbook-of-combinopt-bp,
 author={Coffman, Edward G. and Csirik, J{\'a}nos and Galambos, G{\'a}bor
@@ -144,7 +144,7 @@ doi={10.1007/s00453-021-00818-7}
 @inproceedings{karmarkar-karp,
 title={An efficient approximation scheme for the one-dimensional bin-packing problem},
 author={Karmarkar, Narendra and Karp, Richard M},
-booktitle={23rd Annual Symposium on Foundations of Computer Science (sfcs 1982)},
+booktitle={23rd Annual Symposium on Foundations of Computer Science (SFCS 1982)},
 pages={312--320},
 year={1982},
 organization={IEEE},
@@ -171,7 +171,42 @@ year = {2017},
 doi = {10.1137/1.9781611974782.172}
 }
 
-% 2D Geometric BP ==============================================================
+@article{lawler1979fast,
+title = {Fast approximation algorithms for knapsack problems},
+author = {Lawler, Eugene L},
+journal = {Mathematics of Operations Research},
+volume = {4},
+number = {4},
+pages = {339--356},
+year = {1979},
+publisher = {INFORMS},
+doi = {10.1287/moor.4.4.339}
+}
+
+% Multidimensional Packing =====================================================
+
+@Article{coffman1980performance,
+Title = {Performance bounds for level-oriented two-dimensional packing algorithms},
+Author = {Coffman, Edward G. and Garey, Michael R. and Johnson, David S. and Tarjan, Robert E.},
+Journal = {SIAM Journal on Computing},
+Year = {1980},
+Pages = {808--826},
+Volume = {9},
+Publisher = {SIAM},
+doi = {10.1137/0209062}
+}
+
+@article{chung1982packing,
+title = {On packing two-dimensional bins},
+author = {Chung, Fan RK and Garey, Michael R and Johnson, David S},
+journal = {SIAM Journal on Algebraic Discrete Methods},
+volume = {3},
+number = {1},
+pages = {66--76},
+year = {1982},
+publisher = {SIAM},
+doi = {10.1137/0603007}
+}
 
 @InProceedings{bansal2014binpacking,
 Title = {Improved Approximation Algorithm for Two-Dimensional Bin Packing},
@@ -191,4 +226,258 @@ title = {Packing {$d$}-Dimensional Bins in {$d$} Stages},
 volume = {33},
 journal = {Mathematics of Operations Research - MOR},
 doi = {10.1287/moor.1070.0289}
+}
+
+@article{baker1981tight,
+title = {A tight asymptotic bound for next-fit-decreasing bin-packing},
+author = {Baker, Brenda S and Coffman, Jr, Edward G},
+journal = {SIAM Journal on Algebraic Discrete Methods},
+volume = {2},
+number = {2},
+pages = {147--152},
+year = {1981},
+publisher = {SIAM},
+doi = {10.1137/0602019}
+}
+
+@InProceedings{kenyon1996strip,
+Title = {Approximate Strip Packing},
+Author = {Kenyon, Claire and R{\'e}mila, Eric},
+Booktitle = {FOCS},
+Year = {1996},
+Pages = {31--36},
+doi = {10.1109/SFCS.1996.548461}
+}
+
+@inproceedings{jansen2005strip,
+title = {On strip packing with rotations},
+author = {Jansen, Klaus and van Stee, Rob},
+booktitle = {ACM Symposium on Theory of Computing (STOC)},
+pages = {755--761},
+year = {2005},
+doi = {10.1145/1060590.1060702}
+}
+
+@article{rna,
+title = {A new approximation method for set covering problems,
+    with applications to multidimensional bin packing},
+author = {Bansal, Nikhil and Caprara, Alberto and Sviridenko, Maxim},
+journal = {SIAM Journal on Computing},
+volume = {39},
+number = {4},
+pages = {1256--1278},
+year = {2010},
+publisher = {SIAM},
+doi = {10.1137/080736831}
+}
+
+@InProceedings{JansenP2013,
+Title = {New Approximability Results for Two-Dimensional Bin Packing},
+Author = {Jansen, Klaus and Pr{\"a}del, Lars},
+Booktitle = {SODA},
+Year = {2013},
+Pages = {919--936},
+doi = {10.1007/s00453-014-9943-z}
+}
+
+@inproceedings{jansen2004rectangle,
+title = {On rectangle packing: maximizing benefits.},
+author = {Jansen, Klaus and Zhang, Guochuan},
+booktitle = {SODA},
+volume = {4},
+pages = {204--213},
+year = {2004}
+}
+
+@inproceedings{galvez2017approximating,
+title = {Approximating geometric knapsack via L-packings},
+author = {G{\'a}lvez, Waldo and Grandoni, Fabrizio and Heydrich, Sandy and Ingala, Salvatore
+    and Khan, Arindam and Wiese, Andreas},
+booktitle = {2017 IEEE 58th Annual Symposium on Foundations of Computer Science (FOCS)},
+pages = {260--271},
+year = {2017},
+organization = {IEEE},
+doi = {10.1109/FOCS.2017.32}
+}
+
+@article{chlebik2009hardness,
+title={Hardness of approximation for orthogonal rectangle packing and covering problems},
+author={Chleb{\'\i}k, Miroslav and Chleb{\'\i}kov{\'a}, Janka},
+journal={Journal of Discrete Algorithms},
+volume={7},
+number={3},
+pages={291--305},
+year={2009},
+publisher={Elsevier},
+doi={10.1016/j.jda.2009.02.002}
+}
+
+@inproceedings{bansal2009structural,
+title = {A structural lemma in 2-dimensional packing, and its implications on approximability},
+author = {Bansal, Nikhil and Caprara, Alberto and Jansen, Klaus and Pr{\"a}del, Lars and Sviridenko, Maxim},
+booktitle = {International Symposium on Algorithms and Computation},
+pages = {77--86},
+year = {2009},
+organization = {Springer},
+doi = {10.1007/978-3-642-10631-6_10}
+}
+
+@article{diedrich2008approximation,
+title = {Approximation algorithms for 3D orthogonal knapsack},
+author = {Diedrich, Florian and Harren, Rolf and Jansen, Klaus and Th{\"o}le, Ralf and Thomas, Henning},
+journal = {Journal of Computer Science and Technology},
+volume = {23},
+number = {5},
+pages = {749},
+year = {2008},
+publisher = {Springer},
+doi = {10.1007/s11390-008-9170-7}
+}
+
+@article{chekuri-khanna-vbp,
+title = {On multidimensional packing problems},
+author = {Chekuri, Chandra and Khanna, Sanjeev},
+journal = {SIAM journal on computing},
+volume = {33},
+number = {4},
+pages = {837--851},
+year = {2004},
+publisher = {SIAM},
+doi = {10.1137/S0097539799356265}
+}
+
+@phdthesis{khan-thesis,
+title = {Approximation algorithms for multidimensional bin packing},
+author = {Khan, Arindam},
+year = {2015},
+school = {Georgia Institute of Technology}
+}
+
+@inproceedings{bansal2016improved,
+title = {Improved approximation for vector bin packing},
+author = {Bansal, Nikhil and Eli{\'a}{\v{s}}, Marek and Khan, Arindam},
+booktitle = {ACM-SIAM Symposium on Discrete Algorithms (SODA)},
+pages = {1561--1579},
+year = {2016},
+organization = {SIAM},
+doi = {10.1137/1.9781611974331.ch106}
+}
+
+@article{woeginger1997there,
+title = {There is no asymptotic PTAS for two-dimensional vector packing},
+author = {Woeginger, Gerhard J},
+journal = {Information Processing Letters},
+volume = {64},
+number = {6},
+pages = {293--297},
+year = {1997},
+publisher = {Elsevier},
+doi = {10.1016/S0020-0190(97)00179-8}
+}
+
+@misc{sandeep2021optimal,
+title = {Almost Optimal Inapproximability of Multidimensional Packing Problems},
+author = {Sandeep, Sai},
+year = {2021},
+eprint = {2101.02854},
+archivePrefix = {arXiv},
+primaryClass = {cs.DS}
+}
+
+@article{frieze1984approximation,
+title = {Approximation algorithms for the m-dimensional 0-1 knapsack problem: worst-case and probabilistic analyses},
+author = {Frieze, Alan M and Clarke, MRB and others},
+journal = {European Journal of Operational Research},
+volume = {15},
+number = {1},
+pages = {100--109},
+year = {1984},
+publisher = {Elsevier}
+}
+
+@article{li1990three,
+title = {On three-dimensional packing},
+author = {Li, Keqin and Cheng, Kam-Hoi},
+journal = {SIAM Journal on Computing},
+volume = {19},
+number = {5},
+pages = {847--867},
+year = {1990},
+publisher = {SIAM},
+doi = {10.1137/0219059}
+}
+
+@inproceedings{bansal2007harmonic,
+title = {Harmonic algorithm for 3-dimensional strip packing problem},
+author = {Bansal, Nikhil and Han, Xin and Iwama, Kazuo and Sviridenko, Maxim and Zhang, Guochuan},
+booktitle = {SODA},
+volume = {7},
+pages = {1197--1206},
+year = {2007},
+organization = {Citeseer}
+}
+
+@inproceedings{jansen2014new,
+title = {A new asymptotic approximation algorithm for 3-dimensional strip packing},
+author = {Jansen, Klaus and Pr{\"a}del, Lars},
+booktitle = {International Conference on Current Trends in Theory and Practice of Informatics},
+pages = {327--338},
+year = {2014},
+organization = {Springer},
+doi = {10.1007/978-3-319-04298-5_29}
+}
+
+@inproceedings{jansen2006asymptotic,
+title = {An asymptotic approximation algorithm for 3D-strip packing},
+author = {Jansen, Klaus and Solis-Oba, Roberto},
+booktitle = {ACM-SIAM Symposium on Discrete Algorithm (SODA)},
+pages = {143--152},
+year = {2006}
+}
+
+@article{bansal2006bin,
+title = {Bin packing in multiple dimensions: inapproximability results and approximation schemes},
+author = {Bansal, Nikhil and Correa, Jos{\'e} R and Kenyon, Claire and Sviridenko, Maxim},
+journal = {Mathematics of operations research},
+volume = {31},
+number = {1},
+pages = {31--49},
+year = {2006},
+publisher = {INFORMS},
+doi = {10.1287/moor.1050.0168}
+}
+
+@article{epstein2006side,
+title = {This side up!},
+author = {Epstein, Leah and Van Stee, Rob},
+journal = {ACM Transactions on Algorithms (TALG)},
+volume = {2},
+number = {2},
+pages = {228--243},
+year = {2006},
+publisher = {ACM New York, NY, USA},
+doi = {10.1145/1150334.1150339}
+}
+
+@article{miyazawa2009three,
+title = {Three-dimensional packings with rotations},
+author = {Miyazawa, Flavio Keidi and Wakabayashi, Yoshiko},
+journal = {Computers \& Operations Research},
+volume = {36},
+number = {10},
+pages = {2801--2815},
+year = {2009},
+publisher = {Elsevier},
+doi = {10.1016/j.cor.2008.12.015}
+}
+
+% Miscellaneous ================================================================
+
+@incollection{daa:rounding-dp,
+title = {Rounding data and dynamic programming},
+booktitle = {The Design of Approximation Algorithms},
+author = {Williamson, David P and Shmoys, David B},
+year = {2011},
+publisher = {Cambridge university press},
+isbn = {9781139498173}
 }
