@@ -1,7 +1,24 @@
-% symbols
-\newcommand*{\Acal}{\mathcal{A}}
+\newcommand*{\optionalcolor}{gray}
+\newenvironment*{optional}{\color{\optionalcolor}}{}
+\newcommand*{\geomvec}[2]{(#1, #2)}
+\newcommand*{\geomvecdim}[2]{(#1, #2)-dimensional}
 
-% functions
+% SYMBOLS ======================================================================
+
+\newcommand*{\Acal}{\mathcal{A}}
+\newcommand*{\Ical}{\mathcal{I}}
+\newcommand*{\Icalhat}{\widehat{\mathcal{I}}}
+\newcommand*{\Icaltild}{\widetilde{\mathcal{I}}}
+
+% FUNCTIONS ====================================================================
+
+% dD GBP
 \newcommand*{\hdhk}[1][k]{\operatorname{\mathtt{HDH}}_{#1}}
 \newcommand*{\hgapk}{\operatorname{\mathtt{HGaP}}_k}
 \newcommand*{\fhk}{\operatorname{\mathtt{fullh}}_k}
+\newcommand*{\hdhkunit}{\operatorname{\mathtt{HDH-unit-pack}}_k}
+
+% GVBP
+\DeclareMathOperator{\simplePack}{\mathtt{simple-pack}}
+\DeclareMathOperator{\betterSimplePack}{\mathtt{better-simple-pack}}
+\DeclareMathOperator{\cbPack}{\mathtt{cb-pack}}

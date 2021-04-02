@@ -1,23 +1,30 @@
 \chapter{Introduction}
 \label{chap:intro}
 
-We will first introduce the classical bin packing problem and the classical knapsack problem,
-which are important problems in computer science and operations research.
-We will then look at well-known generalizations of these problems.
-This will set the context for us to describe the contributions of this thesis.
-
-\section{Classical Bin Packing Problem}
-
-In the classical bin packing problem, we are given a set $I$ of $n$ items.
+In the classical bin packing problem, we are given a set $I$ of items.
 Each item $i \in I$ has a size $s(i) \in (0, 1]$ associated with it.
 Our goal is to partition $I$ into the minimum number of bins,
 such that the sum of sizes of items in each bin is at most 1.
 The classical bin packing problem and its generalizations
 have diverse applications in computer science and operations research,
-like packing trucks with a given weight limit,
-allocating jobs to servers,
+like packing goods into trucks, allocating jobs to servers,
 allocating memory in computers~\cite{handbook-of-combinopt-bp},
-or assigning commercials to station breaks in television programming,
+or assigning advertisements to station breaks in television programming,
+
+This work focuses on approximation algorithms for geometric variants
+of the classical bin packing problem.
+In this chapter, we will first describe the classical bin packing problem
+and some of its well-known variants in more detail.
+With this context, we will then describe the contributions of this thesis.
+
+\section{Well-Known Packing Problems}
+
+\subsection{Classical Bin Packing}
+
+In the classical bin packing problem, we are given a set $I$ of $n$ items.
+Each item $i \in I$ has a size $s(i) \in (0, 1]$ associated with it.
+Our goal is to partition $I$ into the minimum number of bins,
+such that the sum of sizes of items in each bin is at most 1.
 
 Classical bin packing is known to be NP-hard.
 In fact, deciding whether a set of items can be packed into two bins is NP-complete,
@@ -47,104 +54,9 @@ if it accepts a parameter $\eps > 0$ and gives an AAR of $1+\eps$.
 The running time for such an algorithm usually increases as $\eps$ decreases.
 \end{definition}
 
-In the online version of bin packing, the items arrive one-by-one,
-and for each item, we have to immediately and irrevocably pack it into a bin.
-In the online version, the (asymptotic) approximation ratio is also called the
-(asymptotic) \emph{competitiveness ratio}.
-(The non-online version is called the offline version, i.e., where we can read the
-whole input before we start packing.)
+For classical bin packing, an APTAS was given by Lueker and Vega~\cite{bp-aptas}.
 
-\subsection{Prior Work}
-
-The Next-Fit algorithm~\cite{johnson-thesis} is one of the simplest algorithms
-for the online classical bin packing problem.
-In this algorithm, we start with an empty bin, and designate it as the \emph{open bin}.
-We repeatedly pack items into the open bin till we
-come across an item that doesn't fit in the open bin.
-We then \emph{close} that bin and \emph{open} a new bin and resume.
-Let $s(I)$ denote the sum of sizes of all items in $I$.
-It is easy to prove that Next-Fit uses at most $\ceil{2s(I)}$ bins.
-Since $s(I) \le \opt(I)$, we get that Next-Fit is 2-approximate.
-
-Lee and Lee~\cite{leelee} gave an algorithm for online classical bin packing,
-called the $\operatorname{Harmonic}_k$ algorithm.
-This algorithm takes as input a set $I$ of items and an integer parameter $k \ge 2$.
-The number of bins used by $\operatorname{Harmonic}_k$ to pack $I$ is less than
-$T_k\opt(I) + k$, where $T_k$ is a decreasing function of $k$
-and $T_{\infty} \defeq \lim_{k \to \infty} T_k \approx 1.6910302$.
-
-Many other algorithms have been devised for the online classical bin packing problem.
-See \cref{table:online-1bp} for examples and~\cite{handbook-of-combinopt-bp} for a detailed survey.
-The best algorithm we are aware of is the Advanced Harmonic algorithm by
-Balogh, B\'ek\'esi, D\'osa, Epstein and Levin~\cite{balogh2018}
-that has an AAR of 1.57829.
-
-\begin{table}[ht]
-\centering
-\caption{Online algorithms for classical bin packing.}
-\begin{tabular}{ll}
-\toprule Algorithm & Approximation guarantee
-\\ \midrule Next-Fit~\cite{johnson-thesis}
-    & $\le 2\opt(I)$
-\\[\defaultaddspace] First-Fit~\cite{dosa2013first}
-    & $\le \floor{1.7\opt(I)}$
-%\\[\defaultaddspace] \hline Harmonic$_k$~\cite{leelee}
-    %& $< T_k\opt(I) + k - H(k-1)$
-\\[\defaultaddspace] Harmonic$_k$~\cite{leelee}
-    & $< T_k\opt(I) + k$\quad $(T_\infty \approx 1.69103)$
-\\[\defaultaddspace] Advanced Harmonic~\cite{balogh2018}
-    & $\le 1.57829\opt(I) + O(1)$
-\\ \bottomrule
-\end{tabular}
-\label{table:online-1bp}
-\end{table}
-
-Balogh, B\'ek\'esi and Galambos gave a lower bound of $248/161 \approx 1.54037$
-on the asymptotic competitive ratio~\cite{balogh2012new}.
-This bound was recently improved to 1.54278~\cite{balogh2021new},
-which is the best-known lower bound we are aware of.
-See~\cite{handbook-of-combinopt-bp} for a detailed survey on lower bounds.
-
-For the offline version of classical bin packing,
-First-Fit Decreasing (FFD) is a popular algorithm.
-Johnson~\cite{johnson-thesis} showed that the number of bins used by
-FFD is at most $(11/9)\opt(I) + 4$.
-The additive constant $4$ was improved by D\'osa
-to $2/3$, which is tight~\cite{dosa2007tight}.
-
-Lueker and Vega gave the first APTAS for classical bin packing~\cite{bp-aptas}.
-This was later improved upon by Karmarkar and Karp to an algorithm
-that uses at most $\opt(I) + O(\log^2\opt(I))$ bins~\cite{karmarkar-karp}.
-Rothvoss gave an algorithm that uses at most
-$\opt(I) + O(\log\opt(I)\log\log\opt(I))$ bins~\cite{rothvoss2013}.
-Hoberg and Rothvoss gave an algorithm that uses at most
-$\opt(I) + O(\log\opt(I))$ bins~\cite{HobergR17}
-(see \cref{table:offline-1bp}).
-
-\begin{table}[ht]
-\centering
-\caption{Offline algorithms for classical bin packing.}
-\begin{tabular}{ll}
-\toprule Algorithm & Approximation guarantee
-\\ \midrule First-Fit Decreasing (FFD)~\cite{dosa2007tight}
-    & $\le \frac{11}{9}\opt(I) + \frac{2}{3}$
-\\[\defaultaddspace] Lueker, Vega~\cite{bp-aptas}
-    & $\le (1+\eps)\opt(I) + O(1/\eps^2)$
-\\[\defaultaddspace] Karmarkar, Karp~\cite{karmarkar-karp}
-    & $\le \opt(I) + O(\log^2\opt(I))$
-\\[\defaultaddspace] Rothvoss~\cite{rothvoss2013}
-    & $\le \opt(I) + O(\log\opt(I)\log\log\opt(I))$
-\\[\defaultaddspace] Hoberg, Rothvoss~\cite{HobergR17}
-    & $\le \opt(I) + O(\log\opt(I))$
-\\ \bottomrule
-\end{tabular}
-\label{table:offline-1bp}
-\end{table}
-
-On the hardness side, to the best of our knowledge,
-an $\opt(I) + 1$ algorithm hasn't yet been proven to not exist.
-
-\section{Classical Knapsack Problem}
+\subsection{Classical Knapsack}
 
 In the classical knapsack problem, we are given a set $I$ of items.
 Each item $i \in I$ has a size $s(i) \in (0, 1]$
@@ -164,15 +76,18 @@ A simple $(1+\eps)$-approximate $O(n^3/\eps)$-time algorithm
 exists for this problem~\cite{daa:rounding-dp}.
 Lawler improved the running time to $O(n\log(1/\eps) + 1/\eps^4)$~\cite{lawler1979fast}.
 
-\section{Geometric Bin Packing Problem}
+\subsection{Geometric Bin Packing}
 
-In the 2-dimensional geometric bin packing problem (abbreviated as 2D GBP),
+In the 2-dimensional geometric bin packing problem
+(abbreviated as 2D GBP; also called \emph{rectangle bin packing problem}),
 we are given a set $I$ of $n$ rectangular items and an infinite supply
 of identical rectangular bins.
 Our task is to pack the rectangles into the minimum number of bins such that
 in each bin, the items don't overlap.
-%
-There are two commonly-studied versions of the above problem.
+For each 2D item $i$, let $w(i)$ denote the width and $h(i)$ denote the height.
+Let $a(i) \defeq w(i)h(i)$ be the area of item $i$.
+
+There are two commonly-studied versions of 2D GBP.
 In the non-rotational version, the rotating the items is forbidden.
 In the rotational version, the items can be rotated by 90$^\circ$.
 In both versions, the items and bins are oriented parallel to the coordinate axes.
@@ -182,16 +97,14 @@ the classical bin packing problem.
 2D GBP finds applications in the wood-cutting, metal-cutting, paper and cloth industries,
 where rectangular pieces need to be cut out of standard-sized sheets,
 and item rotations are usually allowed.
-2D GBP is also used for placing advertisements on pages.
-Here rotating items is forbidden.
+Non-rotational 2D GBP can be used for placing advertisements on web pages and newspapers.
 
 The problem can be extended to three dimensions (3D GBP),
 where the bins and items are cuboids.
 Since a cuboid can have 6 possible orientations, there can be
 many versions of 3D GBP depending on which orientations of items are allowed.
-3D GBP has applications in logistics,
-where boxes need to be packed into cuboidal shipping containers.
-Here usually the boxes can be rotated in any way, but there are exceptions:
+3D GBP can be used to pack boxes into shipping containers.
+Here the boxes can usually be rotated in any way, but there are exceptions:
 for example, some boxes may need to be kept upright due to fragile contents inside.
 Such boxes can only be rotated around the vertical axis.
 
@@ -202,195 +115,18 @@ A cube is a cuboid that has the same length in each dimension.
 For example, a $d$D cube of side length 1 is the set $[0, 1]^d$.
 Note that 1D GBP is the classical bin packing problem.
 
-In the non-rotational version of 2D GBP, we can assume \wLoG{} that
-the bin is a square of side length 1.
+In the non-rotational version of $d$D GBP, we can assume \wLoG{} that
+the bin is a cube of side length 1.
 This is because we can scale the dimensions of the bins and items by the same factor.
 Note that this assumption doesn't hold for the rotational version.
-For each 2D item $i$, let $w(i)$ denote the width and $h(i)$ denote the height.
-Let $a(i) \defeq w(i)h(i)$ be the area of item $i$.
 
-\subsection{Prior Work}
+For 2D GBP, the algorithm by Bansal and Khan~\cite{bansal2014binpacking}
+gives the best-known AAR of $1 + \ln(1.5) + \eps \approx 1.40547 + \eps$.
+An APTAS cannot exist for 2D GBP unless P = NP~\cite{bansal2006bin,chlebik2009hardness}.
+For non-rotational $d$D GBP where $d \ge 3$, the algorithm by Caprara~\cite{caprara2008}
+gives the best-known AAR of roughly $T_{\infty}^{d-1}$, where $T_{\infty} \approx 1.69103$.
 
-The Next-Fit Decreasing Height (NFDH) algorithm by
-Coffman, Garey, Johnson and Tarjan~\cite{coffman1980performance}
-is one of the simplest algorithms for 2D GBP
-(for both the rotational and non-rotational versions),
-which is 4-asymptotic-approximate.
-Chung, Garey and Johnson~\cite{chung1982packing}
-gave an algorithm for non-rotational 2D GBP, which we call FFDH-FF,
-and proved that it has an AAR of $17/8 = 2.125$.
-Kenyon and R\'emila~\cite{kenyon1996strip} gave an APTAS for
-a problem called \emph{2D strip packing}, which gives a
-$(2+\eps)$-asymptotic-approximation algorithm for non-rotational 2D GBP.
-
-Caprara~\cite{caprara2008} gave an algorithm for $d$D GBP, called $\hdhk$,
-that takes a parameter $k$ as input and has an AAR of roughly
-$T_{\infty}^{d-1}$ (recall that $T_{\infty} \approx 1.69103$) when $k$ is large.
-Caprara also simplified and improved the proofs of approximation of some known algorithms,
-e.g., the AAR of FFDH-FF is $187/90 = 2.0\overline{7}8$.
-Their results, along with those of Baker and Coffman~\cite{baker1981tight},
-imply that the AAR of NFDH is $2T_{\infty} \approx 3.38206$.
-All the results in~\cite{caprara2008} (including the $\hdhk$ algorithm)
-only work for the non-rotational version.
-
-Bansal, Caprara and Sviridenko gave an algorithm for 2D GBP,
-for both the non-rotational version and the rotational version when the bin is square,
-having an AAR of $1 + \ln(T_{\infty}) + \eps \approx 1.52534 + \eps$~\cite{rna}.
-Their algorithm was a combination of the Round-and-Approx (R\&A) framework~\cite{rna}
-and the HDH algorithm by Caprara~\cite{caprara2008}.
-Jansen and Pr\"adel gave a $(1.5 + \eps)$-asymptotic-approximation
-algorithm for 2D GBP~\cite{JansenP2013}
-for both the non-rotational version and the rotational version when the bin is square.
-Bansal and Khan~\cite{bansal2014binpacking} combined Jansen and Pr\"adel's algorithm
-with the Round-and-Approx framework to improve the AAR to
-$1 + \ln 1.5 + \eps \approx 1.40547 + \eps$.
-
-\begin{table}[ht]
-\centering
-\caption{Algorithms for 2D geometric bin packing.}
-\begin{tabular}{lll}
-\toprule Algorithm & Asymptotic Approximation Ratio & Works for rotational version?
-\\ \midrule NFDH~\cite{coffman1980performance}
-    & 4 & Yes
-\\[\defaultaddspace] NFDH~\cite{coffman1980performance,caprara2008,baker1981tight}
-    & $2T_{\infty} \approx 3.38206$ & No
-\\[\defaultaddspace] FFDH-FF~\cite{coffman1980performance,caprara2008}
-    & $187/90 \approx 2.0\overline{7}8$ & No
-\\[\defaultaddspace] HDH~\cite{caprara2008}
-    & $T_\infty \approx 1.69103$ & No
-\\[\defaultaddspace] HDH with R\&A~\cite{rna}
-    & $1 + \ln(T_\infty) + \eps \approx 1.52534 + \eps$
-    & Yes (square bin only)
-\\[\defaultaddspace] Jansen, Pr\"adel~\cite{JansenP2013}
-    & $1.5 + \eps$
-    & Yes (square bin only)
-\\[\defaultaddspace] Bansal, Khan~\cite{bansal2014binpacking}
-    & $1 + \ln(1.5) + \eps \approx 1.40547 + \eps$
-    & Yes (square bin only)
-\\ \bottomrule
-\end{tabular}
-\label{table:2gbp}
-\end{table}
-
-Bansal, Correa, Kenyon and Sviridenko~\cite{bansal2006bin}
-give an APTAS for $d$D BP for the case where all items are $d$D cubes
-(recall that a cube is a cuboid having the same length in each dimension).
-
-Chleb{\'\i}k and Chleb{\'\i}kov\'a~\cite{chlebik2009hardness} prove that it is NP-hard to solve
-2D GBP with an AAR better than $1+1/3792 \approx 1.000264$ for the non-rotational version
-and an AAR better than $1+1/2196 \approx 1.000455$ for the rotational version.
-Hence, unlike classical bin packing, an APTAS cannot exist for 2D GBP.
-
-For the version of 3BP where items can be rotated about all axes,
-Miyazawa and Wakabayashi~\cite{miyazawa2009three} gave a
-4.89-asymptotic-approximation algorithm.
-Epstein and van Stee~\cite{epstein2006side} improved the AAR to
-4.5 when the base of the bin is a square.
-
-\section{Geometric Knapsack Problem}
-
-In the $d$D geometric knapsack problem ($d$D GKS), we are given a set $I$ of items,
-where each item $i \in I$ is a $d$D cuboid and has a profit $p(i) \ge 0$ associated with it.
-Our goal is to pack the maximum profit subset of $I$ into a $d$D cuboidal bin.
-In this problem, the bin is also called \emph{knapsack}.
-We can have different versions of the problem depending on whether items
-are allowed to be rotated or not.
-
-\subsection{Prior Work}
-
-%For both the rotational and the non-rotational version of the problem,
-%a variant of Steinberg's algorithm gives a 3-approx algorithm.
-Jansen and Zhang give a $(2+\eps)$-approximation algorithm~\cite{jansen2004rectangle}
-for both the rotational and non-rotational versions of 2D GKS.
-G\'alvez, Grandoni, Heydrich, Ingala, Khan and Wiese give a
-$17/9 + \eps \approx 1.\overline{8}9 + \eps$ approximation algorithm
-for non-rotational 2D GKS and a $(3/2 + \eps)$-approximation algorithm
-for the rotational version when the knapsack is square.
-
-For the special case of 2D GKS where $p(i)/a(i)$ is lower and upper bounded by constants
-for each item $i \in I$, there is a PTAS to pack a maximum-profit subset of $I$
-into a knapsack~\cite{bansal2009structural}. This works for the non-rotational version
-and the rotational version when the knapsack is square.
-
-For 3D GKS, \cite{diedrich2008approximation} give a $(7+\eps)$-approximation
-algorithm for the non-rotational version.
-When items can be rotated by 90$^{\circ}$ either around the vertical axis only
-or around all axes, they obtain algorithms with approximation ratios
-$6 + \eps$ and $5 + \eps$, respectively, assuming that the knapsack is a cube.
-
-\section{Strip Packing Problem}
-
-In the $d$D strip packing problem ($d$D SP),
-we are given a set $I$ of $d$D cuboidal items.
-Our goal is to pack the items into a single $d$D cuboid, called \emph{strip},
-where the first $d-1$ dimensions of the strip are given
-and the $d\Th$ dimension of the strip (called \emph{height}) must be minimized.
-We get different versions of the problem depending on whether
-items are allowed to be rotated or not.
-
-For any $d$D cuboid, the first $d-1$ dimensions are called \emph{base dimensions},
-and the $d\Th$ dimension is called the \emph{height}.
-When item rotations are not allowed, we can assume \wLoG{} that
-the strip has length 1 in each base dimension, and that the
-maximum height of an item is at most 1.
-This is because we can scale the dimensions of the bins and items by the same factor.
-
-\begin{definition}[Asymptotic approximation for SP]
-A strip packing algorithm $\Acal$ is said to be
-$\alpha$-asymptotic-approximate iff for each input $I$,
-$\Acal$ packs $I$ into a strip of height at most
-$\alpha\opt(I) + \beta h_{\max}$
-for some value $\beta \in o(\opt(I))$ (usually, $\beta$ is a constant),
-where $h_{\max}$ is the maximum height of any item in $I$.
-$\alpha$ is called the asymptotic approximation ratio (AAR) of $\Acal$.
-\end{definition}
-We can similarly define what it means for a strip-packing algorithm to be an APTAS.
-
-When all items in a $d$D SP instance have the same height,
-and item rotations are not allowed, then the problem reduces to $(d-1)$D GBP.
-Therefore, $d$D SP is a generalization of $(d-1)$D GBP.
-
-\subsection{Prior Work}
-
-Coffman, Garey, Johnson and Tarjan~\cite{coffman1980performance}
-gave two algorithms for non-rotational 2D SP,
-called Next-Fit Decreasing Height (NFDH) and First-Fit Decreasing Height (FFDH).
-NFDH packs items into a strip of height less than $2\opt(I) + h_{\max}$,
-where $h_{\max}$ is the maximum height of any item in the input.
-FFDH packs items into a strip of height less than $1.7\opt(I) + h_{\max}$.
-The approximation guarantee of NFDH also holds for the rotational version,
-regardless of how we orient the items in the packing.
-FFDH can be made to work for the rotational version with a bit more work.
-% TODO: show how to make FFDH work for the rotational case.
-
-Kenyon gave an APTAS for non-rotational 2D SP~\cite{kenyon1996strip}.
-Jansen and van Stee gave an APTAS for rotation 2D SP~\cite{jansen2005strip},
-under the assumptions that items have width and height at most 1
-and that the strip has width equal to 1.
-
-Caprara~\cite{caprara2008} gave an algorithm for the
-non-rotational $d$D SP, called $\hdhk$,
-that takes a parameter $k$ as input and has an AAR of roughly
-$T_{\infty}^{d-1}$ for large $k$
-(recall that $T_{\infty} \approx 1.69103$).
-
-Li and Cheng~\cite{li1990three} give a 3.25-asymptotic-approximation
-algorithm for non-rotational 3D SP.
-Jansen and Solis-Oba~\cite{jansen2006asymptotic} improve the AAR to $2+\eps$.
-Bansal, Han, Iwama, Sviridenko and Zhang~\cite{bansal2007harmonic}
-improve the AAR to $T_{\infty} \approx 1.69103$.
-Jansen and Pr\"adel~\cite{jansen2014new} further improve the AAR to $1.5 + \eps$.
-
-Miyazawa and Wakabayashi~\cite{miyazawa2009three} gave a
-2.64-asymptotic-approximation algorithm for 3D SP
-when items can be rotated about all axes.
-Epstein and van Stee~\cite{epstein2006side} give a
-2.25-asymptotic-approximation algorithm for 3D SP
-where the base of the strip is a square
-and the items can be rotated either about all axes
-or about the height axis only.
-
-\section{Vector Bin Packing Problem}
+\subsection{Vector Bin Packing}
 
 In the $d$-dimensional vector bin packing problem ($d$D VBP),
 we are given a set $I$ of $d$-dimensional vectors,
@@ -408,68 +144,301 @@ We have to assign these tasks to the minimum number of servers,
 where each server has a capacity on each resource.
 This is an example of $d$D VBP, where the tasks are items and servers are bins.
 
-\subsection{Prior Work}
+For $d$D VBP, the best-known AAR is $\ln d + O(1)$~\cite{rna,bansal2016improved}.
+For 2D VBP, the best-known AAR is
+$1 + \ln(1.5) + \eps \approx 1.40547 + \eps$~\cite{bansal2016improved}.
 
-Lueker and Vega~\cite{bp-aptas} gave a $(d+\eps)$-asymptotic-approximation
-algorithm for $d$D VBP.
+\section{Contributions of This Thesis}
 
-Chekuri and Khanna~\cite{chekuri-khanna-vbp} showed that
-if $d$ is not a constant, then for all $\eps > 0$, it is NP-hard to
-obtain an algorithm for $d$D VBP having an AAR of $d^{1/2-\eps}$.
-They showed this by reducing from the graph coloring problem.
-Khan's PhD thesis~\cite{khan-thesis} shows how to improve the hardness to $d^{1-\eps}$.
-Due to these hardness results, we now focus only on the case where $d$ is a constant.
+In this thesis, we address the following four problems related to geometric bin packing.
 
-Chekuri and Khanna~\cite{chekuri-khanna-vbp} gave an algorithm for $d$D VBP
-(for constant $d$) having an AAR of $2 + H_{d-1}$, where
-$H_k \defeq 1 + 1/2 + \ldots + 1/k$ is the $k\Th$ harmonic number.
-Using the well-known inequality $H_k \le \ln(k+1) + \gamma$,
-% see https://math.stackexchange.com/a/306379
-where $\gamma \approx 0.5772156649$ is the Euler–Mascheroni constant,
-we get that the AAR is at most $2 + \gamma + \ln d$.
+\subsection{Generalized Multidimensional Bin Packing}
 
-Bansal, Caprara and Sviridenko~\cite{rna} improved the AAR to
-$1 + \ln d + \eps$ by combining the R\&A framework with Lueker and Vega's
-$(d+\eps)$-asymptotic-approximation algorithm.
+Geometric packing and vector packing are well-studied generalizations of
+the classical bin packing problem.
+% \cref{fig:geom-vec-diff} in \cref{app:figs} illustrates the difference between
+% geometric packing and vector packing.
+However, often in practice, we encounter a mixture of geometric and vector constraints.
+Consider the following airlines cargo problem~\cite{paquay2016mixed}:
+We have boxes to load in an airline cargo container.
+In addition to the geometric constraint that all the boxes must fit within the container,
+we also have a constraint that the total weight of the loaded boxes
+should be within a specified capacity. Thus, in this problem,
+three dimensions are geometric and the weight is a vector constraint.
 
-Bansal, Khan and Elias~\cite{bansal2016improved} gave an algorithm for 2D VBP
-having an AAR of $1 + \ln(1.5) + \eps \approx 1.40547 + \eps$.
-They also give an algorithm for $d$D VBP having an AAR of
-$(1.5 - \ln 2) + \ln(d+1) + \eps$, which improves upon the previous
-$(1 + \ln d + \eps)$-asymptotic-approximation algorithm~\cite{rna} when $d \ge 5$.
-Their algorithms also use the R\&A framework.
-They also give an algorithm having an absolute approximation ratio of $3/2 + \eps$,
-which is tight (hardness of $3/2$ follows from classical bin packing).
+Weight has been an important constraint to consider for packing in logistics and supply chain
+management, e.g., cranes and other equipment can be damaged by the bins being too heavy,
+or by a skewed weight distribution~\cite{alonso2017mathematical}.
+While the container loading problems mostly consider packing items inside a container,
+the container stowage planning problem considers the stacking of the containers
+onto and off cargo ships~\cite{monaco2014terminal}.
+Even when different cargoes are packed into a fleet of aircraft for transport,
+one needs the individual cargoes to be not too heavy to ensure stability
+and less fuel consumption~\cite{amiouny1992balanced}.
+Similar problems find applications in vehicle routing
+with loading constraints~\cite{bortfeldt2013constraints}.
+Many practical heuristics~\cite{sorset2019heuristic,taylor2017three}
+have been proposed for these kinds of problems.
+Several companies (such as Driw, Boxify, Freightcom) and practical packages~\cite{yang2017gbp}
+have considered the problem. In many cases, we also want to ensure a limit on other attributes,
+such as the amount of magnetism, radioactivity, or toxicity.
+Each of these properties can be considered as additional vector dimensions.
 
-\begin{table}[ht]
+Such multidimensional packing problems are also getting attention due to their
+connections with fair resource allocation~\cite{fairknap}.
+In recent years, a considerable amount of research has focused on
+group fairness~\cite{JosephKMR16,TsangWRTZ19} such that the algorithms are
+not biased towards (or against) some groups or categories.
+One such notion of fairness is \emph{restricted dominance}~\cite{BeraCFN19},
+which upper bounds the number (or size) of items from a category.
+These different categories can be considered as dimensions.
+E.g., in a container packing problem for flood relief,
+one needs to ensure that the money spent on a container is fairly distributed among
+different types of items (such as medicine, food, garments).
+Hence, for each category, there is an upper bound on the value that can go into a container.
+
+Formally, we are given $n$ items $I\defeq\{1, 2, \dots, n\}$
+that are \geomvecdim{$d_g$}{$d_v$}, i.e., item $i$ is a
+$d_g$-dimensional cuboid of lengths $\ell_1(i), \ell_2(i), \ldots, \ell_{d_g}(i)$
+and has $d_v$ non-negative weights $v_1(i), v_2(i), \ldots, v_{d_v}(i)$.
+A \geomvecdim{$d_g$}{$d_v$} bin is a $d_g$-dimensional cuboid of length 1
+in each geometric dimension and weight capacity 1 in each of the $d_v$ vector dimensions.
+A feasible packing of items into a bin is a packing where items are packed parallel to the axes
+without overlapping, and for all $j \in [d_v]$,
+the sum of the $j\Th$ weight-dimension of the items in the bin is at most 1.
+In the \geomvec{$d_g$}{$d_v$} bin packing problem (BP),
+we have to feasibly pack all items into the minimum number of bins.
+In the \geomvec{$d_g$}{$d_v$} knapsack problem (KS),
+each item $i$ also has an associated nonnegative profit $p(i)$,
+and we have to feasibly pack a maximum-profit subset of the items into a single bin
+(also called \emph{knapsack}).
+\geomvec{$d_g$}{$d_v$} packing problems generalize both $d_g$-dimensional geometric packing
+(when $d_v=0$) and $d_v$-dimensional vector packing (when $d_g=0$).
+Already for vector packing, if $d_v$ is part of the input, there is an approximation
+hardness of ${d_v}^{1-\eps}$ unless NP=ZPP~\cite{bansal2016improved}.
+Thus, throughout the paper we assume both $d_g, d_v$ to be constants.
+
+\subsubsection{Our Results}
+
+We study the first approximation algorithms for general \geomvec{$d_g$}{$d_v$} BP,
+with a focus on $d_g = 2$.
+We give two simple algorithms for \geomvec{2}{$d$} BP, called $\simplePack$
+and $\betterSimplePack$, having AARs of $6(d+1)$ and $3(1+\ln(d+1))+\eps$,
+respectively, for any $\eps > 0$.
+For $d = 1$, $\betterSimplePack$'s AAR improves to $\approx 4.21640 + \eps$.
+
+Next, we modify the Round-and-Approx (R\&A) framework~\cite{rna,bansal2014binpacking}
+so that it works for \geomvec{$d_g$}{$d_v$} BP.
+We combine R\&A with the $\simplePack$ algorithm to get an AAR of
+$2(1 + \ln(3(d+1))) + \eps$ for \geomvec{2}{$d$} BP.
+This improves upon the AAR of $\betterSimplePack$ for $d \ge 3$.
+
+Next, we obtain a more sophisticated algorithm for \geomvec{2}{$d$} BP, called $\cbPack$,
+that fits into the R\&A framework and has an even better AAR.
+\begin{theorem}
+\label{thm:2-d-gvbp}
+For any $\eps > 0$, there is a polynomial-time algorithm for \geomvec{2}{$d$} BP,
+called $\cbPack$, having AAR $2(1+\ln((d+4)/2))+\eps$
+(improves to $2(1+\ln((d+3)/2))+\eps$ when items can be rotated by $90^{\circ}$).
+For $d=1$, the AAR improves to $2(1+\ln(19/12))+\eps$ $\approx 2.919 + \eps$
+(further improves to $2(1+\ln(3/2))+\eps$ $\approx 2.811 + \eps$ when items can be rotated).
+\end{theorem}
+
+\begin{table}[!ht]
 \centering
-\caption{Algorithms for vector bin packing.}
-\begin{tabular}{ll}
-\toprule Algorithm & Asymptotic Approximation Ratio
-\\ \midrule Lueker, Vega~\cite{bp-aptas}
-    & $d+\eps$
-\\[\defaultaddspace] Chekuri, Khanna~\cite{chekuri-khanna-vbp}
-    & $2 + H_{d-1} \le 2.57722 + \ln d$
-\\[\defaultaddspace] Bansal, Caprara, Sviridenko~\cite{rna}
-    & $1 + \ln d + \eps$
-\\[\defaultaddspace] Bansal, Khan and Elias~\cite{bansal2016improved}
-    & $(1.5 - \ln 2) + \ln(d+1) + \eps \approx 0.80685 + \ln(d+1) + \eps$
-\\[\defaultaddspace] Bansal, Khan and Elias~\cite{bansal2016improved}
-    & $1 + \ln(1.5) + \eps \approx 1.40547 + \eps$\quad (for $d=2$)
+\caption{Comparison of asymptotic approximation ratios
+of our algorithms for \geomvec{2}{$d$} BP.}
+\begin{tabular}{lcc}
+\toprule Algorithm
+    & AAR for \geomvec{2}{$d$} BP
+    & AAR for \geomvec{2}{1} BP
+\\ \midrule $\simplePack$
+    & $6(d+1)$
+    & $12$
+    % & \cref{sec:simple-algos}
+\\[\defaultaddspace] $\betterSimplePack$
+    & $3(1 + \ln(d+1)) + \eps$
+    & $3(1 + \ln(3/2)) + \eps \approx 4.216+\eps$
+    % & \cref{sec:simple-algos}
+%\\ \hline \parbox[l][2em][c]{14em}{$\simplePack$ with R\&A}
+\\[\defaultaddspace] $\simplePack$ with R\&A
+    & $2(1 + \ln(3(d+1))) + \eps$
+    & $2(1 + \ln 6) + \eps$ $\approx 5.5835+\eps$
+    %& \cref{sec:rna:simple-pack}
+\\[\defaultaddspace] $\cbPack$ (without rotation)
+    & {$2(1+\ln(\frac{d+4}{2})) + \eps$}
+    & $2(1+\ln(19/12))+\eps$ $\approx 2.919+\eps$
+    %& \cref{thm:2-d-gvbp}
+\\[\defaultaddspace] $\cbPack$ (with rotation)
+    & ${2(1+\ln(\frac{d+3}{2})) + \eps}$
+    & $2(1+\ln(3/2))+\eps$ $\approx 2.811+\eps$
+    %& \cref{thm:2-d-gvbp}
 \\ \bottomrule
 \end{tabular}
-\label{table:vbp}
+\label{table:gvbp-aar}
 \end{table}
 
-Woeginger~\cite{woeginger1997there} proved that it is NP-hard to obtain an APTAS for 2D VBP.
-Recently, Sandeep~\cite{sandeep2021optimal} showed that there exists a constant $c > 0$ such that
-it is NP-hard to obtain an AAR less than $c\log d$ for $d$D VBP.
+We also show how to extend $\simplePack$ and $\betterSimplePack$ to \geomvec{$d_g$}{$d_v$} BP
+to obtain AARs $2b(d_v+1)$ and $b(1 + \ln(d_v + 1) + \eps)$, respectively,
+where $b \defeq 4^{d_g} + 2^{d_g}$.
+We also give a similar algorithm for \geomvec{$d_g$}{$d_v$} KS
+having approximation ratio $b(1+\eps)$.
 
-\section{Vector Knapsack Problem}
+One of our main contributions is the enhancement of
+the R\&A framework~\cite{rna,bansal2014binpacking} to a wider class of algorithms.
+The R\&A framework is a simple but powerful technique,
+originally given by Bansal, Caprara and Sviridenko~\cite{rna},
+to improve the AAR of a bin packing algorithm by combining it with
+randomized rounding of a linear program.
+R\&A may have the potential to improve the AARs of several packing problems,
+but its applicability is limited because
+it only works with \emph{subset-oblivious} bin packing algorithms,
+and proving that an algorithm is subset-oblivious is difficult.
 
-In the $d$D vector knapsack problem ($d$D VKS), we are given a set $I$ of $d$D vectors,
-where each vector has a non-negative profit associated with it,
-and we have to pack a maximum-profit subset of $I$ into a single bin
-(here the bin is also called \emph{knapsack}).
+Bansal and Khan~\cite{bansal2014binpacking} partially removed this limitation
+by proving that a large class of algorithms for geometric and vector bin packing,
+called \emph{Rounding-based} algorithms, is subset-oblivious.
+We make further improvements on this front by showing that an even larger class
+of algorithms is subset-oblivious.
+This class includes some of our algorithms for \geomvec{$d_g$}{$d_v$} BP,
+like $\simplePack$ and $\cbPack$.
+We expect that our progress will help in better understanding the power of R\&A
+and extending it to other set-cover type problems,
+like round-SAP and round-UFP~\cite{ElbassioniGGKNP12}.
 
-A PTAS for $d$D VKS was given by Frieze and Clarke~\cite{frieze1984approximation}.
+\subsection{Harmonic Algorithms for \texorpdfstring{$d$}{d}D GBP with Rotations}
+
+In his seminal paper, Caprara~\cite{caprara2008} devised a polynomial-time algorithm
+for non-rotational $d$D GBP called $\hdhk$ (Harmonic Decreasing Height),
+where $k \in \mathbb{Z}$ is a parameter to the algorithm.
+$\hdhk$ has AAR equal to $T_k^{d-1}$,
+where $T_k$ is a decreasing function of $k$ and
+$T_{\infty} \defeq \lim_{k \to \infty} T_k \approx 1.69103$.
+The algorithm $\hdhk$ is based on an extension of the harmonic algorithm~\cite{leelee}
+for classical bin packing.
+For $d \ge 3$ and large $k$, $\hdhk$ has the best AAR
+among all known algorithms for $d$D GBP.
+
+A limitation of $\hdhk$ is that it does not allow rotation of items.
+This is in contrast to some real-world problems,
+like packing boxes into shipping containers ($d=3$),
+where items can often be rotated orthogonally,
+i.e., $90^{\circ}$ rotation around all or a subset of axes.
+
+Furthermore, known algorithms for rotational 3D GBP have a significantly larger AAR
+than what the $\hdhk$ algorithm gives for non-rotational 3D GBP.
+When items can be rotated about all axes,
+Miyazawa and Wakabayashi~\cite{miyazawa2009three} gave a
+4.89-asymptotic-approximation algorithm.
+Epstein and van Stee~\cite{epstein2006side} improved the AAR to
+4.5 when the base of the bin is a square.
+On the other hand, $\hdhk$ gives an AAR of roughly
+$T_{\infty}^2 \approx 2.85958$ for large $k$.
+
+Orientation constraints may sometimes limit the vertical orientation of a box to one dimension
+(e.g., some items require a face labeled `This side up' to always be one top)
+or to two (of three) dimensions
+(e.g., long but low and narrow box should not be placed on its smallest surface).
+These constraints are introduced to deter goods
+and packaging from being damaged and to ensure the stability of the load.
+Current algorithms for 3D GBP either allow rotating all items along the same set of axes
+or don't allow rotating any item, i.e., they enforce the same
+orientation constraints over all items in the input.
+
+\begin{comment}
+The state-of-the-art algorithms for 2D GBP allow rotating items,
+but they assume that the bin is square, which is often not true in practice.
+For $d > 3$, there are no known approximation algorithms for $d$D GBP
+when items can be rotated.
+\end{comment}
+
+We address these issues by giving algorithms for $d$D GBP
+that are similar to $\hdhk$ but allow items to be rotated
+and allow orientation constraints to vary across items.
+We first give a fast and simple algorithm called $\fhk$ that has an AAR of $T_k^d$.
+We next give a more sophisticated algorithm called $\hgapk$
+that has an AAR of $T_k^{d-1}(1+\eps)$.
+
+\subsubsection{Multiple-Choice Packing}
+
+$\fhk$ and $\hgapk$ can be extended to work for the $d$D multiple-choice
+geometric bin packing problem ($d$MCBP), which we will describe now.
+$d$MCBP generalizes both the rotational and non-rotational versions of $d$D GBP.
+It also captures the concept of variable orientation constraints across items.
+This perspective will help us design algorithms for the rotational case.
+
+In $d$MCBP, we are given a set $\Ical = \{I_1, I_2, \ldots, I_n\}$,
+where for each $j$, $I_j$ is a set of items, henceforth called an {\em itemset}.
+We have to pick exactly one item from each itemset and pack those items
+into the minimum number of bins.
+
+We can model rotation using multiple-choice packing:
+Given a set $I$ of items, for each item $i \in I$,
+create an itemset $I_i$ that contains all allowed orientations of $i$.
+Then the optimal solution to $\Ical \defeq \{I_i: i \in I\}$
+will tell us how to rotate and pack items in $I$.
+
+Some algorithms for 2D bin packing with rotations assume that
+the bin is square \cite{rna,JansenP2013,bansal2014binpacking}.
+This assumption holds without loss of generality when rotations are forbidden,
+because we can scale the items.
+But if rotations are allowed, this won't work because
+items $i_1$ and $i_2$ that are rotations of each other
+may stop being rotations of each other after they are scaled.
+Multiple-choice packing algorithms can be used in this case:
+for each item $i \in I$, we will create an itemset $I_i$ that
+contains scaled orientations of $i$.
+
+Multiple-choice packing problems have been studied before.
+Lawler gave an FPTAS for the multiple-choice classical knapsack problem~\cite{lawler1979fast}.
+Patt-Shamir and Rawitz gave an algorithm for multiple-choice vector bin packing having
+AAR $O(\log d)$ and a PTAS for multiple-choice vector knapsack~\cite{patt2012vector}.
+Similar notions have been studied in the scheduling of
+malleable or moldable jobs~\cite{ZhangJ07,Jansen12}.
+
+\subsubsection{Our Results}
+
+In our work, we extend and generalize $\hdhk$ to $d$MCBP.
+$d$MCBP subsumes the rotational case for geometric bin packing,
+and we believe $d$MCBP is an important natural generalization
+of geometric bin packing that may be of independent interest.
+
+In \cref{sec:hdhk-prelims}, we describe ideas from $\hdhk$
+that help us devise harmonic-based algorithms for $d$MCBP.
+In \cref{sec:fhk}, we show an $O(N + n\log n)$-time algorithm for $d$MCBP,
+called $\fhk$, having an AAR of $T_k^d$, where $n$ is the number of itemsets
+and $N$ is total number of items across all the $n$ itemsets.
+
+In \cref{sec:hgap}, we show an algorithm for $d$MCBP, called $\hgapk$, having an AAR of
+$T_k^{d-1}(1+\eps)$ and having a running time of $N^{O(1/\eps^2)}n^{(1/\eps)^{O(1/\eps)}}$.
+For $d \ge 3$, this matches the present best AAR for the case
+where rotations are forbidden.
+Also, for large $k$, this gives an AAR of roughly $T_{\infty}^2 \approx 2.85958$
+for 3D GBP when orthogonal rotations are allowed,
+which is an improvement over the previous best AAR of $4.5$~\cite{epstein2006side},
+an improvement after fourteen years.
+
+\begin{optional}
+Our algorithms produce shelf-based packings (we formally define \emph{shelf-based} later).
+An interesting property of harmonic algorithms is that they are,
+in some sense, optimal for shelf-based packing. Formally,
+Caprara~\cite{caprara2008} showed that no shelf-based algorithm for 2D GBP can get an AAR
+better than $T_{\infty} \approx 1.69103$,
+and his $\hdhk$ algorithm achieves an AAR of $T_k^{d-1}$ for $d$D GBP.
+In \cref{sec:hard-example}, we extend that result to show that no shelf-based algorithm
+for $d$D GBP can get an AAR better than $T_{\infty}^{d-1}$.%
+\end{optional}
+
+Our techniques can be extended to some other packing problems,
+like strip packing and geometric knapsack.
+In \cref{sec:hdhk-sp}, we define the $d$D multiple-choice strip-packing problem ($d$MCSP)
+and extend Caprara's $\hdhk$ algorithm~\cite{caprara2008} to $d$MCSP.
+The algorithm has AAR $T_k^{d-1}$ and runs in time $O(N + n\log n)$,
+where $n$ is the number of itemsets and $N$ is the total number of items across all itemsets.
+In \cref{sec:hdhks}, we define the $d$D multiple-choice geometric knapsack problem ($d$MCKS),
+and for any $0 < \eps < 1$, we show an $O(N\log N + Nn/\eps)$-time algorithm
+that is $(1-\eps)3^{-d}$-approximate.
+
+\subsection{Algorithm for Guillotine-Separable Thin 2D GBP}
+
+\subsection{APTAS for Thin 2D GBP}
