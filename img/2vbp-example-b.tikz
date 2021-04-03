@@ -1,0 +1,19 @@
+\begin{tikzpicture}[
+item/.style={->,>={Stealth},ultra thick},
+bin/.style={draw,thick},
+]
+\definecolor{myColor}{HTML}{c00000}
+\draw[myColor,item] (0,0) -- +(1.5,0.6);
+\definecolor{myColor}{HTML}{bf9000}
+\draw[myColor,item] (1.5,0.6) -- +(1.2,2.4);
+\path[bin] (0,0) rectangle (3,3);
+\begin{scope}[xshift=3.5cm]
+\definecolor{myColor}{HTML}{00b0f0}
+\draw[myColor,item] (0,0) -- +(0.3,1.5);
+\definecolor{myColor}{HTML}{92d050}
+\draw[myColor,item] (0.3,1.5) -- +(0.9,0.9);
+\definecolor{myColor}{HTML}{7030a0}
+\draw[myColor,item] (1.2,2.4) -- +(1.5,0.3);
+\path[bin] (0,0) rectangle (3,3);
+\end{scope}
+\end{tikzpicture}

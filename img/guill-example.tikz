@@ -1,0 +1,93 @@
+\tikzset{pics/mypic/.style args={#1,#2,#3}{code={
+\begin{scope}
+    \begin{scope}
+        \begin{scope}
+            \path[item] (0, 0) rectangle +(0.8, 2.4);
+            \path[bin3] (0, 0) rectangle +(0.8, 2.4);
+        \end{scope}
+        \begin{scope}[xshift={#3cm}]
+            \path[item] (0.8, 0) rectangle +(0.6, 2.4);
+            \path[bin3] (0.8, 0) rectangle +(0.6, 2.4);
+        \end{scope}
+        \begin{scope}[xshift={2*#3cm}]
+            \path[item] (1.4, 0) rectangle +(0.8, 2);
+            \path[bin3] (1.4, 0) rectangle +(1, 2.4);
+        \end{scope}
+        \path[bin2] (0, 0) rectangle +(2.4, 2.4);
+        \path[cutline2] (0.8, -0.2) -- (0.8, 2.6);
+        \path[cutline2] (1.4, -0.2) -- (1.4, 2.6);
+    \end{scope}
+    \begin{scope}[yshift={#2cm}]
+        \begin{scope}
+            \path[item] (0, 2.4) rectangle +(1.1, 1.6);
+            \path[bin3] (0, 2.4) rectangle +(1.1, 1.6);
+        \end{scope}
+        \begin{scope}[xshift={#3cm}]
+            \path[item] (1.1, 2.4) rectangle +(1.3, 1.4);
+            \path[bin3] (1.1, 2.4) rectangle +(1.3, 1.6);
+        \end{scope}
+        \path[bin2] (0, 2.4) rectangle +(2.4, 1.6);
+        \path[cutline2] (1.1, 2.2) -- (1.1, 4.2);
+    \end{scope}
+    \path[cutline1] (-0.2, 2.4) -- (2.6, 2.4);
+    \path[bin1] (0, 0) rectangle +(2.4, 4);
+\end{scope}
+\begin{scope}[xshift={#1cm}]
+    \begin{scope}
+        \begin{scope}
+            \path[item] (2.4, 0) rectangle +(0.8, 2.8);
+            \path[bin3] (2.4, 0) rectangle +(0.8, 3.2);
+        \end{scope}
+        \begin{scope}[xshift={#3cm}]
+            \path[item] (3.2, 0) rectangle +(0.8, 3.2);
+            \path[bin3] (3.2, 0) rectangle +(0.8, 3.2);
+        \end{scope}
+        \path[bin2] (2.4, 0) rectangle +(1.6, 3.2);
+        \path[cutline2] (3.2, -0.2) -- (3.2, 3.4);
+    \end{scope}
+    \begin{scope}[yshift={#2cm}]
+        \path[item] (2.4, 3.2) rectangle +(1.6, 0.6);
+        \path[bin2,bin3] (2.4, 3.2) rectangle +(1.6, 0.8);
+    \end{scope}
+    \path[bin1] (2.4, 0) rectangle +(1.6, 4);
+    \path[cutline1] (2.2, 3.2) -- (4.2, 3.2);
+\end{scope}
+\path[bin0] (0, 0) rectangle +(4, 4);
+\path[cutline0] (2.4, -0.2) -- (2.4, 4.2);
+}}}
+\begin{tikzpicture}[
+item/.style={fill={black!10},draw},
+myarrow/.style={->,>={Stealth},thick},
+bin/.style={draw,thick},
+cutline/.style={draw={black!50!red},densely dashed,line width=1.1pt},
+bin0/.style={},
+bin1/.style={},
+bin2/.style={},
+bin3/.style={},
+cutline0/.style={},
+cutline1/.style={},
+cutline2/.style={},
+]
+\begin{scope}[bin0/.style=bin,cutline0/.style=cutline]
+    \pic[yscale=-1]{mypic={0,0,0}};
+    \node[rotate=90,transform shape] at (2.42,-4.35) {\large\ding{34}};
+\end{scope}
+\draw[myarrow] (5,-2) -> (8,-2);
+\begin{scope}[xshift=9.5cm,bin1/.style=bin,cutline1/.style=cutline]
+    \pic[yscale=-1]{mypic={1,0,0}};
+    \node[transform shape] at (-0.4,-2.42) {\large\ding{34}};
+    \node[xscale=-1,transform shape] at (5.4,-3.22) {\large\ding{34}};
+\end{scope}
+\draw[myarrow] (12.1,-4.5) -> (12.1,-6);
+\begin{scope}[shift={(9.5cm,-7cm)},bin2/.style=bin,cutline2/.style=cutline]
+    \pic[yscale=-1]{mypic={1,0.5,0}};
+    \node[yscale=-1,rotate=90,transform shape] at (0.82,0.4) {\large\ding{34}};
+    \node[yscale=-1,rotate=90,transform shape] at (1.42,0.4) {\large\ding{34}};
+    \node[yscale=-1,rotate=90,transform shape] at (4.22,0.4) {\large\ding{34}};
+    \node[rotate=90,transform shape] at (1.12,-4.9) {\large\ding{34}};
+\end{scope}
+\draw[myarrow] (8.5,-9.5) -> (6.5,-9.5);
+\begin{scope}[yshift=-7cm,bin3/.style=bin]
+    \pic[yscale=-1]{mypic={1.2,0.5,0.4}};
+\end{scope}
+\end{tikzpicture}

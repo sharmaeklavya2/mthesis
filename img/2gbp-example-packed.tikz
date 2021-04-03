@@ -1,0 +1,80 @@
+\ifcsname pGameL\endcsname\else\newlength{\pGameL}\fi
+\setlength{\pGameL}{0.325cm}
+\begin{tikzpicture}[scale=0.8,
+bin/.style={draw,thick},
+binGrid/.style={draw,step=1\pGameL,{black!20}},
+item/.style={draw},
+myarrow/.style={->,>={Stealth},thick},
+]
+\begin{scope}[yshift=2.1cm]
+%\path[binGrid] (0\pGameL, 0\pGameL) grid (19\pGameL, 27\pGameL);
+%\path[bin] (0\pGameL, 0\pGameL) rectangle (19\pGameL, 27\pGameL);
+\definecolor{currentItemColor}{HTML}{3d7af5}
+\path[item,fill=currentItemColor] (1\pGameL, 19\pGameL) rectangle +(7\pGameL, 7\pGameL);
+\definecolor{currentItemColor}{HTML}{bb3df5}
+\path[item,fill=currentItemColor] (7\pGameL, 0\pGameL) rectangle +(9\pGameL, 6\pGameL);
+\definecolor{currentItemColor}{HTML}{813df5}
+\path[item,fill=currentItemColor] (0\pGameL, 1\pGameL) rectangle +(6\pGameL, 9\pGameL);
+\definecolor{currentItemColor}{HTML}{a23df5}
+\path[item,fill=currentItemColor] (7\pGameL, 7\pGameL) rectangle +(8\pGameL, 3\pGameL);
+\definecolor{currentItemColor}{HTML}{3de9f5}
+\path[item,fill=currentItemColor] (9\pGameL, 19\pGameL) rectangle +(4\pGameL, 7\pGameL);
+\definecolor{currentItemColor}{HTML}{d03df5}
+\path[item,fill=currentItemColor] (13\pGameL, 11\pGameL) rectangle +(3\pGameL, 7\pGameL);
+\definecolor{currentItemColor}{HTML}{f5993d}
+\path[item,fill=currentItemColor] (0\pGameL, 11\pGameL) rectangle +(12\pGameL, 2\pGameL);
+\definecolor{currentItemColor}{HTML}{f53d40}
+\path[item,fill=currentItemColor] (2\pGameL, 16\pGameL) rectangle +(9\pGameL, 2\pGameL);
+\definecolor{currentItemColor}{HTML}{3dbef5}
+\path[item,fill=currentItemColor] (17\pGameL, 1\pGameL) rectangle +(2\pGameL, 9\pGameL);
+\definecolor{currentItemColor}{HTML}{f58a3d}
+\path[item,fill=currentItemColor] (17\pGameL, 11\pGameL) rectangle +(2\pGameL, 7\pGameL);
+\definecolor{currentItemColor}{HTML}{3dd6f5}
+\path[item,fill=currentItemColor] (14\pGameL, 23\pGameL) rectangle +(4\pGameL, 4\pGameL);
+\definecolor{currentItemColor}{HTML}{3df5a2}
+\path[item,fill=currentItemColor] (14\pGameL, 19\pGameL) rectangle +(5\pGameL, 3\pGameL);
+\definecolor{currentItemColor}{HTML}{3df590}
+\path[item,fill=currentItemColor] (0\pGameL, 14\pGameL) rectangle +(12\pGameL, 1\pGameL);
+\end{scope}
+\draw[myarrow] (19\pGameL+0.5cm,6.45cm) -- (10cm-0.5cm,6.45cm);
+\begin{scope}[xshift=10cm]
+\begin{scope}[yshift=9cm]
+%\path[binGrid] (0\pGameL, 0\pGameL) grid (12\pGameL, 12\pGameL);
+\definecolor{currentItemColor}{HTML}{813df5}
+\path[item,fill=currentItemColor] (0\pGameL, 3\pGameL) rectangle +(6\pGameL, 9\pGameL);
+\definecolor{currentItemColor}{HTML}{d03df5}
+\path[item,fill=currentItemColor] (8\pGameL, 3\pGameL) rectangle +(3\pGameL, 7\pGameL);
+\definecolor{currentItemColor}{HTML}{f5993d}
+\path[item,fill=currentItemColor] (0\pGameL, 0\pGameL) rectangle +(12\pGameL, 2\pGameL);
+\definecolor{currentItemColor}{HTML}{3dbef5}
+\path[item,fill=currentItemColor] (6\pGameL, 3\pGameL) rectangle +(2\pGameL, 9\pGameL);
+\definecolor{currentItemColor}{HTML}{3df590}
+\path[item,fill=currentItemColor] (0\pGameL, 2\pGameL) rectangle +(12\pGameL, 1\pGameL);
+\path[bin] (0\pGameL, 0\pGameL) rectangle (12\pGameL, 12\pGameL);
+\end{scope}
+\begin{scope}[yshift=4.5cm]
+%\path[binGrid] (0\pGameL, 0\pGameL) grid (12\pGameL, 12\pGameL);
+\definecolor{currentItemColor}{HTML}{bb3df5}
+\path[item,fill=currentItemColor] (0\pGameL, 0\pGameL) rectangle +(9\pGameL, 6\pGameL);
+\definecolor{currentItemColor}{HTML}{a23df5}
+\path[item,fill=currentItemColor] (0\pGameL, 8\pGameL) rectangle +(8\pGameL, 3\pGameL);
+\definecolor{currentItemColor}{HTML}{f53d40}
+\path[item,fill=currentItemColor] (0\pGameL, 6\pGameL) rectangle +(9\pGameL, 2\pGameL);
+\definecolor{currentItemColor}{HTML}{f58a3d}
+\path[item,fill=currentItemColor] (9\pGameL, 0\pGameL) rectangle +(2\pGameL, 7\pGameL);
+\path[bin] (0\pGameL, 0\pGameL) rectangle (12\pGameL, 12\pGameL);
+\end{scope}
+\begin{scope}
+%\path[binGrid] (0\pGameL, 0\pGameL) grid (12\pGameL, 12\pGameL);
+\definecolor{currentItemColor}{HTML}{3d7af5}
+\path[item,fill=currentItemColor] (0\pGameL, 0\pGameL) rectangle +(7\pGameL, 7\pGameL);
+\definecolor{currentItemColor}{HTML}{3de9f5}
+\path[item,fill=currentItemColor] (7\pGameL, 0\pGameL) rectangle +(4\pGameL, 7\pGameL);
+\definecolor{currentItemColor}{HTML}{3dd6f5}
+\path[item,fill=currentItemColor] (0\pGameL, 7\pGameL) rectangle +(4\pGameL, 4\pGameL);
+\definecolor{currentItemColor}{HTML}{3df5a2}
+\path[item,fill=currentItemColor] (4\pGameL, 7\pGameL) rectangle +(5\pGameL, 3\pGameL);
+\path[bin] (0\pGameL, 0\pGameL) rectangle (12\pGameL, 12\pGameL);
+\end{scope}
+\end{scope}
+\end{tikzpicture}

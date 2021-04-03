@@ -1,0 +1,14 @@
+\begin{tikzpicture}[
+item/.style={->,>={Stealth},ultra thick},
+]
+\definecolor{myColor}{HTML}{00b0f0}
+\draw[myColor,item] (0,0) -- +(0.3,1.5);
+\definecolor{myColor}{HTML}{bf9000}
+\draw[myColor,item] (0.8,0) -- +(1.2,2.4);
+\definecolor{myColor}{HTML}{92d050}
+\draw[myColor,item] (1.7,0) -- +(0.9,0.9);
+\definecolor{myColor}{HTML}{c00000}
+\draw[myColor,item] (2.7,0) -- +(1.5,0.6);
+\definecolor{myColor}{HTML}{7030a0}
+\draw[myColor,item] (4.5,0) -- +(1.5,0.3);
+\end{tikzpicture}

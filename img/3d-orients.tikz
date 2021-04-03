@@ -1,0 +1,30 @@
+\tikzset{pics/cuboid/.style args={#1,#2,#3}{code={
+\fill[black!15] (0,0,#3) -- ++(#1,0,0) -- ++(0,#2,0) -- ++(-#1,0,0) -- cycle;
+\fill[black!30] (0,0,0) -- +(#1,0,0) -- +(#1,0,#3) -- +(0,0,#3) -- cycle;
+\fill[black!45] (#1,0,0) -- ++(0,#2,0) -- ++(0,0,#3) -- ++(0,-#2,0) -- cycle;
+}}}
+\begin{tikzpicture}[transform shape,
+x={(-10:1)}, z={(0,0.75)}, y={(60:0.85)}]
+
+\pic{cuboid={0.4,0.8,1.6}};
+
+\begin{scope}[xshift=2cm,yshift=0.1cm]
+\pic{cuboid={0.8,0.4,1.6}};
+\end{scope}
+
+\begin{scope}[xshift=4cm]
+\pic{cuboid={0.4,1.6,0.8}};
+\end{scope}
+
+\begin{scope}[xshift=6cm,yshift=0.4cm]
+\pic{cuboid={1.6,0.4,0.8}};
+\end{scope}
+
+\begin{scope}[xshift=8.5cm,yshift=0.1cm]
+\pic{cuboid={0.8,1.6,0.4}};
+\end{scope}
+
+\begin{scope}[xshift=10.5cm,yshift=0.4cm]
+\pic{cuboid={1.6,0.8,0.4}};
+\end{scope}
+\end{tikzpicture}
