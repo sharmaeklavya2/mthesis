@@ -126,6 +126,38 @@ An APTAS cannot exist for 2D GBP unless P = NP~\cite{bansal2006bin,chlebik2009ha
 For non-rotational $d$D GBP where $d \ge 3$, the algorithm by Caprara~\cite{caprara2008}
 gives the best-known AAR of roughly $T_{\infty}^{d-1}$, where $T_{\infty} \approx 1.69103$.
 
+\subsection{Guillotine-Separable Geometric Bin Packing}
+
+In many practical cases of 2D GBP, there are additional constraints on
+how items can be packed into bins, like in the
+\emph{two-dimensional guillotine-separable geometric bin packing problem} (2D GuillBP).
+
+\begin{definition}
+A packing of rectangles into a bin is said to be
+\emph{$k$-stage guillotine-separable} or \emph{$k$-stage guillotinable}
+iff we can separate all the items in the bin using at most $k$ stages of end-to-end cuts
+(also called \emph{guillotine cuts}), where in each stage,
+all cuts are parallel to the $x$-axis or all cuts are parallel to the $y$-axis.
+A packing of rectangles into a bin is said to be \emph{guillotine-separable}
+or \emph{guillotinable} iff it is $k$-stage guillotinable for some $k$.
+\end{definition}
+
+%TODO: add figures
+
+2D GuillBP is a variant of 2D GBP where we are given a set $I$ of rectangles and
+our task is to pack them into the minimum number of bins such that each bin is guillotinable.
+Similarly, in the $k$-stage 2D bin packing problem, we have to pack a set of rectangles
+into the minimum number of bins such that each bin is $k$-stage guillotinable.
+
+2D GuillBP is relevant in sheet-cutting
+industries~\cite{mchale1999cutting,puchinger2004solving,schneider1988trim},
+where cutting machines can only make guillotine cuts.
+Guillotine cuts simplify the design and programming of cutting machines
+and reduce their operational cost, which is important if
+the raw material being cut is relatively inexpensive.
+
+Unlike 2D GBP, which is APX-hard, an APTAS is known for 2D GuillBP~\cite{bansal2005tale}.
+
 \subsection{Vector Bin Packing}
 
 In the $d$-dimensional vector bin packing problem ($d$D VBP),
@@ -439,6 +471,48 @@ In \cref{sec:hdhks}, we define the $d$D multiple-choice geometric knapsack probl
 and for any $0 < \eps < 1$, we show an $O(N\log N + Nn/\eps)$-time algorithm
 that is $(1-\eps)3^{-d}$-approximate.
 
-\subsection{Algorithm for Guillotine-Separable Thin 2D GBP}
+\subsection{Guillotine-Separable Packing of Thin Rectangles}
+
+2D GuillBP is easier than 2D GBP: there is an APTAS for 2D GuillBP~\cite{bansal2005tale}.
+A natural question, then, is whether the optimal solution to 2D GuillBP
+a good approximation for 2D GBP.
+
+Formally, let $\opt_g(I)$ be the minimum number of guillotinable bins needed to pack $I$.
+Let $\alpha$ be the smallest constant such that
+$\opt_g(I) \le \alpha\opt(I) + \beta$, where $\beta \in o(\opt(I))$.
+We call $\alpha$ the \emph{Asymptotic Price of Guillotinability} (APoG).
+Hence, if we use the APTAS for 2D GuillBP as an approximation algorithm for 2D GBP,
+then the AAR would be $\alpha(1 + \eps)$.
+Therefore, we would like to obtain tight upper and lower bounds on APoG.
+
+It is a simple and well-known fact that $\APoG \ge 4/3$.
+% TODO: add explanation and figure
+Caprara's $\hdhk$ algorithm~\cite{caprara2008} outputs a 2-stage packing,
+so $\APoG \le T_{\infty} \approx 1.69103$.
+
+We consider the special case where the rectangles are $\delta$-thin,
+i.e., each rectangle has height at most $\delta$ or width at most $\delta$,
+where $\delta$ is a small constant.
+We prove an upper-bound on $\APoG$ for thin rectangles by
+giving an algorithm for 2D GBP, called $\skewPack$,
+that outputs a 4-stage packing and has an AAR of $\frac{4}{3}(1+4\delta)(1+\eps)$.
+We also prove a lower-bound of $4/3$ on $\APoG$ by giving
+a set of $\delta$-thin rectangles that cannot be efficiently
+packed by a guillotine-separable packing.
+Therefore, when $\delta$ is close to zero, we get that APoG is roughly $4/3$.
+
+This indicates that to tighten the bound on APoG for the general case,
+we should focus on big rectangles, i.e., rectangles that have width and height
+more than a constant $\delta$.
 
 \subsection{APTAS for Thin 2D GBP}
+
+For a constant $\delta > 0$, a rectangle is said to be $\delta$-thin
+iff either its width is at most $\delta$ or its height is at most $\delta$.
+An APTAS doesn't exist for 2D GBP (assuming P$\neq$NP)~\cite{bansal2006bin}.
+However, we show that if the rectangular items are $\delta$-thin,
+for a very small constant $\delta$, then something like an APTAS exists.
+Formally, we give an algorithm for 2D GBP that takes a parameter $\eps$,
+and show that for every constant $\eps > 0$, there exists a constant $\delta > 0$
+such that the algorithm has an AAR of $1+\eps$
+when all items in the input are $\delta$-thin rectangles.
