@@ -1,0 +1,37 @@
+\begin{tikzpicture}[
+item/.style={draw},
+bin/.style={draw,thick},
+myarrow/.style={->,>={Stealth},thick},
+]
+\definecolor{myblue}{HTML}{4768CC}
+\definecolor{myred}{HTML}{CC4747}
+\definecolor{mycyan}{HTML}{47CCCC}
+\definecolor{mygreen}{HTML}{8ACC47}
+\definecolor{myyellow}{HTML}{CCAB47}
+\begin{scope}
+\path[item,fill=myblue]
+    (0, 0) rectangle +(2, -1) node[text=white,pos=0.5] {1}
+    (2.5, 0) rectangle +(1, -2) node[text=white,pos=0.5] {2}
+    (0, -1.5) rectangle +(1.5, -1.5) node[text=white,pos=0.5] {3};
+\path[item,fill=myred]
+    (4, 0) rectangle +(1.5, -2) node[text=white,pos=0.5] {4};
+\path[item,fill=mycyan]
+    (2, -2.4) rectangle +(2, -0.625) node[pos=0.5] {5}
+    (4.5, -2.4) rectangle +(1, -1.25) node[pos=0.5] {6};
+\path[item,fill=mygreen]
+    (0.25, -3.5) rectangle +(0.5, -2.5) node[pos=0.5] {7}
+    (1.25, -3.5) rectangle +(2.5, -0.5) node[pos=0.5] {8};
+\path[item,fill=myyellow]
+    (1.25, -4.5) rectangle +(2.25, -1.5) node[pos=0.5] {9};
+\end{scope}
+\draw[myarrow] (6.5, -3) -- (8,-3);
+\begin{scope}[xshift=9cm,yshift=-0.25cm]
+\path[item,fill=myred] (0, 0) rectangle +(1.5, -2) node[text=white,pos=0.5] {4};
+\path[item,fill=myblue] (1.5, 0) rectangle +(1, -2) node[text=white,pos=0.5] {2};
+\path[item,fill=mygreen] (0, -2) rectangle +(2.5, -0.5) node[pos=0.5] {8};
+\path[item,fill=mycyan] (0, -4) rectangle +(2, 0.625) node[pos=0.5] {5};
+\path[item,fill=myyellow] (0, -4) rectangle +(2.25, -1.5) node[pos=0.5] {9};
+\path[bin] (0, 0) rectangle +(2.5, -2.5);
+\path[bin] (0, -3) rectangle +(2.5, -2.5);
+\end{scope}
+\end{tikzpicture}

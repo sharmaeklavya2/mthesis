@@ -501,7 +501,16 @@ This perspective will help us design algorithms for the rotational case.
 In $d$MCBP, we are given a set $\Ical = \{I_1, I_2, \ldots, I_n\}$,
 where for each $j$, $I_j$ is a set of items, henceforth called an {\em itemset}.
 We have to pick exactly one item from each itemset and pack those items
-into the minimum number of bins.
+into the minimum number of bins. See \cref{fig:2mcbp-example} for an example.
+
+\begin{figure}[htb]
+\centering
+\input{img/2mcbp-example.tikz}
+\caption{2MCBP example: packing the input
+$\Ical = \{\{1, 2, 3\}, \{4\}, \{5, 6\}, \{7, 8\}, \{9\}\}$ into two bins.
+Here items of the same color belong to the same itemset.}
+\label{fig:2mcbp-example}
+\end{figure}
 
 We can model rotation using multiple-choice packing:
 Given a set $I$ of items, for each item $i \in I$,
