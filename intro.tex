@@ -99,8 +99,14 @@ Let $\opt(I)$ be the maximum profit of a subset of $I$ that can be packed into t
 An algorithm $\Acal$ for the knapsack problem is said to be $\alpha$-approximate iff
 the profit of the items packed by $\Acal$ is at least $\opt(I)/\alpha$.
 
-A simple $(1+\eps)$-approximate $O(n^3/\eps)$-time algorithm
-exists for this problem~\cite{daa:rounding-dp}.
+An algorithm for the knapsack problem is called a PTAS
+if it takes a constant $\eps > 0$ as parameter,
+is $(1+\eps)$-approximate, and runs in time polynomial in $n$.
+Additionally, if the running time is polynomial in both $n$ and $1/\eps$,
+then the algorithm is called an FPTAS.
+
+FPTASes are known for the classical knapsack problem.
+There is a simple FPTAS that runs in $O(n^3/\eps)$ time~\cite{daa:rounding-dp}.
 Lawler improved the running time to $O(n\log(1/\eps) + 1/\eps^4)$~\cite{lawler1979fast}.
 
 \subsection{Geometric Bin Packing}
@@ -617,6 +623,8 @@ when all items in the input are $\delta$-thin rectangles.
 \begin{itemize}
 \item In \cref{chap:prior-work}, we describe prior work on well-known packing problems
     (problems of \cref{sec:well-known-problems} and other related problems).
+\item In \cref{chap:preliminaries}, we describe the notation and preliminaries
+    needed for the rest of the thesis.
 \item In \cref{chap:gvbp}, we describe our algorithms for generalized multidimensional
     bin packing (\geomvec{2}{$d$} BP) and our extension of the Round-and-Approx framework.
 \item In \cref{chap:hdhk}, we describe our algorithms for $d$-dimensional

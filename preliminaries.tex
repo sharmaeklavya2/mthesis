@@ -1,0 +1,199 @@
+\chapter{Notation and Preliminaries}
+\label{chap:preliminaries}
+
+\section{Notation}
+
+\subsection{General}
+
+For an integer $n \ge 0$, define $[n] \defeq \{1, 2, \ldots, n\}$.
+Define $\poly(n)$ as the set of polynomial and sub-polynomial functions of $n$.
+For a set $X$, define $|X|$ as the cardinality of the set
+and define $\Sum(X) \defeq \sum_{x \in X} x$.
+
+For a vector $\xvec \in \mathbb{R}^d$, define $\Sum(\xvec) \defeq \sum_{i=1}^d \xvec_i$.
+Define the support of $\xvec$ as the set of indices of $\xvec$ with non-zero value,
+i.e., $\support(\xvec) \defeq \{i \in [d]: \xvec_i \neq 0\}$.
+The $\ell_p$-norm of $\xvec$, denoted as $\norm{\xvec}_p$, is defined as
+\[ \norm{\xvec}_p \defeq \left( \sum_{i=1}^d \abs{\xvec_i}^p \right)^{1/p}. \]
+Note that if all entries of $\xvec$ are non-negative, then $\Sum(\xvec) = \norm{\xvec}_1$.
+
+\subsection{Items}
+
+Let $i$ be a $d$D cuboidal item
+(this means that $i$ is the cross-product of $d$ intervals on the real line).
+Denote the length of $i$ along the $j\Th$ dimension by $\ell_j(i)$.
+The first $d-1$ dimensions of $i$ are called \emph{base dimensions}
+and the $d\Th$ dimension of $i$ is called \emph{height}, denoted by $h(i) \defeq \ell_d(i)$.
+The volume of $i$ is defined as
+\[ \vol(i) \defeq \prod_{i=1}^d \ell_j(i). \]
+When $d=2$, we say that $i$ is a rectangular item.
+Define the width of $i$ as $w(i) \defeq \ell_1(i)$
+and the area of $i$ as $a(i) \defeq \vol(i) = w(i)h(i)$.
+
+For a set $I$ of items, let $f: I \mapsto \mathbb{R}$ be a function
+mapping each item to a real number.
+Then for a set $X \subseteq I$, define $f(X) \defeq \sum_{i \in X} f(i)$
+(unless stated otherwise).
+For example, $\vol(X) \defeq \sum_{i \in X} \vol(i)$.
+
+\subsection{Packing of Items}
+
+Let $I$ be a set of items. Hence, $|I|$ is the number of items in $I$.
+Let $P$ be a packing of items into bins. Define $|P|$ as the number of bins used by $P$.
+Let $\Acal$ be an algorithm for bin packing.
+Define $\Acal(I)$ as the packing of $I$ output by $\Acal$.
+Hence, the number of bins used by $\Acal$ to pack $I$ is $|\Acal(I)|$.
+
+Let $I$ be a bin packing instance.
+Define $\opt(I)$ as the minimum number of bins needed to pack $I$.
+Sometimes, we may be considering multiple versions of bin packing,
+like 2D GBP with rotations (denoted as 2BPR)
+and 2D GBP without rotations (denoted as 2BPNR).
+Hence, to disambiguate, we will use the problem name in subscript,
+e.g., $\opt_{\mathrm{2BPR}}(I)$ and $\opt_{\mathrm{2BPNR}}(I)$.
+We will sometimes look at other kinds of packing problems,
+like strip packing (SP) and knapsack (KS).
+If the problem is clear from context, we will use $\opt(I)$
+to denote the objective value of the optimal solution to $I$.
+Otherwise, to disambiguate, we will use $\opt_{\mathrm{BP}}(I)$,
+$\opt_{\mathrm{SP}}(I)$, $\opt_{\mathrm{KS}}(I)$, etc.
+
+\section{Approximation Algorithms}
+
+\subsection{Minimization Problems}
+\label{sec:appx:min}
+
+In a minimization problem, there is a set of feasible solutions associated with each input,
+and each feasible solution has a cost associated with it.
+Our task is to output a feasible solution of minimum cost for the given input.
+For an input $I$, let $\opt(I)$ denote the cost of the minimum-cost feasible solution.
+The bin packing problem is an example of a minimization problem.
+
+Let $\Acal$ be an algorithm for the minimization problem.
+Define $\Acal(I)$ as the output of $\Acal$ on input $I$.
+Algorithm $\Acal$ is said to be $\alpha$-approximate iff
+for each input $I$, the cost of $\Acal(I)$ is at most $\alpha\opt(I)$.
+The minimum value $\alpha$ for which $\Acal$ is $\alpha$-approximate
+is called the \emph{approximation ratio} of $\Acal$.
+Note that $\alpha$ is always at least 1.
+
+The algorithm $\Acal$ is called a PTAS (Polynomial-Time Approximation Scheme)
+iff it takes a constant $\eps > 0$ as a parameter, is $(1+\eps)$-approximate,
+and has a running time that is polynomial in $n$.
+Note that $\eps$ is a constant, so $n^{1/\eps}$ is polynomial in $n$.
+A PTAS is called an FPTAS iff it is a PTAS and its running time is polynomial
+in both $n$ and $1/\eps$.
+
+\subsection{Maximization Problems}
+\label{sec:appx:max}
+
+In a maximization problem, there is a set of feasible solutions associated with each input,
+and each feasible solution has a score associated with it.
+Our task is to output a feasible solution of maximum score for the given input.
+For an input $I$, let $\opt(I)$ denote the score of the maximum-score feasible solution.
+The knapsack problem is an example of a maximization problem.
+
+Let $\Acal$ be an algorithm for the maximization problem.
+Define $\Acal(I)$ as the output of $\Acal$ on input $I$.
+Algorithm $\Acal$ is said to be $\alpha$-approximate iff
+for each input $I$, the score of $\Acal(I)$ is at least $\opt(I)/\alpha$.
+The minimum value $\alpha$ for which $\Acal$ is $\alpha$-approximate
+is called the \emph{approximation ratio} of $\Acal$.
+Note that $\alpha$ is always at least 1.
+
+The algorithm $\Acal$ is called a PTAS (Polynomial-Time Approximation Scheme)
+iff it takes a constant $\eps > 0$ as a parameter, is $(1+\eps)$-approximate,
+and has a running time that is polynomial in $n$.
+A PTAS is called an FPTAS iff it is a PTAS and its running time is polynomial
+in both $n$ and $1/\eps$.
+
+(Some authors use a slightly different definition of $\alpha$-approximate.
+By this definition, algorithm $\Acal$ is $\alpha$-approximate iff
+for each input $I$, the score of $\Acal(I)$ is at least $\alpha\opt(I)$.
+Note that $\alpha$ is always at most 1 by this definition.)
+
+\section{Configuration Linear Program}
+\label{sec:config-lp}
+
+Let $I$ be a bin packing instance.
+We will now describe a linear program (LP) associated with $I$,
+called the \emph{configuration LP}.
+Configuration LPs are defined for a large class of bin packing problems,
+like classical bin packing, geometric bin packing and vector bin packing.
+
+For a set $I$ of items, define a configuration of $I$ as a non-empty subset of $I$
+that can fit into a bin, and a way of packing those items into a bin.
+An equivalent definition of bin packing is that we need to find
+a small number of configurations such that each item belongs to
+at least one of those configurations.
+
+Let $C$ be a configuration. We say that $i \in C$ iff
+item $i$ belongs to the set of items corresponding to $C$.
+We can denote each configuration as a vector $C \in \{0, 1\}^n$,
+where $C_i = 1$ iff $i \in C$.
+Let $\Ccal$ be the set of all possible configurations.
+
+We can express bin packing as the problem of finding integer solutions
+to the following linear program, called the configuration LP,
+where $x_C \in \{0, 1\}$ denotes the number of bins that have configuration $C$:
+\[ \begin{array}{*3{>{\displaystyle}l}}
+\min_{x \in \mathbb{R}^{|\Ccal|}} & \multicolumn{2}{>{\displaystyle}l}{\sum_{C \in \Ccal} x_C}
+\\[1.5em] \textrm{where } & \sum_{C \ni i} x_C \ge 1 & \forall i \in [n]
+\\[1em] \textrm{and } & x_C \ge 0 & \forall C \in \Ccal
+\end{array} \]
+
+Linear programs are a useful tool in the area of approximation algorithms.
+Many optimization problems can be expressed as integer programs.
+\emph{Rounding-based} algorithms first solve the LP relaxation of these integer programs,
+and then \emph{round} the relaxed solution to get an approximate solution to the original problem
+\cite{daa:det-lp-round,daa:rand-lp-round,iterative-methods}.
+This approach has also been successfully applied to bin packing:
+the Round-and-Approx framework~\cite{rna,bansal2014binpacking}
+applies randomized rounding to a solution to the configuration LP.
+
+We would like to solve the configuration LP in polynomial time.
+However, the number of configurations can be up to $2^n-1$,
+which is exponential in the input size.
+One may wonder what it would even mean to solve the LP in polynomial time,
+since even writing down a feasible solution to the LP can take exponential time!
+The key observation (which we will soon show) is that
+there exists an optimal solution to the configuration LP
+whose support contains at most $n$ configurations.
+Therefore, we can restrict ourselves to solutions of $\poly(n)$-sized support
+without loss of generality. Such solutions can be written down in polynomial time.
+
+\begin{definition}[Extreme point; Definition 1.2.1 in \cite{iterative-methods}]
+Let $P \subseteq \mathbb{R}^d$ and $x \in P$.
+$x$ is called an extreme point of $P$ iff there is no $y \neq 0$
+such that $x + y \in P$ and $x - y \in P$.
+\end{definition}
+\begin{lemma}
+If a linear program is bounded (i.e., it attains the optimal objective value at some point),
+then it contains an optimal solution that is an extreme point of the set of all feasible solutions.
+\end{lemma}
+\begin{lemma}[Rank Lemma; Lemma 2.1.4 in \cite{iterative-methods}]
+Let $P \defeq \{x: Ax \ge b \textrm{ and } x \ge 0\}$. Let $\xhat$ be an extreme point of $P$.
+Let $S \defeq \{a_i: (A\xhat)_i = b_i\}$, where $a_i$ is the $i\Th$ row of $A$.
+Then $|\support(\xhat)|$ is equal to the maximal number of linearly independent vectors in $S$.
+\end{lemma}
+\begin{corollary}
+\label{thm:rank-lemma-corr}
+Let $P \defeq \{x: Ax \ge b \textrm{ and } x \ge 0\}$ and let $\xhat$ be an extreme point of $P$.
+Then $|\support(x)|$ is at most the number of constraints in $Ax \ge b$.
+\end{corollary}
+By \cref{thm:rank-lemma-corr}, we get that there exist extreme point optimal solutions
+to the configuration LP, and these solutions have at most $n$ configurations in their support.
+
+\subsection{Solving the Configuration LP}
+
+Karmarkar and Karp~\cite{karmarkar-karp} gave an FPTAS for solving the configuration LP
+of any classical bin packing instance.
+They do this by slightly modifying the Ellipsoid algorithm of
+Gr\"otschel, Lov\'asz and Schrijver~\cite{gls-ellipsoid}.
+
+The algorithm of Plotkin, Shmoys and Tardos~\cite{plotkin1995fast} can be used to
+obtain a PTAS for the configuration LP of any variant of bin packing,
+given a PTAS for the corresponding knapsack problem.
+Bansal, Caprara, Jansen, Pr\"adel and Sviridenko~\cite{bansal2009structural}
+showed how to use this to solve the configuration LP for 2D GBP
+(both the rotational and non-rotational versions).
