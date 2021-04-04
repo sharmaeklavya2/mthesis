@@ -1,0 +1,63 @@
+In this chapter, we focus on the $d$-dimensional multiple-choice geometric
+bin packing problem ($d$MCBP).
+This problem generalizes both the non-rotational and rotational versions of $d$D GBP.
+See \cref{sec:intro:hdhk} for a detailed introduction to this problem
+and its significance.
+
+In $d$MCBP, we are given a set $\Ical = \{I_1, I_2, \ldots, I_n\}$ as input,
+where for each $j$, $I_j$ is a set of items, henceforth called an {\em itemset}.
+We have to pick exactly one item from each itemset and pack those items
+into the minimum number of bins.
+
+\subsection*{Preliminaries}
+
+For convenience, in this chapter only, we will denote non-rotational $d$D GBP by $d$BP
+and non-rotational $d$D strip packing by $d$SP.
+In $d$BP and $d$MCBP, we assume \wLoG{} that bins are $d$D cubes of side length 1.
+
+We now give an equivalent definition of $d$MCBP for notational convenience.
+Let $\Ical$ be a set of itemsets.
+Let $K$ be a set of items that contains exactly one item from each itemset in $\Ical$.
+Formally, for each itemset $I \in \Ical$, $|K \cap I| = 1$.
+Then $K$ is called an \emph{assortment} of $\Ical$.
+Let $\assortSet(\Ical)$ denote the set of all assortments of $\Ical$.
+%
+In $d$MCBP, given an input instance $\Ical$,
+we have to select an assortment $K \in \assortSet(\Ical)$ and output a bin-packing of $K$,
+such that the number of bins used is minimized. Therefore,
+$\optdmcbp(\Ical) = \min_{K \in \assortSet(\Ical)} \optdbp(K)$.
+
+Define $\flatten(\Ical)$ as the union of all itemsets in $\Ical$.
+Then $n \defeq |\Ical|$ is the number of itemsets in $\Ical$
+and $N \defeq |\flatten(\Ical)|$ is the total number of items across all itemsets of $\Ical$.
+
+\subsection*{Overview of the Chapter}
+
+\begin{itemize}
+\item In \cref{sec:hdhk-prelims}, we describe ideas from $\hdhk$~\cite{caprara2008}
+    that help us devise harmonic-based algorithms for $d$MCBP.
+    One of these ideas gives us an algorithm, called $\hdhkunit$,
+    that we frequently use as a subroutine in our other algorithms.
+    We give its overview in \cref{sec:hdhk-prelims:hdhkunit}
+    and defer the details to \cref{sec:hdhkunit}.
+\item In \cref{sec:fhk}, we show an $O(N + n\log n)$-time algorithm for $d$MCBP,
+    called $\fhk$, having an AAR of $T_k^d$, where $n$ is the number of itemsets
+    and $N$ is total number of items across all the $n$ itemsets.
+\item We present an algorithm for $d$MCBP, called $\hgapk$, having an AAR of
+    $T_k^{d-1}(1+\eps)$ and having a running time of $N^{O(1/\eps^2)}n^{(1/\eps)^{O(1/\eps)}}$.
+    We give an overview of $\hgapk$ in \cref{sec:hgap}
+    and give its details in \cref{sec:hgap-extra}.
+\item In \cref{sec:hdhk-sp}, we define the $d$D multiple-choice strip packing problem ($d$MCSP)
+    and extend Caprara's $\hdhk$ algorithm~\cite{caprara2008} to $d$MCSP.
+    The algorithm has AAR $T_k^{d-1}$ and runs in time $O(N + n\log n)$.
+\item In \cref{sec:hdhks}, we define the $d$D multiple-choice geometric knapsack problem ($d$MCKS),
+    and for any $0 < \eps < 1$, we show an $O(N\log N + Nn/\eps)$-time algorithm
+    that is $3^d(1+\eps)$-approximate.
+\begin{optional}
+\item Caprara~\cite{caprara2008} showed that no shelf-based algorithm for 2BP or 2SP
+    can get an AAR better than $T_{\infty} \approx 1.69103$,
+    and his $\hdhk$ algorithm achieves an AAR of $T_k^{d-1}$ for $d$BP and $d$SP.
+    In \cref{sec:hard-example}, we extend that result to show that no shelf-based algorithm
+    for $d$BP or $d$SP can get an AAR better than $T_{\infty}^{d-1}$.
+\end{optional}
+\end{itemize}
