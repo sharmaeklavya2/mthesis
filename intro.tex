@@ -18,6 +18,7 @@ and some of its well-known variants in more detail.
 With this context, we will then describe the contributions of this thesis.
 
 \section{Well-Known Packing Problems}
+\label{sec:well-known-problems}
 
 \subsection{Classical Bin Packing}
 
@@ -610,3 +611,23 @@ Formally, we give an algorithm for 2D GBP that takes a parameter $\eps$,
 and show that for every constant $\eps > 0$, there exists a constant $\delta > 0$
 such that the algorithm has an AAR of $1+\eps$
 when all items in the input are $\delta$-thin rectangles.
+
+\section{Organization of the Thesis}
+
+\begin{itemize}
+\item In \cref{chap:prior-work}, we describe prior work on well-known packing problems
+    (problems of \cref{sec:well-known-problems} and other related problems).
+\item In \cref{chap:gvbp}, we describe our algorithms for generalized multidimensional
+    bin packing (\geomvec{2}{$d$} BP) and our extension of the Round-and-Approx framework.
+\item In \cref{chap:hdhk}, we describe our algorithms for $d$-dimensional
+    multiple-choice geometric packing problems (which generalize packing with item rotations).
+    We mostly focus on multiple-choice bin packing but also describe algorithms for
+    multiple-choice strip packing and multiple-choice knapsack.
+\item In \cref{chap:guill-thin}, we show how to bound the asymptotic price of guillotinability
+    (APoG) for thin rectangular items. We show a simple lower bound of $4/3$ and prove an
+    upper bound of roughly $4/3$ by giving a 4-stage
+    $\frac{4}{3}(1+4\delta)(1+\eps)$-asymptotic-approximation algorithm for 2D GBP
+    for $\delta$-thin rectangles.
+\item In \cref{chap:thin-aptas}, we give an APTAS for 2D GBP when the items are
+    sufficiently thin.
+\end{itemize}
