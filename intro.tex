@@ -577,8 +577,10 @@ Hence, if we use the APTAS for 2D GuillBP as an approximation algorithm for 2D G
 then the AAR would be $\alpha(1 + \eps)$.
 Therefore, we would like to obtain tight upper and lower bounds on APoG.
 
-It is a simple and well-known fact that $\APoG \ge 4/3$.
-% TODO: add explanation and figure
+It is a simple and well-known fact that $\APoG \ge 4/3$\footnote{Consider
+a set $I$ of items containing $2m$ rectangles of width 0.6 and height 0.4 and
+$2m$ rectangles of width 0.4 and height 0.6.
+Then $\opt(I) = m$ and $\opt_g(I) = \ceil{4m/3}$.}.
 Caprara's $\hdhk$ algorithm~\cite{caprara2008} outputs a 2-stage packing,
 so $\APoG \le T_{\infty} \approx 1.69103$.
 
