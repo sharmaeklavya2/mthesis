@@ -438,6 +438,7 @@ and extending it to other set-cover type problems,
 like round-SAP and round-UFP~\cite{ElbassioniGGKNP12}.
 
 \subsection{Harmonic Algorithms for \texorpdfstring{$d$}{d}D GBP with Rotations}
+\label{sec:intro:hdhk}
 
 In his seminal paper, Caprara~\cite{caprara2008} devised a polynomial-time algorithm
 for non-rotational $d$D GBP called $\hdhk$ (Harmonic Decreasing Height),
@@ -467,8 +468,8 @@ On the other hand, $\hdhk$ gives an AAR of roughly
 $T_{\infty}^2 \approx 2.85958$ for large $k$.
 
 Orientation constraints may sometimes limit the vertical orientation of a box to one dimension
-(e.g., some items require a face labeled `This side up' to always be one top)
-or to two (of three) dimensions
+(e.g., some items require a face labeled `This side up' to always be on top)
+or to two dimensions
 (e.g., long but low and narrow box should not be placed on its smallest surface).
 These constraints are introduced to deter goods
 and packaging from being damaged and to ensure the stability of the load.
@@ -543,12 +544,9 @@ $d$MCBP subsumes the rotational case for geometric bin packing,
 and we believe $d$MCBP is an important natural generalization
 of geometric bin packing that may be of independent interest.
 
-In \cref{sec:hdhk-prelims}, we describe ideas from $\hdhk$
-that help us devise harmonic-based algorithms for $d$MCBP.
 In \cref{sec:fhk}, we show an $O(N + n\log n)$-time algorithm for $d$MCBP,
 called $\fhk$, having an AAR of $T_k^d$, where $n$ is the number of itemsets
 and $N$ is total number of items across all the $n$ itemsets.
-
 In \cref{sec:hgap}, we show an algorithm for $d$MCBP, called $\hgapk$, having an AAR of
 $T_k^{d-1}(1+\eps)$ and having a running time of $N^{O(1/\eps^2)}n^{(1/\eps)^{O(1/\eps)}}$.
 For $d \ge 3$, this matches the present best AAR for the case
@@ -557,6 +555,16 @@ Also, for large $k$, this gives an AAR of roughly $T_{\infty}^2 \approx 2.85958$
 for 3D GBP when orthogonal rotations are allowed,
 which is an improvement over the previous best AAR of $4.5$~\cite{epstein2006side},
 an improvement after fourteen years.
+
+Our techniques can be extended to some other packing problems,
+like strip packing and geometric knapsack.
+In \cref{sec:hdhk-sp}, we define the $d$D multiple-choice strip packing problem ($d$MCSP)
+and extend Caprara's $\hdhk$ algorithm~\cite{caprara2008} to $d$MCSP.
+The algorithm has AAR $T_k^{d-1}$ and runs in time $O(N + n\log n)$,
+where $n$ is the number of itemsets and $N$ is the total number of items across all itemsets.
+In \cref{sec:hdhks}, we define the $d$D multiple-choice geometric knapsack problem ($d$MCKS),
+and for any $0 < \eps < 1$, we show an $O(N\log N + Nn/\eps)$-time algorithm
+that is $3^d(1+\eps)$-approximate.
 
 \begin{optional}
 Our algorithms produce shelf-based packings (we formally define \emph{shelf-based} later).
@@ -568,16 +576,6 @@ and his $\hdhk$ algorithm achieves an AAR of $T_k^{d-1}$ for $d$D GBP.
 In \cref{sec:hard-example}, we extend that result to show that no shelf-based algorithm
 for $d$D GBP can get an AAR better than $T_{\infty}^{d-1}$.%
 \end{optional}
-
-Our techniques can be extended to some other packing problems,
-like strip packing and geometric knapsack.
-In \cref{sec:hdhk-sp}, we define the $d$D multiple-choice strip-packing problem ($d$MCSP)
-and extend Caprara's $\hdhk$ algorithm~\cite{caprara2008} to $d$MCSP.
-The algorithm has AAR $T_k^{d-1}$ and runs in time $O(N + n\log n)$,
-where $n$ is the number of itemsets and $N$ is the total number of items across all itemsets.
-In \cref{sec:hdhks}, we define the $d$D multiple-choice geometric knapsack problem ($d$MCKS),
-and for any $0 < \eps < 1$, we show an $O(N\log N + Nn/\eps)$-time algorithm
-that is $(1-\eps)3^{-d}$-approximate.
 
 \subsection{Guillotine-Separable Packing of Thin Rectangles}
 
