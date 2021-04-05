@@ -114,6 +114,78 @@ By this definition, algorithm $\Acal$ is $\alpha$-approximate iff
 for each input $I$, the score of $\Acal(I)$ is at least $\alpha\opt(I)$.
 Note that $\alpha$ is always at most 1 by this definition.)
 
+\section{Simple Packing Algorithms}
+
+\begin{lemma}
+\label{thm:next-fit}
+Let $I$ be a classical bin packing instance. Then
+$|\operatorname{Next-Fit}(I)| < 2\size(I) + 1$.
+\end{lemma}
+\begin{proof}
+Let $m \defeq |\operatorname{Next-Fit}(I)|$.
+Let $J_j$ be the items packed into the $j\Th$ bin by Next-Fit.
+For $j \le m-1$, by the definition of Next-Fit,
+the first item in the $(j+1)\Th$ bin didn't fit into the $j\Th$ bin.
+Therefore, $\size(J_j) + \size(J_{j+1}) > 1$. This gives us
+\begin{align*}
+& \size(I)
+= \frac{\size(J_1) + \size(J_m)}{2} + \sum_{j=1}^{m-1} \frac{\size(J_j) + \size(J_{j+1})}{2}
+> \sum_{j=1}^{m-1} \frac{1}{2} = \frac{m-1}{2}
+\\ &\implies m < 2\size(I) + 1
+\qedhere \end{align*}
+\end{proof}
+
+\begin{lemma}[NFDH for strip packing~\cite{coffman1980performance}]
+\label{thm:nfdh-strip}
+Let $I$ be a set of rectangular items of width at most 1.
+$I$ can be packed (without rotation) into a rectangular bin of width 1
+and height less than $2a(I) + max_{i \in I} h(i)$
+using the Next-Fit Decreasing Height (NFDH) algorithm.
+\end{lemma}
+\begin{proof}
+Let there be $p$ shelves output by NFDH.
+Let $S_j$ be the items in the $j\Th$ shelf.
+Let $h_j$ be the height of the $j\Th$ shelf.
+Let $H$ be the sum of heights of all the shelves.
+
+For $j \le p-1$, all items in the $j\Th$ shelf have height at least $h_{j+1}$.
+The combined width of the items in $S_j$ and the first item in $S_{j+1}$ is more than 1.
+Therefore, $a(S_j) + a(S_{j+1}) > h_{j+1}$. This gives us
+\begin{align*}
+& a(I) = \frac{a(S_1) + a(S_p)}{2} + \sum_{j=1}^{p-1} \frac{a(S_j) + a(S_{j+1})}{2}
+> \sum_{j=1}^{p-1} \frac{h_{j+1}}{2} = \frac{H-h_1}{2}
+\\ &\implies H < 2a(I) + h_1 = 2a(I) + \max_{i \in I} h(i)
+\qedhere \end{align*}
+\end{proof}
+
+\begin{lemma}[NFDH for small items~\cite{coffman1980performance}]
+\label{thm:nfdh-small}
+Let $I$ be a set of rectangular items where each item has width at most $\delta_W$
+and height at most $\delta_H$. Let there be a rectangular bin of width $W$ and height $H$.
+If $a(I) \le (W - \delta_W)(H - \delta_H)$, then the Next-Fit Decreasing Height (NFDH)
+algorithm can pack $I$ into the bin (without rotating the items).
+\end{lemma}
+\begin{proof}
+NFDH packs the items into shelves of width $W$.
+Let the number of shelves be $p$.
+Let $h_j$ be the height of the $j\Th$ shelf.
+Let $S_j$ be the items in the $j\Th$ shelf.
+Let $\Htild$ be the total height of the shelves.
+We need to prove that $\Htild \le H$.
+
+For $j \le p-1$, all items in the $j\Th$ shelf have height at least $h_{j+1}$,
+and the total width of the items in $S_j$ is more than $W-\delta_W$,
+because otherwise we could have fit another item into the $j\Th$ shelf.
+Therefore, $a(S_j) > (W-\delta_W)h_{j+1}$ for $j \le p-1$. This gives us
+\begin{align*}
+& (W - \delta_W)(H - \delta_H) \ge a(I) > \sum_{j=1}^{p-1} a(S_j)
+\ge (W-\delta_W)\sum_{j=1}^{p-1} h_{j+1}
+= (W-\delta_W)(\Htild - h_1)
+\\ &\implies H - \delta_H > \Htild - h_1
+\\ &\implies \Htild < H - (\delta_H - h_1) \le H
+\qedhere \end{align*}
+\end{proof}
+
 \section{Configuration Linear Program}
 \label{sec:config-lp}
 

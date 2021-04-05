@@ -64,7 +64,8 @@ H &= \sum_{q=1}^Q \sum_{t=1}^{p^{[q]}-1} \ell_d(S_{t+1}^{[q]})
 \\ &< \sum_{q=1}^Q \sum_{t=1}^{p^{[q]}} \vol(\wfk(S_t^{[q]}))
 = \vol(\wfk(I))
 \end{align*}
-Next-Fit guarantees that for a 1BP instance $J$, number of bins used is at most $\ceil{2\vol(J)}$.
+Next-Fit guarantees that for a 1BP instance $J$,
+number of bins used is at most $\ceil{2\vol(J)}$ (see \cref{thm:next-fit}).
 So for the shelves in $P'$, we use $\ceil{2H}$ bins.
 The total number of bins used is therefore
 $Q + \ceil{2H} \le Q + \smallceil{2\vol(\wfk(I))}$.
