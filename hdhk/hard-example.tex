@@ -1,0 +1,112 @@
+\section{Hard Instance for Shelf-Based Packing}
+\label{sec:hard-example}
+
+We will prove that no shelf-based algorithm can get an asymptotic approximation ratio
+better than $T_{\infty}^{d-1}$ for $d$D SP or $d$D BP.
+Caprara~\cite{caprara2008} proved this for $d=2$.
+To do this, for any $k \ge 3$ and $m > 0$, we will show a set of items that
+fit into $m$ $d$D bins but their optimal shelf-based strip-packing has height
+more than $m(1-\eps)S_k^{d-1}$, where $S_k \defeq \sum_{j=1}^{k-1} \frac{1}{r_j}$.
+Define $S_{\infty} \defeq \lim_{k \to \infty} S_k$.
+It can be proved that $T_{\infty} = S_{\infty} \approx 1.6910302$.
+
+It's important to note what exactly we mean by shelf-based.
+Here we forbid item rotation and only allow stacking shelves along the $d\Th$ dimension
+(for $d=3$, this means that the base of each shelf is perpendicular to the $z$-axis,
+and for $d=2$, this means that all shelves have width 1).
+As noted by Caprara~\cite{caprara2008} for $d=2$, if at the beginning of the algorithm
+we can choose whether to use horizontal shelves (width=1) or vertical shelves (height=1),
+and this choice depends on the input items, then we may get an
+asymptotic approximation ratio less than $T_{\infty}$.
+
+For simplicity of presentation, we will only consider the $d=3$ case.
+We call the first dimension $x$-axis, the second dimension $y$-axis
+and the third dimension $z$-axis.
+An item's length in the $d\Th$ dimension is called \emph{height}.
+It's easy to extend our result to higher dimensions,
+and we will give a few hints on how to do so.
+
+Let $r_j$ be the $j\Th$ harmonic number. Choose an integer $k \ge 2$
+and positive constant $0 < \delta \le 1/(r_k-1)$ and $\eps > 0$ such that $1/\eps \in \mathbb{Z}$.
+Define $a_0 \defeq 0$ and for $j \in [k-1]$, define $a_j \defeq (1+\delta)(1-1/r_{j+1})$.
+Therefore, $0 = a_0 < a_1 < a_2 < \ldots < a_{k-1} \le 1$.
+Create a cube of side length $a_{k-1}$.
+We will cut this cube into pieces, and then cut those pieces into items.
+Therefore, the items will fit into a bin.
+See \cref{fig:hard-example} for an example.
+
+\begin{figure}[!ht]
+\centering
+\input{img/hard-shelf.tikz}
+\caption{Constructing a hard instance for $d$D shelf-based packing,
+where $d=3$, $k=3$, $\eps = 1/2$, and $\delta = 1/(r_k-1) = 1/5$.
+The top half of the figure shows how to cut out $(k-1)^{d-1} = 4$ pieces
+from a cube of side length $a_{k-1} = 1$.
+The bottom half shows how to cut out $1/\eps^{j-1}$ items from piece number $j$.}
+\label{fig:hard-example}
+\end{figure}
+
+First cut the cube using the planes $x = a_j$ for $j \in [k-2]$.
+Then cut the cube using the planes $y = a_j$ for $j \in [k-2]$.
+This will give us $Q \defeq (k-1)^2$ pieces.
+For the piece between the planes $x = a_{q_1-1}$, $x = a_{q_1}$,
+$y = a_{q_2 - 1}$ and $y = a_{q_2}$, we call $\vec{q} \defeq (q_1, q_2)$
+the \emph{base type} of that piece.
+(For general $d$, make such cuts in each of the first $d-1$ dimensions
+in a $d$D cube to get $Q \defeq (k-1)^{d-1}$ pieces.
+The type of a piece is a $(d-1)$-dimensional vector.)
+Now arbitrarily order these pieces and number them from 1 to $Q$.
+This number is called the \emph{height type} of the piece.
+For the piece having height type $j$, use planes perpendicular to the $z$-axis to cut it into
+items of height $\eps^{j-1}$.
+
+Repeat this process for $m-1$ additional cubes.
+Let $I$ be the resulting set of items. So $I$ can fit into $m$ bins.
+We call $I$ a \emph{hard instance for shelf-based packing}.
+
+\begin{theorem}
+Let $I$ be a hard instance for shelf-based packing, parametrized by
+$m > 0$, $k \ge 3$, $0 < \delta \le 1/(r_k-1)$, $\eps > 0$.
+Then the height of an optimal strip-packing of $I$ is more than $m(1-\eps)S_k^{d-1}$.
+\end{theorem}
+\begin{proof}
+Consider items of height type $j$. They all have the same base type $\vec{q}$.
+These items have length $(1+\delta)/(r_{q_1}+1)$ along the $x$-axis
+and length $(1+\delta)/(r_{q_2}+1)$ along the $y$-axis.
+For any $j \in [k-1]$, we have $1/(r_j+1) < (1+\delta)/(r_j+1) \le 1/r_j$.
+Hence, we can have at most $r_{q_1} r_{q_2}$ such items in one shelf.
+Let $R_j \defeq r_{q_1} r_{q_2}$.
+Since there are $m/\eps^{j-1}$ items of height type $j$,
+these items will be spread across at least $m/R_j\eps^{j-1}$ shelves.
+Those shelves will have height at least $\eps^{j-1}$. Therefore, for all $j \in [Q]$,
+we have at least $m_j \defeq m/R_j\eps^{j-1}$ shelves of height at least $h_j \defeq \eps^{j-1}$.
+We will use this fact to lower-bound the height of the optimal shelf-based strip-packing of $I$.
+
+Let $x_j$ be the number of shelves of height exactly $\eps^{j-1}$.
+Then the total height of the optimal shelf-based strip-packing of $I$ is
+lower-bounded by the following linear program:
+\[ \min_{x \in \mathbb{R}^Q} \sum_{i=1}^Q h_ix_i
+\quad \textrm{where} \quad \sum_{j=1}^i x_j \ge m_i \qquad \forall i \in [Q] \]
+Define $m_0 \defeq h_{Q+1} \defeq 0$. Let $\xhat_i \defeq m_i - m_{i-1}$.
+Then $\xhat$ is a feasible solution to this linear program and has objective value
+\[ \sum_{i=1}^Q h_i\xhat_i
+= \sum_{i=1}^Q h_i(m_i - m_{i-1})
+= \sum_{i=1}^Q (h_i - h_{i+1})m_i \]
+The dual of this linear program is
+\[ \max_{y \in \mathbb{R}^Q} \sum_{i=1}^Q y_im_i
+\quad \textrm{where} \quad \sum_{j=i}^Q y_j \le h_i \qquad \forall i \in [Q] \]
+Let $\yhat_i \defeq h_i - h_{i+1}$.
+Then $\yhat$ is a feasible solution to the dual linear program
+and has objective value $\sum_{i=1}^Q h_i\xhat_i$.
+By the weak duality of linear programs, $\xhat$ is an optimal solution to the linear program.
+Therefore, the total height of the optimal shelf-based strip-packing of $I$ is
+lower-bounded by
+\begin{align*}
+\sum_{i=1}^Q (h_i - h_{i+1})m_i
+&> m \sum_{i=1}^Q (\eps^{i-1} - \eps^i) \frac{1}{R_i\eps^{i-1}}
+\; = m(1-\eps) \sum_{i=1}^Q \frac{1}{R_i}
+\\ &= m(1-\eps) \sum_{q_1=1}^{k-1} \sum_{q_2=1}^{k-1} \frac{1}{r_{q_1}r_{q_2}}
+\; = m(1-\eps) \left(\sum_{q=1}^{k-1} \frac{1}{r_q}\right)^{d-1}
+\\ &= m(1-\eps) S_k^{d-1}
+\qedhere \end{align*}
+\end{proof}

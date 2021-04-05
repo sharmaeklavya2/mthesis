@@ -1,0 +1,46 @@
+\def\cuboid#1#2#3#4#5{%
+\fill[black!10] ($#1 + (0,0,#4)$) -- ++(#2,0,0) -- ++(0,#3,0) -- ++(-#2,0,0) -- cycle;
+\fill[black!20] #1 -- +(#2,0,0) -- +(#2,0,#4) -- +(0,0,#4) -- cycle;
+\fill[black!30] ($#1 + (#2,0,0)$) -- ++(0,#3,0) -- ++(0,0,#4) -- ++(0,-#3,0) -- cycle;
+\ifnum#5>1\relax
+\foreach \t in {1,...,\number\numexpr#5-1\relax}{%
+    \draw ($#1 + \t/#5*(0,0,#4)$) -- ++(#2,0,0) -- ++(0,#3,0);
+}\fi}
+\def\a{2.5}
+\begin{tikzpicture}[transform shape,
+myarrow/.style={->,>={Stealth}},
+mybrace/.style = {decoration={brace,mirror,raise=1pt,amplitude=5pt},semithick,decorate},
+x={(-10:1)}, z={(0,0.75)}, y={(60:0.85)}]
+\cuboid{(0,0,0)}{\a}{\a}{\a}{0};
+\draw (\a*0.6,0,0) -- ++(0,0,\a) -- ++(0,\a,0);
+\draw (\a,\a*0.6,0) -- ++(0,0,\a) -- ++(-\a,0,0);
+\begin{scope}[canvas is xy plane at z=\a]
+    \node at (0.3*\a, 0.3*\a) {1};
+    \node at (0.8*\a, 0.3*\a) {2};
+    \node at (0.3*\a, 0.8*\a) {3};
+    \node at (0.8*\a, 0.8*\a) {4};
+    \draw[mybrace] (0,0) -- node[below=6pt] {$\sfrac{3}{5}$} (0.6*\a, 0);
+    \draw[mybrace] (0.6*\a, 0) -- node[below=6pt] {$\sfrac{2}{5}$} (\a, 0);
+    \draw[mybrace] (0, 0.6*\a) -- node[left=4pt] {$\sfrac{3}{5}$} (0, 0);
+    \draw[mybrace] (0, \a) -- node[left=4pt] {$\sfrac{2}{5}$} (0, 0.6*\a);
+\end{scope}
+\draw[myarrow,thick] (\a/2, 0, -0.5) -- (\a/2, 0, -2.25);
+\begin{scope}[yshift=-2*\a cm]
+    \begin{scope}[xshift=-1.3*\a cm]
+        \cuboid{(0,0,0)}{0.6*\a}{0.6*\a}{\a}{1};
+        \node[canvas is xy plane at z=\a] at (0.3*\a, 0.3*\a) {1};
+    \end{scope}
+    \begin{scope}[xshift=-0.3*\a cm]
+        \cuboid{(0,0,0)}{0.4*\a}{0.6*\a}{\a}{2};
+        \node[canvas is xy plane at z=\a] at (0.2*\a, 0.3*\a) {2};
+    \end{scope}
+    \begin{scope}[xshift=0.5*\a cm]
+        \cuboid{(0,0.1*\a,0)}{0.6*\a}{0.4*\a}{\a}{4};
+        \node[canvas is xy plane at z=\a] at (0.3*\a, 0.3*\a) {3};
+    \end{scope}
+    \begin{scope}[xshift=1.5*\a cm]
+        \cuboid{(0,0.1*\a,0)}{0.4*\a}{0.4*\a}{\a}{8};
+        \node[canvas is xy plane at z=\a] at (0.2*\a, 0.3*\a) {4};
+    \end{scope}
+\end{scope}
+\end{tikzpicture}
