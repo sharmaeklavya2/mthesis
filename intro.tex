@@ -47,7 +47,7 @@ See \cref{fig:1bp-example} for an example.
     \input{img/1bp-example-c.tikz}
     \caption{A packing of the items into 2 bins.}
 \end{subfigure}
-\caption{An example of classical bin packing.
+\caption[An example of classical bin packing.]{An example of classical bin packing.
 We want to minimize the number of bins, so the packing into 2 bins
 is better than the packing into 3 bins.}
 \label{fig:1bp-example}
@@ -148,7 +148,8 @@ the classical bin packing problem.
     \input{img/rot-vs-nonrot-b.tikz}
     \caption{Packing with item rotation}
 \end{subfigure}
-\caption{Packing 4 rectangular items, each of width 0.6 and height 0.4,
+\caption[Packing 4 rectangles into square bins. Allowing rotation decreases $\opt(I)$.]%
+{Packing 4 rectangular items, each of width 0.6 and height 0.4,
 into square bins of side length 1.
 Allowing rotation decreases the minimum number of bins needed to pack these items.}
 \label{fig:rot-vs-nonrot}
@@ -507,7 +508,7 @@ into the minimum number of bins. See \cref{fig:2mcbp-example} for an example.
 \begin{figure}[htb]
 \centering
 \input{img/2mcbp-example.tikz}
-\caption{2MCBP example: packing the input
+\caption[2MCBP example]{2MCBP example: packing the input
 $\Ical = \{\{1, 2, 3\}, \{4\}, \{5, 6\}, \{7, 8\}, \{9\}\}$ into two bins.
 Here items of the same color belong to the same itemset.}
 \label{fig:2mcbp-example}
