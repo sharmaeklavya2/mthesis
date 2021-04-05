@@ -478,13 +478,6 @@ Current algorithms for 3D GBP either allow rotating all items along the same set
 or don't allow rotating any item, i.e., they enforce the same
 orientation constraints over all items in the input.
 
-\begin{comment}
-The state-of-the-art algorithms for 2D GBP allow rotating items,
-but they assume that the bin is square, which is often not true in practice.
-For $d > 3$, there are no known approximation algorithms for $d$D GBP
-when items can be rotated.
-\end{comment}
-
 We address these issues by giving algorithms for $d$D GBP
 that are similar to $\hdhk$ but allow items to be rotated
 and allow orientation constraints to vary across items.
@@ -567,16 +560,14 @@ In \cref{sec:hdhks}, we define the $d$D multiple-choice geometric knapsack probl
 and for any $0 < \eps < 1$, we show an $O(N\log N + Nn/\eps)$-time algorithm
 that is $3^d(1+\eps)$-approximate.
 
-\begin{optional}
 Our algorithms produce shelf-based packings (we formally define \emph{shelf-based} later).
-An interesting property of harmonic algorithms is that they are,
+An interesting property of Caprara's $\hdhk$ algorithm is that it is,
 in some sense, optimal for shelf-based packing. Formally,
 Caprara~\cite{caprara2008} showed that no shelf-based algorithm for 2D GBP can get an AAR
 better than $T_{\infty} \approx 1.69103$,
 and his $\hdhk$ algorithm achieves an AAR of $T_k^{d-1}$ for $d$D GBP.
 In \cref{sec:hard-example}, we extend that result to show that no shelf-based algorithm
-for $d$D GBP can get an AAR better than $T_{\infty}^{d-1}$.%
-\end{optional}
+for $d$D GBP can get an AAR better than $T_{\infty}^{d-1}$.
 
 \subsection{Guillotine-Separable Packing of Thin Rectangles}
 
