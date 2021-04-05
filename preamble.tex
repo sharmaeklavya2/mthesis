@@ -80,3 +80,5 @@
 \newcommand{\blankpage}{\newpage\thispagestyle{empty}\mbox{}\newpage}
 \abovetopsep=4pt
 \defaultaddspace=0.4em
+\algnewcommand{\LineComment}[1]{\State \textcolor{gray}{// #1}}
+\renewcommand{\algorithmiccomment}[1]{\hfill\textcolor{gray}{\texttt{//} \textit{#1}}}
