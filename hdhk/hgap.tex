@@ -1,0 +1,326 @@
+\section{Better Algorithm for \texorpdfstring{$d$}{d}MCBP (\texorpdfstring{$\hgapk$}{HGaP})}
+\label{sec:hgap}
+
+Here we will describe a $T_k^{d-1}(1+\eps)$-\asymAppx{} algorithm for $d$MCBP that is based on
+$\hdhk$ and Lueker and de la Vega's APTAS for 1BP~\cite{bp-aptas}.
+We call our algorithm \emph{Harmonic Guess-and-Pack} ($\hgapk$).
+This improves upon $\fhk$ that has AAR $T_k^d$.
+
+\begin{comment}
+In \cite{caprara2008}, Caprara showed that we can get a $T_k^{d-1}(1+\eps)$-approx
+algorithm for $d$BP by using $\hdhksp$ to pack the items into shelves
+and then packing the shelves into bins using the APTAS for 1BP.
+$\hgapk$ works the other way around, i.e., we first guess
+the heights of the shelves and the way they are packed into bins,
+and then we compute an assortment of the input that can be packed into the shelves.
+\end{comment}
+
+\begin{definition}
+For a $d$D item $i$, let $h(i) \defeq \ell_d(i)$,
+$w(i) \defeq \prod_{j=1}^{d-1} f_k(\ell_j(i))$ and $a(i) \defeq w(i)h(i)$.
+Let $\round(i)$ be a rectangle of height $h(i)$ and width $w(i)$.
+For a set $X$ of $d$D items, define $w(X) \defeq \sum_{i \in X} w(i)$
+and $\round(X) \defeq \{\round(i): i \in X\}$.
+%For a set $\Icalhat$ of $d$D itemsets, define $round(\Ical) \defeq \{\round(I): I \in \Ical\}$.
+\end{definition}
+
+For any $\eps > 0$, the algorithm $\hgapk(\Ical, \eps)$ returns
+a bin packing of $\Ical$, where $\Ical$ is a set of $d$D itemsets.
+$\hgapk$ first converts $\Ical$ to a set $\Icalhat$ of 2D itemsets.
+It then computes $P_{\best}$, which is a \emph{structured} bin packing of $\Icalhat$
+(we formally define \emph{structured} later).
+Finally, it uses the algorithm $\inflate$ to convert $P_{\best}$
+into a bin packing of the $d$D itemsets $\Ical$, where
+$|\inflate(P_{\best})|$ is very close to $|P_{\best}|$.
+See \cref{algo:hgap} for a more precise description.
+This approach of converting items to 2D, packing them,
+and then converting back to $d$D is very useful,
+because most of our analysis is about how to compute a structured 2D packing, and
+a packing of 2D items is easier to visualize and reason about than a packing of $d$D items.
+
+\begin{algorithm}[!ht]
+\caption{$\hgapk(\Ical, \eps)$: Returns a bin packing of $d$D itemsets $\Ical$,
+where $\eps \in (0, 1)$.}
+\label{algo:hgap}
+\begin{algorithmic}[1]
+\State Let $\delta \defeq \eps/(2+\eps)$.
+\State \label{alg-line:hgap:round}$\Icalhat = \{\round(I): I \in \Ical\}$
+\State Initialize $P_{\best}$ to \Null.
+\For{$P \in \guessShelves(\Icalhat, \delta)$}
+    \State $\Pbar = \chooseAndPack(\Icalhat, P, \delta)$
+    \If{$\Pbar$ is not \Null{} and ($P_{\best}$ is \Null{} or $|\Pbar| \le |P_{\best}|$)}
+        \State $P_{\best} = \Pbar$
+    \EndIf
+\EndFor
+\State \Return $\inflate(P_{\best})$
+\end{algorithmic}
+\end{algorithm}
+
+A bin packing is said to be \emph{shelf-based} if items are packed into \emph{shelves}
+and the shelves are packed into bins, where a shelf is a rectangle of width 1.
+See \cref{fig:shelf-based-2} for an example.
+A structured bin packing is a shelf-based bin packing
+where the heights of the shelves satisfy some additional properties
+(we describe these properties later).
+The algorithm $\guessShelves$ repeatedly guesses the number and heights of shelves
+and computes a structured packing $P$ of those shelves into bins.
+Then for each packing $P$, the algorithm $\chooseAndPack(\Icalhat, P, \delta)$ \emph{tries to}
+pack an assortment of $\Icalhat$ into the shelves in $P$ plus maybe one additional shelf.
+If $\chooseAndPack$ succeeds, call the resulting bin packing $\Pbar$.
+Otherwise, $\chooseAndPack$ returns \Null.
+$P_{\best}$ is the value of $\Pbar$ with the minimum number of bins
+across all guesses by $\guessShelves$.
+
+\begin{figure}[!ht]
+\centering
+\input{img/shelf-based-2.tikz}
+\caption{An example of shelf-based packing with 3 shelves.}
+\label{fig:shelf-based-2}
+\end{figure}
+
+We prove that $\hgapk$ is $T_k^{d-1}(1+\eps)$-\asymAppx{} by showing that
+for some $P^* \in \guessShelves(\Icalhat, \delta)$,
+we have $|P^*| \lessapprox T_k^{d-1}\opt(\Ical)(1+\eps)$
+and $\chooseAndPack(\Icalhat, P^*, \delta)$ is not \Null.
+
+We will now precisely define \emph{structured} bin packing
+and state the main theorems on $\hgapk$.
+
+\subsection{Structured Packing}
+
+\begin{definition}[Slicing]
+Slicing a 1D item $i$ is the operation of replacing it by items $i_1$ and $i_2$
+such that $\size(i_1) + \size(i_2) = \size(i)$.
+
+Slicing a rectangle $i$ using a vertical cut is the operation of replacing $i$
+by two rectangles $i_1$ and $i_2$ where
+$h(i) = h(i_1) = h(i_2)$ and $w(i) = w(i_1) + w(i_2)$.
+Slicing $i$ using a horizontal cut is the operation of replacing $i$
+by two rectangles $i_1$ and $i_2$ where
+$w(i) = w(i_1) = w(i_2)$ and $h(i) = h(i_1) + h(i_2)$.
+\end{definition}
+
+\begin{definition}[Shelf-based $\delta$-fractional packing]
+\label{defn:hgap:shelf-based-packing}
+Let $\delta \in (0, 1)$ be a constant. Let $K$ be a set of rectangular items.
+Items in $K_L \defeq \{i \in K: h(i) > \delta\}$ are said to be `$\delta$-large'
+and items in $K_S \defeq K - K_L$ are said to be `$\delta$-small'.
+A $\delta$-fractional bin packing of $K$ is defined to be a packing of $K$ into bins where
+items in $K_L$ can be sliced (recursively) using vertical cuts only,
+and items in $K_S$ can be sliced (recursively) using both horizontal and vertical cuts.
+
+A \emph{shelf} is a rectangle of width 1 into which we can pack items
+such that the bottom edge of each item in the shelf touches
+the bottom edge of the shelf. A shelf can itself be packed into a bin.
+A $\delta$-fractional bin packing of $K$ is said to be \emph{shelf-based} iff
+(all slices of) all items in $K_L$ are packed into shelves,
+the shelves are packed into the bins,
+and items in $K_S$ are packed outside the shelves (and inside the bins).
+Packing of items into a shelf $S$ is said to be \emph{tight} iff
+the top edge of some item (or slice) in $S$ touches the top edge of $S$.
+\end{definition}
+
+\begin{definition}[Structured packing]
+Let $K$ be a set of rectangles and
+let $P$ be a packing of empty shelves into bins.
+Let $H$ be the set of heights of shelves in $P$ (note that $H$ is not a multiset,
+i.e., we only consider distinct heights of shelves).
+Then $P$ is said to be \emph{structured} for $(K, \delta)$ iff
+$|H| \le \ceildeltsq$ and each element in $H$ is
+the height of some $\delta$-large item in $K$.
+
+A shelf-based $\delta$-fractional packing of $K$ is said to be
+\emph{structured} iff the shelves in the packing are structured for $(K, \delta)$.
+Define $\sopt_{\delta}(K)$ to be the number of bins in the optimal structured
+$\delta$-fractional packing of $K$.
+\end{definition}
+
+$\hgapk$ relies on the following key structural theorem.
+We formally prove it in \cref{sec:hgap:struct} and give an outline of the proof here.
+\begin{restatable}[Structural theorem]{theorem}{rthmHgapStruct}
+\label{thm:hgap:struct}
+Let $I$ be a set of $d$D items. Let $\delta \in (0, 1)$ be a constant. Then
+$\sopt_{\delta}(\round(I)) < T_k^{d-1}(1+\delta)\optdbp(I) + \ceildeltsq + 1 + \delta$.
+\end{restatable}
+\begin{proof}[Proof outline]
+Let $\Ihat \defeq \round(I)$. Let $\Ihat_L$ and $\Ihat_S$ be the
+$\delta$-large and $\delta$-small items in $\Ihat$, respectively.
+
+We give a simple greedy algorithm to pack $\Ihat_L$ into shelves.
+Let $J$ be the shelves output by this algorithm.
+We can treat $J$ as a 1BP instance,
+and $\Ihat_S$ as a sliceable 1D item of size $a(\Ihat_S)$.
+We prove that an optimal 1D bin packing of $J \cup \Ihat_S$ gives us
+an optimal shelf-based $\delta$-fractional packing of $\Ihat$.
+
+We use linear grouping by Lueker and Vega~\cite{bp-aptas}.
+We partition $J$ into linear groups of size $\floor{\delta\size(J)} + 1$ each.
+Let $h_j$ be the height of the first 1D item in the $j\Th$ group.
+Let $J\hi$ be the 1BP instance obtained by rounding up the height of each item
+in the $j\Th$ group to $h_j$ for all $j$.
+Then $J\hi$ contains at most $\ceildeltsq$ distinct sizes,
+so the optimal packing of $J\hi \cup \Ihat_S$ gives us a
+structured $\delta$-fractional packing of $\Ihat$.
+Therefore, $\sopt_{\delta}(\Ihat) \le \opt(J\hi \cup \Ihat_S)$.
+Let $J\lo$ be the 1BP instance obtained by rounding down the height of each item
+in the $j\Th$ group to $h_{j+1}$ for all $j$.
+We prove that $J\lo$ contains at most $\ceildeltsq-1$ distinct sizes and that
+$\opt(J\hi \cup \Ihat_S) < \opt(J\lo \cup \Ihat_S) + \delta a(\Ihat_L) + (1 + \delta)$.
+
+We model packing $J\lo \cup \Ihat_S$ as a linear program, denoted by $\LP(\Ihat)$,
+that has at most $\ceildeltsq^{1/\delta}$ variables and $\ceildeltsq$ non-trivial constraints.
+The optimum extreme point solution to $\LP(\Ihat)$, therefore,
+has at most $\ceildeltsq$ positive entries,
+so $\opt(J\lo \cup \Ihat_S) \le \opt(\LP(\Ihat)) + \ceildeltsq$.
+
+We use techniques from Caprara~\cite{caprara2008} to obtain a
+monotonic \dff{} $\eta$ from the optimal solution to the dual of $\LP(\Ihat)$.
+For each item $i \in I$, we define $p(i) \defeq w(i)\eta(h(i))$
+and prove that $p(I) \ge \opt(\LP(\Ihat))$.
+By \cref{thm:dff-pack}, we get that $p(I) \le T_k^{d-1}\optdbp(I)$
+and $a(\Ihat_L) \le T_k^{d-1}\optdbp(I)$.
+Combining the above facts gives us an upper-bound on $\sopt_{\delta}(\Ihat)$
+in terms of $\optdbp(I)$.
+\end{proof}
+
+\subsection{Subroutines}
+
+\subsubsection{\texorpdfstring{$\guessShelves$}{guess-shelves}}
+
+The algorithm $\guessShelves(\Icalhat, \delta)$ takes a set $\Icalhat$
+of 2D itemsets and a constant $\delta \in (0, 1)$ as input.
+We will design $\guessShelves$ so that it satisfies the following theorem.
+\begin{theorem}
+\label{thm:hgap:guess-shelves}
+$\guessShelves(\Icalhat, \delta)$ returns all possible packings of empty shelves into at most
+$|\Icalhat|$ bins such that each packing is structured for $(\flatten(\Icalhat), \delta)$.
+$\guessShelves(\Icalhat, \delta)$ returns at most $T \defeq (N^{\ceildeltsq}+1)(n+1)^R$
+packings, where $N \defeq |\flatten(\Icalhat)|$, $n \defeq |\Icalhat|$,
+and $R \defeq \binom{\ceildeltsq + \ceil{1/\delta}-1}{\ceil{1/\delta}-1}
+\le (1+\ceildeltsq)^{1/\delta}$. Its running time is $O(T)$.
+\end{theorem}
+$\guessShelves$ works by first guessing at most $\ceildeltsq$ distinct heights of shelves.
+It then enumerates all configurations, i.e.,
+different ways in which shelves can be packed into a bin.
+It then guesses the configurations in a bin packing of the shelves.
+$\guessShelves$ can be easily implemented using standard techniques.
+For the sake of completeness, we give a more precise description of $\guessShelves$
+and prove \cref{thm:hgap:guess-shelves} in \cref{sec:hgap:guess-shelves}.
+
+\subsubsection{\texorpdfstring{$\chooseAndPack$}{choose-and-pack}}
+
+$\chooseAndPack(\Icalhat, P, \delta)$ takes as input a set $\Icalhat$ of 2D itemsets,
+a constant $\delta \in (0, 1)$, and a bin packing $P$ of empty shelves that is
+structured for $(\flatten(\Icalhat), \delta)$.
+It tries to pack an assortment of $\Icalhat$ into the shelves in $P$.
+
+$\chooseAndPack$ works by rounding up the width of all
+$\delta$-large items in $\Icalhat$ to a multiple of $1/n$.
+This would increase the number of shelves required by 1, so it adds another empty shelf.
+It then uses dynamic programming to pack an assortment into the shelves,
+such that the area of the chosen $\delta$-small items is minimum.
+This is done by maintaining a dynamic programming table that keeps track of
+the number of itemsets considered so far and
+the remaining space in shelves of each type.
+If it is not possible to pack the items into the shelves,
+then $\chooseAndPack$ outputs \Null.
+In \cref{sec:hgap:choose-and-pack}, we give the details of this algorithm
+and formally prove the following theorems:
+
+\begin{restatable}{theorem}{rthmCAPNotNull}
+\label{thm:hgap:cap-not-null}
+If there exists an assortment $\Khat$ of $\Icalhat$ having
+a structured $\delta$-fractional bin packing $P$,
+then $\chooseAndPack(\Icalhat, P, \delta)$ does not output \Null.
+\end{restatable}
+\begin{restatable}{theorem}{rthmCAPCorrect}
+\label{thm:hgap:cap-correct}
+If the output of $\chooseAndPack(\Icalhat, P, \delta)$ is not \Null,
+then the output $\Pbar$ is a shelf-based $\delta$-fractional packing of some assortment
+of $\Icalhat$ such that $|\Pbar| \le |P| + 1$
+and the distinct shelf heights in $\Pbar$ are the same as that in $P$.
+\end{restatable}
+\begin{restatable}{theorem}{rthmCAPTime}
+\label{thm:hgap:cap-time}
+$\chooseAndPack(\Icalhat, P, \delta)$ runs in $O(Nn^{2\ceildeltsq})$ time.
+Here $N \defeq |\flatten(\Icalhat)|$, $n \defeq |\Icalhat|$.
+\end{restatable}
+
+\subsubsection{\texorpdfstring{$\inflate$}{inflate}}
+
+For a set $I$ of $d$D items, $\inflate$ is an algorithm that
+converts a shelf-based packing of $\round(I)$ into a packing of $I$
+having roughly the same number of bins.
+
+For a $d$D item $i$, $\btype(i)$ (called \emph{base type}) is defined to be
+a $(d-1)$-dimensional vector whose $j\Th$ component is $\type_k(\ell_j(i))$.
+Roughly, $\inflate(P)$ works as follows:
+It first slightly modifies the packing $P$ so that
+items of different base types are in different shelves and
+$\delta$-small items are no longer sliced using horizontal cuts.
+Then it converts each 2D shelf to a $d$D shelf of the same height using $\hdhkunitHyp$
+(a $d$D shelf is a cuboid where the first $d-1$ dimensions are equal to 1).
+
+In \cref{sec:hgap:inflate}, we formally describe $\inflate$ and prove the following theorem about it.
+\begin{theorem}
+\label{thm:hgap:inflate}
+Let $I$ be a set of $d$D items having $Q$ distinct base types.
+Let $P$ be a shelf-based $\delta$-fractional packing of $\round(I)$
+where shelves have $t$ distinct heights.
+Then $\inflate(P)$ returns a packing of $I$ into less than
+$|P|/(1-\delta) + t(Q-1) + 1 + \delta Q/(1-\delta)$ bins
+in $O(n\log n)$ time, where $n \defeq |I|$.
+\end{theorem}
+
+Now that we have mentioned the guarantees of all the subroutines used by $\hgapk$,
+we can prove the correctness and running time of $\hgapk$.
+
+\subsection{Correctness and Running Time of \texorpdfstring{$\hgapk$}{HGaP}}
+
+\begin{theorem}
+\label{thm:hgap:hgap}
+The number of bins used by $\hgapk(\Ical, \eps)$ to pack $\Ical$ is less than
+\[ T_k^{d-1}(1+\eps)\optdmcbp(\Ical)
+    + \ceil{\left(\frac{2}{\eps}+1\right)^2}\left(Q + \frac{\eps}{2}\right)
+    + 3 + (Q+3)\frac{\eps}{2} \]
+Here $Q$ is the number of distinct base types in $\flatten(\Ical)$.
+\end{theorem}
+\begin{proof}
+Let $K^*$ be the assortment in an optimal bin packing of $\Ical$.
+Let $\Khat^* = \round(K^*)$.
+Let $P^*$ be the optimal structured $\delta$-fractional bin packing of $\Khat^*$.
+Then $|P^*| = \sopt_{\delta}(\Khat^*)$ by the definition of $\sopt$.
+By \thmdepcref{thm:hgap:guess-shelves}{}, $P^* \in \guessShelves(\Icalhat, \delta)$.
+Let $\Pbar^* = \chooseAndPack(\Icalhat, P^*, \delta)$.
+By \thmdepcref{thm:hgap:cap-not-null}{}, $\Pbar^*$ is not \Null{}.
+By \thmdepcref{thm:hgap:cap-correct}{}, $P_{\best}$ is
+structured for $(\flatten(\Icalhat), \delta)$
+and $|P_{\best}| \le |\Pbar^*| \le \sopt_{\delta}(\Khat^*) + 1$.
+
+By \thmdepcref{thm:hgap:inflate}{}, we get that
+\[ |\inflate(P_{\best})| < \frac{\sopt_{\delta}(\Khat^*)}{1-\delta}
+    + \ceil{\frac{1}{\delta^2}}(Q-1) + 1 + \frac{\delta Q + 1}{1-\delta} \]
+By \thmdepcref{thm:hgap:struct}{} (structural theorem)
+and using $\optdbp(K^*) = \optdmcbp(\Ical)$, we get
+\[ \sopt_{\delta}(\Khat^*) < T_k^{d-1}(1+\delta)\optdmcbp(\Ical) + \ceildeltsq + 1 + \delta \]
+Therefore, $|\inflate(P_{\best})|$ is less than
+\begin{align*}
+&T_k^{d-1}\frac{1+\delta}{1-\delta}\optdmcbp(\Ical)
+    + \ceil{\frac{1}{\delta^2}}\left(Q + \frac{\delta}{1-\delta}\right)
+    + 3 + \frac{\delta(3+Q)}{1-\delta}
+\\ &= T_k^{d-1}(1+\eps)\optdmcbp(\Ical)
+    + \ceil{\left(\frac{2}{\eps}+1\right)^2}\left(Q + \frac{\eps}{2}\right)
+    + 3 + (Q+3)\frac{\eps}{2}
+\qedhere \end{align*}
+\end{proof}
+\begin{theorem}
+\label{thm:hgap:hgap-time}
+$\hgapk(\Ical, \eps)$ runs in time $O(N^{1+\ceildeltsq}n^{R+2\ceildeltsq})$, where
+$N \defeq |\flatten(\Icalhat)|$, $n \defeq |\Icalhat|$, $\delta \defeq \eps/(2+\eps)$
+and $R \defeq \binom{\ceildeltsq + \ceil{1/\delta}-1}{\ceil{1/\delta}-1}
+\le (1+\ceildeltsq)^{1/\delta}$.
+\end{theorem}
+\begin{proof}
+Follows from \thmdepcref{thm:hgap:guess-shelves,thm:hgap:cap-time,thm:hgap:inflate}{}.
+\end{proof}
+\Cref{sec:hgap:improve-time} gives hints on improving the running time of $\hgapk$.

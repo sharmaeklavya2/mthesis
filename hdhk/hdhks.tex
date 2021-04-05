@@ -1,0 +1,123 @@
+\section{Harmonic Algorithm for \texorpdfstring{$d$}{d}MCKS}
+\label{sec:hdhks}
+
+In the $d$D knapsack problem ($d$KS), we are given a set $I$ of $d$D items,
+and a profit $p(i)$ for each item $i \in I$. We have to compute
+a maximum-profit packing of a subset of $I$ (without rotating the items)
+into a $d$D unit cube (called a knapsack).
+
+In the $d$D multiple-choice knapsack problem ($d$MCKS),
+we are given a set $\Ical = \{I_1, I_2, \ldots, I_n\}$ as input,
+where for each $j$, $I_j$ is a set of items, called an {\em itemset},
+and each item $i \in I_j$ has a profit $p(i)$.
+We have to pick at most one item from each itemset and pack those items
+into a $d$D bin such that the total profit is maximized.
+
+For a $d$D item $i$, $\btype(i)$ (called \emph{base type}) is defined to be
+a $(d-1)$-dimensional vector whose $j\Th$ component is $\type_k(\ell_j(i))$.
+Define $\wfk(i)$ to be the cuboid $\itild$ where $\ell_j(\itild) \defeq f_k(\ell_j(i))$
+for $j \in [d-1]$ and $\ell_d(\itild) \defeq \ell_d(i)$.
+Define $\wfk(I) \defeq \{\wfk(i): i \in I\}$.
+Similarly define $\wHk(i)$ and $\wHk(I)$.
+
+We will see a fast and simple algorithm $\hdhknf(I)$ (\cref{algo:hdhknf}) for $d$BP
+that we will use to design an algorithm for $d$MCKS.
+
+\begin{algorithm}[!ht]
+\caption{$\hdhknf(I)$:
+Returns a bin-packing of $d$D items $I$ ($d \ge 2$).}
+\label{algo:hdhknf}
+\begin{algorithmic}[1]
+\State Let $P$ be the list of shelves output by $\hdhkspHyp(I)$.
+\Comment{cf.~\cref{sec:hdhk-sp} for $\hdhksp$.}
+\State Let $P'$ be an empty list.
+\For{each $\btype$ $q$}
+    \State Let $S_1^{[q]}, S_2^{[q]}, \ldots, S_{p^{[q]}}^{[q]}$
+        be the shelves in $P$ of $\btype$ $q$, in decreasing order of height.
+    \State Pack $S_1^{[q]}$ in a $d$D bin.
+    \State For $j \ge 2$, add $S_j^{[q]}$ to $P'$.
+\EndFor
+\State Interpreting each shelf $S_j^{[q]}$ in $P'$ as a 1D item of size $\ell_d(S_j^{[q]})$,
+    pack the shelves into $d$D bins using Next-Fit.
+\end{algorithmic}
+\end{algorithm}
+
+Note that $\hdhknf(I)$ runs in $O(n\log n)$ time.
+
+\begin{theorem}
+\label{thm:hdhk-nf-fvol}
+$\hdhknf(I)$ uses at most $Q + \smallceil{2\vol(\wfk(I))}$ bins,
+where $Q$ is the number of distinct $\btype$s of items.
+\end{theorem}
+\begin{proof}
+For each $q \in [Q]$, $S_1^{[q]}$ occupies one bin.
+
+As per \cref{eqn:wfk-lb-height} in the proof of \cref{thm:hdhk-fvol},
+for all $t \le p^{[q]}-1$, we get $\vol(\wfk(S_t^{[q]}))
+%\ge \vol(f_k(S_t^{[q] (d-1)}))\ell_d(S_{t+1}^{[q]})
+\ge \ell_d(S_{t+1}^{[q]})$.
+
+Let $H$ be the total height of the shelves in $P'$. Then
+\begin{align*}
+H &= \sum_{q=1}^Q \sum_{t=1}^{p^{[q]}-1} \ell_d(S_{t+1}^{[q]})
+\le \sum_{q=1}^Q \sum_{t=1}^{p^{[q]}-1} \vol(\wfk(S_t^{[q]}))  \tag{by \eqref{eqn:wfk-lb-height}}
+\\ &< \sum_{q=1}^Q \sum_{t=1}^{p^{[q]}} \vol(\wfk(S_t^{[q]}))
+= \vol(\wfk(I))
+\end{align*}
+Next-Fit guarantees that for a 1BP instance $J$, number of bins used is at most $\ceil{2\vol(J)}$.
+So for the shelves in $P'$, we use $\ceil{2H}$ bins.
+The total number of bins used is therefore
+$Q + \ceil{2H} \le Q + \smallceil{2\vol(\wfk(I))}$.
+\end{proof}
+
+By \cref{thm:wfvol-sp,thm:hdhk-nf-fvol}, we get that $\hdhknf$ is $2T_k^{d-1}$-\asymAppx{}.
+
+Lawler gave an FPTAS for 1MCKS that has a running time of
+$O(N\log N + Nn/\eps)$~\cite{lawler1979fast},
+where $N \defeq |\flatten(\Ical)|$ and $n \defeq |\Ical|$.
+We will use it along with $\hdhknf[3]$ to get an algorithm for $d$MCKS,
+called $\hdhks$ (see \cref{algo:hdhks}).
+
+Our algorithm for $d$MCKS, called $\hdhks(\Ical)$, works as follows:
+It computes a 1MCKS instance $\Icalhat$ by replacing each item $i$ in $\Ical$
+by a 1D item $\vol(\wHk[3](i))$.
+It uses the FPTAS for 1MCKS to obtain a $(1+\eps)$-\appx{} solution $J$ to $\Icalhat$.
+It uses $\hdhknf[3]$ to pack the corresponding $d$D items of $J$ into bins.
+It then selects the most profitable bin.
+See \cref{algo:hdhks} for a more detailed description.
+
+\begin{algorithm}[!ht]
+\caption{$\hdhks(\Ical)$: algorithm for $d$MCKS.}
+\label{algo:hdhks}
+\begin{algorithmic}[1]
+\State $\Icalhat = \{\{\vol(\wHk[3](i)): i \in I\}: I \in \Ical\}$.
+\Comment{Reduction to 1MCKS.}
+\State Let $\Jhat$ be a $(1+\eps)$-\appx{} solution to the 1MCKS instance $\Icalhat$
+    output by the FPTAS for 1MCKS.
+\State Let $J$ be the items of $\Ical$ corresponding to $\Jhat$.
+\State Let $[J_1, J_2, \ldots, J_b]$ be the bin-packing of $J$ produced using $\hdhknf[3]$.
+\State ${\displaystyle j_{\max} = \argmax_{j=1}^b p(J_j)}$
+\State \Return $J_{j_{\max}}$.
+\end{algorithmic}
+\end{algorithm}
+
+$\hdhks$ runs in $O(N\log N + Nn/\eps)$ time.
+
+\begin{theorem}
+\label{thm:emb-ks}
+$\hdhks$ is $3^d(1+\eps)$-\appx{}.
+\end{theorem}
+\begin{proof}
+Let $I$ be a set of $d$D items.
+Suppose $S \subseteq I$ can be packed into a bin.
+Then by \cref{thm:dff-pack}, $\widehat{S} = \{\vol(\wHk[3](i)): i \in S\}$
+can also be packed into a bin. Therefore, $\optdmcks[1](\Icalhat) \ge \optdmcks(\Ical)$.
+
+The FPTAS for 1MCKS gives us $\Jhat$ such that
+$p(\Jhat) \ge \optdmcks[1](\Icalhat)/(1+\eps)$.
+$\hdhknf$ packs $J$ into
+$b \le 3^{d-1} + \smallceil{2T_3^{d-1}\vol(\wHk[3](J))} \le 3^d$ bins.
+Given the way we choose $j_{\max}$,
+\[ p(J_{j_{\max}}) \ge \frac{p(J)}{b} = \frac{p(\Jhat)}{b}
+\ge \frac{\optdmcks[1](\Icalhat)}{b(1+\eps)} \ge \frac{\optdmcks(\Ical)}{3^d(1+\eps)}  \qedhere \]
+\end{proof}

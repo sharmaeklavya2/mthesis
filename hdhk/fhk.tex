@@ -1,0 +1,81 @@
+\section{Fast and Simple Algorithm for \texorpdfstring{$d$}{d}MCBP
+(\texorpdfstring{$\fhk$}{fullh\_k})}
+\label{sec:fhk}
+
+We will now describe an algorithm for $d$BP called the \emph{full-harmonic algorithm}
+($\fhk$). We will then extend it to $d$MCBP.
+
+$\fhk$ works by first partitioning the items based on their $\type$ vector
+(type vector is defined in \cref{sec:hdhk-prelims:harmonic}).
+Then for each partition, it repeatedly picks the smallest prefix $J$
+such that $\vol(f_k(J)) \ge 1$ and packs $J$ into a $d$D bin using $\hdhkunit$.
+See \cref{algo:fhk} for a more precise description of $\fhk$.
+Note that $\fhk(I)$ has a running time of $O(|I|\log |I|)$.
+
+\begin{algorithm}[!ht]
+\caption{$\fhk(I)$: Returns a bin packing of $d$D items $I$.}
+\label{algo:fhk}
+\begin{algorithmic}[1]
+\State Let $P$ be an empty list.
+\For{each $\type$ $t$}
+    \State $I^{[t]} = \{i \in I: \type(i) = t\}$.
+    \While{$|I^{[t]}| > 0$}
+        \State Find $J$, the smallest prefix of $I^{[t]}$ such that
+            $J = I^{[t]}$ or $\vol(f_k(J))) \ge 1$.
+        \State $B = \hdhkunitHyp^{[t]}(J)$.
+            \Comment{$B$ is a packing of $J$ into a $d$D bin}.
+        \State Append $B$ to the list $P$.
+        \State Remove $J$ from $I^{[t]}$.
+    \EndWhile
+\EndFor
+\State \Return the list $P$ of bins.
+\end{algorithmic}
+\end{algorithm}
+
+\begin{theorem}
+\label{thm:fhk-fvol}
+The number of bins used by $\fhk(I)$ is less than $Q + \vol(f_k(I))$,
+where $Q$ is the number of distinct $\type$s of items (so $Q \le k^d$).
+\begin{optional}
+Also, let $\mathscr{B}$ be the set of partially-filled bins, i.e.,
+$\mathscr{B} \defeq \{B \in P: \vol(f_k(B)) < 1\}$. Then $|\mathscr{B}| \le Q$.
+\end{optional}
+\end{theorem}
+\begin{proof}
+Let $I^{[t]}$ be the items in $I$ of type $t$.
+Suppose $\fhk(I)$ uses $m^{[t]}$ bins to pack $I^{[t]}$.
+For each type $t$, the first $m^{[t]}-1$ bins have $\vol\cdot f_k$ at least 1,
+so $\vol(f_k(I^{[t]})) > m^{[t]} - 1$.
+Therefore, total number of bins used is
+$\sum_{t=1}^Q m^{[t]} < \sum_{t=1}^Q (1 + \vol(f_k(I^{[t]})))
+= Q + \vol(f_k(I))$.
+\end{proof}
+
+\begin{lemma}[Corollary to \cref{thm:fhk-fvol,thm:fvol-bp}]
+\label{thm:fhk-appx}
+$\fhk(I)$ uses less than $Q + T_k^d\optdbp(I)$ bins,
+where $Q$ is the number of distinct item $\type$s.
+\end{lemma}
+
+\begin{theorem}
+Let $\Ical$ be a $d$MCBP instance.
+Let $\Khat \defeq \{\argmin_{i \in I} \vol(f_k(i)): I \in \Ical\}$,
+i.e., $\Khat$ is the assortment obtained by picking from each itemset
+the item $i$ having the minimum value of $\vol(f_k(i))$.
+Then the number of bins used by $\fhk(\Khat)$ is less than $Q + T_k^d\optdmcbp(\Ical)$,
+where $Q$ is the number of distinct $\type$s of items in $\flatten(\Ical)$ (so $Q \le k^d$).
+\end{theorem}
+\begin{proof}
+For any assortment $K$, $\vol(f_k(\Khat)) \le \vol(f_k(K))$.
+Let $K^*$ be the assortment in an optimal packing of $\Ical$.
+By \cref{thm:fhk-fvol,thm:fvol-bp}, the number of bins used by
+$\fhk(\Khat)$ is less than
+\[ Q + \vol(f_k(\Khat))
+\le Q + \vol(f_k(K^*))
+\le Q + T_k^d\optdbp(K^*)
+= Q + T_k^d\optdmcbp(\Ical) \qedhere \]
+\end{proof}
+
+Let $N \defeq |\flatten(\Ical)|$ and $n \defeq |\Ical|$.
+We can find $\Khat$ in $O(N)$ time and compute $\fhk(\Khat)$ in $O(n\log n)$ time.
+This gives us an $O(N + n\log n)$-time algorithm for $d$MCBP having AAR $T_k^d$.

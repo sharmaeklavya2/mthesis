@@ -1,0 +1,153 @@
+\section{Harmonic Algorithm for Strip Packing}
+\label{sec:hdhk-sp}
+
+\subsection{Multiple-Choice Strip Packing}
+
+Let $I$ be a set of $d$D cuboidal items.
+In the $d$D strip packing problem ($d$SP), we have to compute
+a feasible packing of $I$ (without rotating the items)
+into a $d$D cuboid (called a strip) that has length one in the first $d-1$ dimensions
+and has the minimum possible length (called height) in the $d\Th$ dimension.
+Let $\optdsp(I)$ denote the minimum height of a strip needed to pack $I$.
+
+In the $d$D multiple-choice strip packing problem ($d$MCSP),
+we are given as input a set $\Ical = \{I_1, I_2, \ldots, I_n\}$,
+where for each $j$, $I_j$ is a set of items, called an {\em itemset}.
+We have to pick exactly one item from each itemset and pack those items
+into a strip of minimum height.
+
+Equivalently, given an input instance $\Ical$, we have to select an
+assortment $K \in \assortSet(\Ical)$ and output a strip packing of $K$,
+such that the total height of the strip is minimized. Therefore,
+$\optdmcsp(\Ical) \defeq \min_{K \in \assortSet(\Ical)} \optdsp(K)$.
+
+\subsection{Revisiting the \texorpdfstring{$\hdhk$}{HDHk} Algorithm}
+
+Caprara~\cite{caprara2008} gave an algorithm for $d$SP,
+which we call $\hdhksp$.
+We will first prove a few useful properties of $\hdhksp$
+and then see how to extend it to $d$MCSP.
+
+For a $d$D item $i$, $\btype(i)$ (called \emph{base type}) is defined to be
+a $(d-1)$-dimensional vector whose $j\Th$ component is $\type_k(\ell_j(i))$.
+Define $\wfk(i)$ to be the cuboid $\itild$ where $\ell_j(\itild) \defeq f_k(\ell_j(i))$
+for $j \in [d-1]$ and $\ell_d(\itild) \defeq \ell_d(i)$.
+Define $\wfk(I) \defeq \{\wfk(i): i \in I\}$.
+Similarly define $\wHk(i)$ and $\wHk(I)$.
+Define $i^{(j)}$ to be the $j$-dimensional item
+obtained by ignoring all dimensions of $i$ other than the first $j$.
+For a set $I$ of $d$D items, let $I^{(j)} \defeq \{i^{(j)}: i \in I\}$.
+
+$\hdhksp$ works by first partitioning the items based on $\btype$.
+Then for each partition, it repeatedly picks the smallest prefix $J$
+such that $\vol(f_k(J^{(d-1)})) \ge 1$ and packs $J$ into a $d$D shelf
+by using $\hdhkunit$ on $J^{(d-1)}$
+(see \cref{sec:shelf} for the definition of a $d$D shelf).
+See \cref{algo:hdhksp} for a more precise description of $\hdhksp$.
+Note that $\hdhksp(I)$ has a running time of $O(n\log n)$, where $n \defeq |I|$.
+
+\begin{algorithm}[!ht]
+\caption{$\hdhksp(I)$:
+Returns a strip packing of $d$D items $I$ ($d \ge 2$).}
+\label{algo:hdhksp}
+\begin{algorithmic}[1]
+\State Let $P$ be an empty list.
+\For{each $\btype$ $t$}
+    \State $I^{[t]} = \{i \in I: \btype(i) = t\}$.
+    \State Sort items in $I^{[t]}$ in non-increasing order of their length in the $d\Th$ dimension.
+    \While{$|I^{[t]}| > 0$}
+        \State Find $J$, the smallest prefix of $I^{[t]}$ such that
+            $J = I^{[t]}$ or $\vol(f_k(J^{(d-1)})) \ge 1$.
+        \State $S = \hdhkunitHyp^{[t]}(J^{(d-1)})$
+            \Comment{$S$ is a $d$D shelf containing items $J$.}
+        \State Append $S$ to the list $P$.
+        \State Remove $J$ from $I^{[t]}$.
+    \EndWhile
+\EndFor
+\State Return the strip packing formed by the shelves $P$.
+\end{algorithmic}
+\end{algorithm}
+
+\begin{theorem}
+\label{thm:hdhk-fvol}
+The height of the strip packing produced by $\hdhksp(I)$ is less than $Q + \vol(\wfk(I))$,
+where $Q$ is the number of distinct $\btype$s of items (so $Q \le k^{d-1}$).
+\end{theorem}
+\begin{proof}
+Let there be $p^{[q]}$ shelves of $\btype$ $q$ produced by $\hdhksp(I)$.
+Let $S_j^{[q]}$ be the set of items in the $j\Th$ shelf of $\btype$ $q$.
+Define $\ell_d(S_j^{[q]}) \defeq \max_{i \in S_j^{[q]}} \ell_d(i)$
+to be the height of shelf $S_j^{[q]}$.
+
+Since items in $I^{[q]}$ were sorted in decreasing order of $\ell_d$,
+$\forall i \in S_j^{[q]}$, $\ell_d(i) \ge \ell_d(S_{j+1}^{[q]})$.
+Given the way we choose prefixes, $\vol(f_k(S_j^{[q] (d-1)})) \ge 1$ for $j \in [p-1]$.
+\begin{equation}
+\label{eqn:wfk-lb-height}
+\vol(\wfk(S_j^{[q]}))
+\ge \vol(f_k(S_j^{[q] (d-1)}))\ell_d(S_{j+1}^{[q]})
+\ge \ell_d(S_{j+1}^{[q]})
+\end{equation}
+
+Total height of the strip packing is
+\begin{align*}
+\sum_{q=1}^Q \sum_{j=1}^{p^{[q]}} \ell_d(S_j^{[q]})
+&\le \sum_{q=1}^Q \left(1 + \sum_{j=1}^{p^{[q]}-1} \ell_d(S_{j+1}^{[q]})\right)
+\tag{since $\ell_d(S_1^{[q]}) \le 1$}
+\\ &\le Q + \sum_{q=1}^Q \sum_{j=1}^{p^{[q]}-1} \vol(\wfk(S_j^{[q]}))
+\tag{by \eqref{eqn:wfk-lb-height}}
+\\ &< Q + \sum_{q=1}^Q \sum_{j=1}^{p^{[q]}} \vol(\wfk(S_j^{[q]}))
+= Q + \vol(\wfk(I))
+\qedhere \end{align*}
+\end{proof}
+
+\begin{theorem}
+\label{thm:wfvol-sp}
+For a set $I$ of $d$D items, $\vol(\wfk(I)) \le T_k^{d-1} \optdsp(I)$.
+\end{theorem}
+\begin{proof}
+$I$ fits in a unit strip of height $\optdsp(I)$.
+Let $I'$ be the items obtained by scaling each item's height by $1/\optdsp(I)$.
+Then $I'$ fits in a unit cube.
+
+Since $H_k$ is a \dff{}, $\wHk(I')$ fits in a unit cube by \cref{thm:dff-pack}.
+% \thmdep{thm:h-dff}{thm:wfvol-sp}
+Therefore, $\wHk(I)$ can be packed into a unit strip of height $\optdsp(I)$.
+Therefore, $\vol(\wfk(I)) \le T_k^{d-1}\vol(\wHk(I)) \le T_k^{d-1}\optdsp(I)$.
+\end{proof}
+
+\begin{corollary}
+\label{thm:hdhk-sp-appx}
+$\hdhksp(I)$ packs $I$ into a strip of height less than $Q + T_k^{d-1}\optdsp(I)$,
+where $Q$ is the number of distinct $\btype$s of items.
+\end{corollary}
+\begin{proof} Follows from \cref{thm:hdhk-fvol,thm:wfvol-sp}. \end{proof}
+
+\subsection{Extending \texorpdfstring{$\hdhksp$ to $d$MCSP}{HDH-SP to dMCSP}}
+\label{sec:hdhk-mcsp}
+
+\begin{theorem}
+Let $\Ical$ be a $d$MCSP instance.
+Let $\Khat \defeq \{\argmin_{i \in I} \vol(\wfk(i)): I \in \Ical\}$,
+i.e., $\Khat$ is the assortment obtained by picking from each itemset
+the item $i$ having the minimum value of $\vol(\wfk(i))$.
+Then the height of the strip packing produced by $\hdhksp(\Khat)$
+is less than $Q + T_k^{d-1}\optdmcsp(\Ical)$,
+where $Q$ is the number of distinct $\btype$s of items in $\flatten(\Ical)$
+(so $Q \le k^{d-1}$).
+\end{theorem}
+\begin{proof}
+For any assortment $K$, $\vol(\wfk(\Khat)) \le \vol(\wfk(K))$.
+Let $K^*$ be the assortment in an optimal packing of $\Ical$.
+By \cref{thm:hdhk-fvol,thm:wfvol-sp}, the height of the strip packing produced by
+$\hdhksp(\Khat)$ is less than
+\[ Q + \vol(\wfk(\Khat))
+\le Q + \vol(\wfk(K^*))
+\le Q + T_k^{d-1}\optdsp(K^*)
+= Q + T_k^{d-1}\optdmcsp(\Ical) \qedhere \]
+\end{proof}
+
+Let $N \defeq |\flatten(\Ical)|$ and $n \defeq |\Ical|$.
+Then we can find $\Khat$ in $O(N)$ time and compute $\hdhksp(\Khat)$ in $O(n\log n)$ time.
+Therefore, we get a $T_k^{d-1}$-\asymAppx{} algorithm for $d$MCSP
+that runs in $O(N + n\log n)$ time.

@@ -1,0 +1,115 @@
+\section{Important Ideas from the \texorpdfstring{$\hdhk$}{HDHk} Algorithm}
+\label{sec:hdhk-prelims}
+
+In this section, we will describe some important ideas behind the $\hdhk$ algorithm
+for $d$BP by Caprara~\cite{caprara2008}.
+These ideas are the building blocks for our algorithms for $d$MCBP.
+
+\subsection{\DFF{}s}
+
+Fekete and Schepers~\cite{fekete2004} present a useful approach for
+obtaining lower bounds on the optimal solution to bin packing problems.
+Their approach is based on \emph{\dff{}s}.
+
+\begin{definition}
+$g: [0, 1] \mapsto [0, 1]$ is a weighting function iff
+for all $m \in \mathbb{Z}_{>0}$ and $x \in [0, 1]^m$,
+\[ \sum_{i=1}^m x_i \le 1 \implies \sum_{i=1}^m g(x_i) \le 1 \]
+(Weighting functions are also called \emph{dual feasible functions} (DFFs)).
+\end{definition}
+
+\begin{restatable}{theorem}{rthmDffPack}
+\label{thm:dff-pack}
+Let $I$ be a set of $d$D items that can be packed into a bin.
+Let $g_1, g_2, \ldots, g_d$ be \dff{}s.
+For $i \in I$, define $g(i)$ as the item whose length is $g_j(\ell_j(i))$ in the $j\Th$ dimension.
+Then $\{g(i): i \in I\}$ can be packed into a $d$D bin (without rotating the items).
+\end{restatable}
+\Cref{thm:dff-pack} is proved in \cref{sec:dff-trn}.
+%\cite{caprara2008} refers to Lemma 2 in \cite{fekete2004},
+%but that just mentions a special case, and that too without proof.
+
+\subsection{The Harmonic Function}
+\label{sec:hdhk-prelims:harmonic}
+
+To obtain a lower-bound on $\optdbp(I)$ using \cref{thm:dff-pack},
+Caprara~\cite{caprara2008} defined a function $f_k$.
+For an integer constant $k \ge 3$, $f_k: [0, 1] \mapsto [0, 1]$ is defined as
+\[ f_k(x) \defeq \begin{cases}
+\frac{1}{q} & x \in \left(\left.\frac{1}{q+1}, \frac{1}{q}\right]\right. \textrm{ for } q \in [k-1]
+\\ \frac{k}{k-2}x & x \le \frac{1}{k} \end{cases} \]
+$f_k$ was originally defined and studied by Lee and Lee~\cite{leelee} for their
+online algorithm for 1BP, except that they used $k/(k-1)$ instead of $k/(k-2)$.
+Define $\type_k: [0, 1] \mapsto [k]$ as
+\[ \type_k(x) \defeq \begin{cases}
+q & x \in \left(\left.\frac{1}{q+1}, \frac{1}{q}\right]\right. \textrm{ for } q \in [k-1]
+\\ k & x \le \frac{1}{k} \end{cases} \]
+
+Define $T_k$ to be the smallest positive constant such that
+$H_k(x) \defeq f_k(x)/T_k$ is a \dff{}. We call $H_k$ the \emph{harmonic \dff}.
+We can efficiently compute $T_k$ as a function of $k$ using ideas from \cite{leelee,eku-harmonic}.
+\Cref{table:tk-values} lists the values of $T_k$ for the first few $k$.
+It can also be proven that $T_k$ is a decreasing function of $k$
+and $T_{\infty} \defeq \lim_{k \to \infty} T_k \approx 1.6910302$.
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+$k$ & 3 & 4 & 5 & 6 & 7 & $\infty$ \\
+\hline
+$T_k$ & 3 & 2 & $11/6 = 1.8\overline{3}$ & $7/4 = 1.75$
+& $26/15 = 1.7\overline{3}$ & $\approx 1.6910302$ \\
+\hline
+\end{tabular}
+\caption{Values of $T_k$.}
+\label{table:tk-values}
+\end{table}
+
+For a $d$D cuboid $i$, define $f_k(i)$ to be the cuboid
+whose length is $f_k(\ell_j(i))$ in the $j\Th$ dimension.
+For a set $I$ of $d$D cuboids, let $f_k(I) \defeq \{f_k(i): i \in I\}$.
+Similarly define $H_k(i)$ and $H_k(I)$.
+Define $\type(i)$ to be a $d$-dimensional vector whose $j\Th$ component is $\type_k(\ell_j(i))$.
+Note that there can be at most $k^d$ different values of $\type(i)$.
+Sometimes, for the sake of convenience, we may express $\type(i)$ as an integer in $[k^d]$.
+
+\begin{theorem}
+\label{thm:fvol-bp}
+For a set of $I$ of $d$D items, $\vol(f_k(I)) \le T_k^d \optdbp(I)$.
+\end{theorem}
+\begin{proof}
+Let $m \defeq \optdbp(I)$. Let $J_j$ be the items in the
+$j\Th$ bin in the optimal bin packing of $I$.
+By \cref{thm:dff-pack} and because $H_k$ is a \dff{},
+% \thmdep{thm:h-dff}{thm:fvol-bp}
+$H_k(J_j)$ fits in a bin. Therefore,
+\[ \vol(f_k(I))
+= \sum_{j=1}^m T_k^d \vol(H_k(J_j))
+\le \sum_{j=1}^m T_k^d
+= T_k^d \optdbp(I)
+\qedhere \]
+\end{proof}
+
+\subsection{The \texorpdfstring{$\hdhkunit$}{HDH-unit-pack} Subroutine}
+\label{sec:hdhk-prelims:hdhkunit}
+
+From the $\hdhk$ algorithm by Caprara~\cite{caprara2008},
+we extracted out a useful subroutine, which we call $\hdhkunit$,
+that satisfies the following useful property:
+\begin{property}
+\label{prop:hdhkunit}
+The algorithm $\hdhkunit^{[t]}(I)$ takes a \emph{sequence} $I$ of $d$D items such that
+all items have type $t$ and $\vol(f_k(I-\{\last(I)\})) < 1$
+(here $\last(I)$ is the last item in sequence $I$).
+It returns a packing of $I$ into a single $d$D bin
+in $O(n\log n)$ time, where $n \defeq |I|$.
+\end{property}
+
+The design of $\hdhkunit$ and its correctness can be inferred from
+Lemma 4.1 in \cite{caprara2008}.
+We use $\hdhkunit$ as a black-box subroutine in our algorithms,
+i.e., we only rely on \cref{prop:hdhkunit};
+we don't need to know anything else about $\hdhkunit$.
+Nevertheless, for the sake of completeness, in \cref{sec:hdhkunit},
+we give a complete description of $\hdhkunit$ and prove its correctness.

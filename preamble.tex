@@ -15,9 +15,9 @@
 \usepackage{subcaption}
 \usepackage{pifont}
 %\usepackage{enumerate}
-%\usepackage{mathrsfs}
+\usepackage{mathrsfs}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta}
+\usetikzlibrary{decorations.pathreplacing,arrows.meta}
 
 % use default font for \mathcal
 \DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
@@ -68,6 +68,10 @@
 \newcommand*{\ceil}[1]{\left\lceil #1 \right\rceil}
 \newcommand*{\abs}[1]{\left\lvert #1 \right\rvert}
 \newcommand*{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand*{\smallfloor}[1]{\lfloor #1 \rfloor}
+\newcommand*{\smallceil}[1]{\lceil #1 \rceil}
+\newcommand*{\smallabs}[1]{\lvert #1 \rvert}
+\newcommand*{\smallnorm}[1]{\lVert #1 \rVert}
 \DeclareMathOperator*{\E}{E}
 \DeclareMathOperator*{\Var}{Var}
 \DeclareMathOperator*{\argmin}{argmin}
@@ -82,3 +86,5 @@
 \defaultaddspace=0.4em
 \algnewcommand{\LineComment}[1]{\State \textcolor{gray}{// #1}}
 \renewcommand{\algorithmiccomment}[1]{\hfill\textcolor{gray}{\texttt{//} \textit{#1}}}
+\newcommand*{\thmdep}[2]{}
+\newcommand*{\thmdepcref}[2]{\cref{#1}}

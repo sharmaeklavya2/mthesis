@@ -1,0 +1,104 @@
+\section{\DFF{} Transform}
+\label{sec:dff-trn}
+
+In this section, we prove \cref{thm:dff-pack}.
+
+\begin{lemma}
+\label{thm:dff-pack-1}
+Let $I$ be a set of $d$D items that can be packed into a bin. Let $g$ be a \dff{}.
+Let $q \in [d]$. For $i \in I$, define $g(i)$ to be the item $\ihat$ for which
+$\ell_j(\ihat) \defeq \ell_j(i)$ when $j \neq q$ and $\ell_q(\ihat) \defeq g(\ell_q(i))$.
+Then the items $\{g(i): i \in I\}$ can be packed into a $d$D bin (without rotating the items).
+\end{lemma}
+Bansal, Caprara and Sviridenko \cite{rna} give a brief proof sketch for $d=2$,
+based on which we provide a full proof below.
+\begin{proof}
+Any $d$D cuboid can be represented as the Cartesian product of
+$d$ closed intervals on the real line. Let the bin be $[0, 1]^d$.
+Any item $i \in I$ can be written as $\prod_{j=1}^d [v_j(i), v_j(i) + \ell_j(i)]$.
+Here $v_j(i)$ is called the \emph{position} of item $i$ in dimension $j$.
+Since each item $i$ lies completely inside the bin, $0 \le v_j(i) < v_j(i) + \ell_j(i) \le 1$.
+Two cuboids $A$ and $B$ are said to overlap if their intersection has positive volume.
+Since $I$ is a valid packing, no two items overlap.
+
+Assume \wLoG{} that $q = d$.
+Let $\proj(i)$ be the projection of item $i$ onto the hyperplane
+perpendicular to the $d\Th$ dimension.
+This hyperplane can be thought of as the \emph{base} of the bin.
+
+We will now show that for each item $i$, we can change $\ell_d(i)$ to $g(\ell_d(i))$
+and change $v_d(i)$ so that the items continue to fit in the bin.
+But to define what the new value of $v_d(i)$ would be,
+we need to first introduce some notation.
+
+For two items $i_1$ and $i_2$, we say that $i_1 \prec i_2$
+($i_1$ is a predecessor of $i_2$)
+iff $v_d(i_1) < v_d(i_2)$ and $\proj(i_1)$ overlaps $\proj(i_2)$.
+Call a sequence $[i_0, i_1, \ldots, i_{m-1}]$ of items a \emph{chain}
+iff $i_{m-1} \prec i_{m-2} \prec \ldots \prec i_0$. $i_0$ is called the head of this chain.
+The \emph{augmented height} of a chain $S$ is defined to be
+$\sum_{i \in S} g(\ell_d(i))$.
+For each item $i$, we wish to find the chain headed at $i$
+with the maximum augmented height.
+
+For an item $i$, define
+\[ \level(i) \defeq \begin{cases} 0 & \textrm{if } i \textrm{ has no predecessors}
+\\ {\displaystyle 1 + \max_{i' \prec i} \level(i')} & \textrm{otherwise} \end{cases} \]
+Since $\prec$ is anti-symmetric, $\level$ is well-defined.
+Define $\pi$ and $u$ as
+\begin{align*}
+u(i) &\defeq g(\ell_d(i)) + \begin{cases} 0 & \textrm{if } \level(i) = 0
+    \\ u(\pi(i)) & \textrm{otherwise}\end{cases}
+& \pi(i) &\defeq \begin{cases} \Null & \textrm{if } \level(i) = 0
+\\ {\displaystyle \argmax_{i' \prec i} u(i')} & \textrm{otherwise} \end{cases}
+\end{align*}
+In the definition of $\pi$, ties can be broken arbitrarily for $\argmax$.
+$i' \prec i$ implies $\level(i') < \level(i)$, so $\level(\pi(i)) < \level(i)$.
+This ensures that the definitions of $\pi$ and $u$ are not mutually circular.
+
+We can prove, by inducting on $\level(i)$, that
+$\Pi(i) \defeq [i, \pi(i), \pi(\pi(i)), \ldots]$ is the chain headed at $i$ with
+the maximum augmented height, and that the augmented height of $\Pi(i)$ is $u(i)$.
+
+\begin{transformation}
+\label{trn:ld-and-vd}
+For each item $i \in I$, change $\ell_d(i)$ to $g(\ell_d(i))$
+and change $v_d(i)$ to $v_d'(i) \defeq u(i) - g(\ell_d(i))$.
+\end{transformation}
+
+We need to prove that \cref{trn:ld-and-vd} produces a valid packing,
+i.e. items don't overlap and all items lie completely inside the bin $[0, 1]^d$.
+
+Let $i_1$ and $i_2$ be any two items. We will prove that they don't overlap in the new packing.
+If $\proj(i_1)$ and $\proj(i_2)$ don't overlap, then $i_1$ and $i_2$ don't overlap
+and we are done, so assume $\proj(i_1)$ and $\proj(i_2)$ overlap.
+Assume \wLoG{} that $i_1 \prec i_2$. Then $\level(i_2) \ge 1$ and
+\[ v_d'(i_2) = u(i_2) - g(\ell_d(i_2)) = \max_{i' \prec i_2} u(i')
+\ge u(i_1) = v_d'(i_1) + g(\ell_d(i_1)) \]
+Therefore, $i_1$ and $i_2$ don't overlap in the new packing.
+
+After \cref{trn:ld-and-vd}, item $i$ lies completely inside the bin
+iff $v_d'(i) + g(\ell_d(i)) = u(i) \le 1$. Let $i_0 \defeq i$ and
+$\Pi(i) = [i_0, i_1, i_2, \ldots, i_{m-1}]$.
+Then $u(i) = \sum_{j=0}^{m-1} g(\ell_d(i_j))$ and for all $j \in [m-1], i_j \prec i_{j-1}$.
+Since $i_j$ and $i_{j-1}$ don't overlap in the original packing,
+but $\proj(i_j)$ and $\proj(i_{j-1})$ overlap,
+we get $v_d(i_{j-1}) \ge v_d(i_j) + \ell_d(i_j)$. Therefore,
+\begin{align*}
+\sum_{j=0}^{m-1} \ell_d(i_j)
+&\le \ell_d(i) + \sum_{j=1}^{m-1} (v_d(i_{j-1}) - v_d(i_j))
+\tag{since $v_d(i_{j-1}) \ge v_d(i_j) + \ell_d(i_j)$}
+\\ &= \ell_d(i) + v_d(i) - v_d(i_{m-1})
+\le 1
+\tag{$\because$ in the original packing, $i$ lies in the bin}
+\end{align*}
+Since $g$ is a \dff{} and $\sum_{j=0}^{m-1} \ell_d(i_j) \le 1$,
+we get $u(i) = \sum_{j=0}^{m-1} g(\ell_d(i_j)) \le 1$.
+Therefore, the packing obtained by \cref{trn:ld-and-vd} is valid.
+So $\{g(i): i \in I\}$ can be packed into a bin.
+\end{proof}
+
+\rthmDffPack*
+\begin{proof}[Proof]
+Apply \cref{thm:dff-pack-1} multiple times, with $q$ ranging from $1$ to $d$.
+\end{proof}

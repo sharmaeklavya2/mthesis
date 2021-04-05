@@ -1,0 +1,18 @@
+\begin{tikzpicture}[scale=0.8,
+shelf-line/.style = {draw={black!30}},
+item/.style = {fill={black!10}}
+]
+\draw[shelf-line] (0,1.5) -- (4,1.5);
+\draw[shelf-line] (0,2.5) -- (4,2.5);
+\draw (0,0) rectangle (4,4);
+\draw[item]
+    (0,0) rectangle +(1.25,1.5)
+    (1.25,0) rectangle +(1.5,1)
+    (2.75,0) rectangle +(1,0.5);
+\draw[item]
+    (0,1.5) rectangle +(1.5,1)
+    (1.5,1.5) rectangle +(1.75,0.75);
+\draw[item]
+    (0,2.5) rectangle +(2,0.6)
+    (2,2.5) rectangle +(1,0.5);
+\end{tikzpicture}

@@ -1,36 +1,105 @@
 \newcommand*{\optionalcolor}{gray}
 \newenvironment*{optional}{\color{\optionalcolor}}{}
+\newcommand*{\lavec}[1]{\mathbf{#1}}  % linear-algebraic vector
+\newcommand*{\Null}{\texttt{null}}
+\newcommand*{\asymAppx}{asymptotic-approximate}
+\newcommand*{\appx}{approximate}
+\newcommand*{\config}{configuration}
+\newcommand*{\Config}{Configuration}
+
+% GVBP
 \newcommand*{\geomvec}[2]{(#1, #2)}
 \newcommand*{\geomvecdim}[2]{(#1, #2)-dimensional}
+
+% dD GBP
+\newcommand*{\dff}{weighting function}
+\newcommand*{\Dff}{Weighting function}
+\newcommand*{\DFF}{Weighting Function}
 
 % SYMBOLS ======================================================================
 
 \newcommand*{\Acal}{\mathcal{A}}
 \newcommand*{\Ccal}{\mathcal{C}}
+\newcommand*{\Chat}{\widehat{C}}
+\newcommand*{\Htild}{\widetilde{H}}
 \newcommand*{\Ical}{\mathcal{I}}
 \newcommand*{\Icalhat}{\widehat{\mathcal{I}}}
 \newcommand*{\Icaltild}{\widetilde{\mathcal{I}}}
-\newcommand*{\xvec}{\mathbf{x}}
+\newcommand*{\Itild}{\widetilde{I}}
+\newcommand*{\Ihat}{\widehat{I}}
+\newcommand*{\Jtild}{\widetilde{J}}
+\newcommand*{\Jhat}{\widehat{J}}
+\newcommand*{\Khat}{\widehat{K}}
+\newcommand*{\Kbar}{\overline{K}}
+\newcommand*{\Ktild}{\widetilde{K}}
+\newcommand*{\Pbar}{\overline{P}}
+
+\newcommand*{\itild}{\tilde{\imath}}
+\newcommand*{\ihat}{\hat{\imath}}
+\newcommand*{\xvec}{\lavec{x}}
 \newcommand*{\xhat}{\widehat{x}}
+\newcommand*{\yhat}{\widehat{y}}
 
 % dD GBP
 \newcommand*{\assortSet}{\Psi}
+\newcommand*{\wfk}[1][k]{\widetilde{f}_{#1}}
+\newcommand*{\wHk}[1][k]{\widetilde{H}_{#1}}
+\newcommand*{\lo}{^{\mathrm{(lo)}}}
+\newcommand*{\hi}{^{\mathrm{(hi)}}}
+\newcommand*{\best}{\mathrm{best}}
+\newcommand*{\ceildeltsq}{\smallceil{1/\delta^2}}
+
+% APoG
+\newcommand*{\APoG}{\mathrm{APoG}}
 
 % FUNCTIONS ====================================================================
 
 \DeclareMathOperator{\poly}{poly}
 \DeclareMathOperator{\Sum}{sum}
 \DeclareMathOperator{\vol}{vol}
+\DeclareMathOperator{\size}{size}
 \DeclareMathOperator{\support}{support}
+\DeclareMathOperator{\LP}{LP}
+
+% dD GBP
+\DeclareMathOperator{\flatten}{flat}
+\newcommand*{\optdbp}{\operatorname{opt}_{d\mathrm{BP}}}
+\newcommand*{\optdmcbp}{\operatorname{opt}_{d\mathrm{MCBP}}}
+\newcommand*{\optdsp}{\operatorname{opt}_{d\mathrm{SP}}}
+\newcommand*{\optdmcsp}{\operatorname{opt}_{d\mathrm{MCSP}}}
+\newcommand*{\optdks}{\operatorname{opt}_{d\mathrm{KS}}}
+\newcommand*{\optdmcks}[1][d]{\operatorname{opt}_{{#1}\mathrm{MCKS}}}
+\DeclareMathOperator{\type}{type}
+\DeclareMathOperator{\btype}{btype}
+\DeclareMathOperator{\last}{last}
+\DeclareMathOperator{\proj}{proj}
+\DeclareMathOperator{\level}{level}
+\DeclareMathOperator{\fopt}{fopt}
+\DeclareMathOperator{\sopt}{sopt}
+\DeclareMathOperator{\DLP}{DLP}
+\DeclareMathOperator{\score}{score}
+\DeclareMathOperator{\canShelv}{can-shelv}
+\DeclareMathOperator{\canShelvHyp}{\hyperref[defn:hgap:can-shelv]{\canShelv}}
+\DeclareMathOperator{\smallArea}{smallArea}
+\DeclareMathOperator{\reduce}{reduce}
+
+% ALGORITHMS ===================================================================
 
 % dD GBP
 \newcommand*{\hdhk}[1][k]{\operatorname{\mathtt{HDH}}_{#1}}
 \newcommand*{\hgapk}{\operatorname{\mathtt{HGaP}}_k}
 \newcommand*{\fhk}{\operatorname{\mathtt{fullh}}_k}
 \newcommand*{\hdhkunit}{\operatorname{\mathtt{HDH-unit-pack}}_k}
-\DeclareMathOperator{\flatten}{flat}
-\newcommand*{\optdbp}{\operatorname{opt}_{d\mathrm{BP}}}
-\newcommand*{\optdmcbp}{\operatorname{opt}_{d\mathrm{MCBP}}}
+\newcommand*{\hdhkunitHyp}{\operatorname{\hyperref[sec:hdhk-prelims:hdhkunit]{\mathtt{HDH-unit-pack}}}_k}
+\newcommand*{\hdhksp}[1][k]{\operatorname{\mathtt{HDH-SP}}_{#1}}
+\newcommand*{\hdhkspHyp}[1][k]{\operatorname{\hyperref[algo:hdhksp]{\mathtt{HDH-SP}}}_{#1}}
+\newcommand*{\hdhknf}[1][k]{\operatorname{\mathtt{HDH-NF}}_{#1}}
+\newcommand*{\hdhks}{\operatorname{\mathtt{HDH-KS}}}
+\DeclareMathOperator{\round}{\mathtt{round}}
+\DeclareMathOperator{\guessShelves}{\mathtt{guess-shelves}}
+\DeclareMathOperator{\simpleChooseAndPack}{\mathtt{simple-choose-and-pack}}
+\DeclareMathOperator{\chooseAndPack}{\mathtt{choose-and-pack}}
+\DeclareMathOperator{\inflate}{\mathtt{inflate}}
 
 % GVBP
 \DeclareMathOperator{\simplePack}{\mathtt{simple-pack}}
@@ -38,7 +107,4 @@
 \DeclareMathOperator{\cbPack}{\mathtt{cb-pack}}
 
 % APoG
-\newcommand*{\APoG}{\mathrm{APoG}}
-
-% Thin BP
 \DeclareMathOperator{\skewPack}{\mathtt{skewPack}}

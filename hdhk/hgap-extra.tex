@@ -1,0 +1,724 @@
+\section{Details of the \texorpdfstring{$\hgapk$}{HGaP} Algorithm}
+\label{sec:hgap-extra}
+
+This section gives details of the subroutines used by $\hgapk$.
+It also proves the theorems claimed in \cref{sec:hgap}.
+
+\subsection{Preliminaries}
+
+\begin{definition}
+\label{defn:pred}
+Let $I_1$ and $I_2$ be sets of 1D items.
+Then $I_1$ is defined to be a predecessor of $I_2$ (denoted as $I_1 \preceq I_2$)
+iff there exists a one-to-one mapping $\pi: I_1 \mapsto I_2$ such that
+$\forall i \in I_1, i \le \pi(i)$.
+\end{definition}
+\begin{observation}
+\label{obs:pred-pack}
+Let $I_1 \preceq I_2$ where $\pi$ is the corresponding mapping.
+Then we can obtain a packing of $I_1$ from a packing of $I_2$,
+by packing each item $i \in I_1$ in the place of $\pi(i)$.
+Hence, $\opt(I_1) \le \opt(I_2)$.
+\end{observation}
+
+\begin{definition}[Canonical shelving]
+\label{defn:hgap:can-shelv}
+Let $I$ be a set of rectangles.
+Order the items in $I$ in non-increasing order of height
+(break ties arbitrarily but deterministically)
+and greedily pack them into tight shelves,
+slicing items using vertical cuts if necessary.
+The set of shelves thus obtained is called the \emph{canonical shelving} of $I$,
+and is denoted by $\canShelv(I)$.
+(The canonical shelving is unique because ties are broken deterministically.)
+\end{definition}
+
+See \cref{fig:can-shelv-example} for an example of canonical shelving.
+
+Suppose a set $I$ of rectangular items is packed into a set $J$ of shelves.
+Then we can interpret $J$ as a 1BP instance where
+the height of each shelf is the size of the corresponding 1D item.
+
+\begin{figure}[htb]
+\centering
+\input{img/can-shelv-example.tikz}
+\caption{Six items and their canonical shelving into three tight shelves of width 1.
+The items are numbered by decreasing order of height.
+Each item has its width mentioned below it.
+Item 3 was sliced into two items of widths 0.3 and 0.1.
+Item 5 was sliced into two items of widths 0.4 and 0.5.}
+\label{fig:can-shelv-example}
+\end{figure}
+
+We will now prove that the canonical shelving is optimal,
+i.e., any shelf-based bin packing of items can be obtained
+by first computing the canonical shelving and then
+packing the shelves into bins like a 1BP instance.
+
+\begin{lemma}
+\label{thm:hgap:can-shelv-pred}
+Let $I$ be a set of rectangles packed inside shelves $J$.
+Let $J^* \defeq \canShelv(I)$. Then $J^* \preceq J$.
+\end{lemma}
+\begin{proof}
+We say that a shelf is full if the total width of items in a shelf is 1.
+Arrange the shelves $J$ in non-increasing order of height,
+and arrange the items $I$ in non-increasing order of height.
+Then try to pack $I$ into $J$ using the following greedy algorithm:
+For each item $i$, pack the largest possible slice of $i$ into
+the first non-full shelf and pack the remaining slice (if any) in the next shelf.
+If this greedy algorithm succeeds, then within each shelf of $J$,
+there is a shelf of $J^*$, so $J^* \preceq J$.
+We will now prove that this greedy algorithm always succeeds.
+
+For the sake of proof by contradiction, assume that the greedy algorithm failed, i.e.,
+for an item (or slice) $i$ there was a non-full shelf $S$ but $h(i) > h(S)$.
+Let $I'$ be the items (and slices) packed before $i$ and $J'$ be the shelves before $S$.
+Therefore, $w(I') = |J'|$.
+
+All items in $I'$ have height at least $h(i)$,
+so all shelves in $J'$ have height at least $h(i)$.
+All shelves after $J'$ have height less than $h(i)$.
+Therefore, $J'$ is exactly the set of shelves of height at least $h(i)$.
+
+In the packing $P$, $I' \cup \{i\}$ can only be packed into shelves of height
+at least $h(i)$, so $w(I') + w(i) \le |J'|$. But this contradicts $w(I') = |J'|$.
+Therefore, the greedy algorithm cannot fail.
+\end{proof}
+
+\begin{lemma}
+\label{thm:nos-sum}
+Consider the inequality $x_1 + x_2 + \ldots + x_n \le s$,
+where for each $j \in [n]$, $x_j \in \mathbb{Z}_{\ge 0}$.
+Let $N$ be the number of solutions to this inequality.
+Then $N = \binom{s+n}{n} \le (s+1)^n$.
+\end{lemma}
+\begin{proof}
+The proof of $N = \binom{s+n}{n}$ is a standard result in combinatorics.
+
+To prove $N \le (s+1)^n$, note that we can choose each
+$x_j \in \{0, 1, \ldots, s\}$ independently.
+\end{proof}
+
+\subsection{Structural Theorem}
+\label{sec:hgap:struct}
+
+Let $I$ be a set of $d$D items.
+Let $\Ihat \defeq \round(I)$.
+Let $\delta \in (0, 1)$ be a constant.
+Let $\Ihat_L \defeq \{i \in \Ihat: h(i) > \delta\}$ and $\Ihat_S \defeq \Ihat - \Ihat_L$.
+Let $J \defeq \canShelv(\Ihat_L)$. Let $m \defeq |J|$, i.e., $J$ contains $m$ shelves.
+We can interpret $\Ihat_S$ as a single sliceable 1D item of size $a(\Ihat_S)$.
+
+We will show the existence of a structured $\delta$-fractional packing of $\Ihat$
+into at most $T_k^{d-1}(1+\delta)\optdbp(I) + \ceildeltsq + 1 + \delta$ bins.
+This would prove \cref{thm:hgap:struct}.
+
+\begin{definition}[Linear grouping~\cite{bp-aptas}]
+\label{defn:hgap:lingroup}
+Arrange the 1D items $J$ in non-increasing order of size and number them from 1 to $m$.
+Let $q \defeq \floor{\delta\size(J)} + 1$.
+Let $J_1$ be the first $q$ items, $J_2$ be the next $q$ items, and so on.
+$J_j$ is called the $j\Th$ \emph{linear group} of $J$.
+This gives us $t \defeq \ceil{m/q}$ linear groups.
+Note that the last group, $J_t$, may have less than $q$ items.
+
+Let $h_j$ be the size of the first item in $J_j$. Let $h_{t+1} \defeq 0$.
+For $j \in [t-1]$, let $J_j\lo$ be the items obtained by
+decreasing the height of items in $J_j$ to $h_{j+1}$.
+For $j \in [t]$, let $J_j\hi$ be the items obtained by
+increasing the height of items in $J_j$ to $h_j$.
+
+Let ${J\lo \defeq \bigcup_{j=1}^{t-1} J_j\lo}$
+and ${J\hi \defeq \bigcup_{j=1}^t J_j\hi}$.
+We call $J\lo$ a down-rounding of $J$ and $J\hi$ an up-rounding of $J$.
+\end{definition}
+
+\begin{lemma}
+\label{thm:hgap:n-pivots}
+%\thmdep{defn:hgap:lingroup}{thm:hgap:n-pivots}
+$t \le \ceildeltsq$.
+\end{lemma}
+\begin{proof}
+Since each shelf in $J$ has height more than $\delta$, $\size(J) > |J|\delta$.
+\[ t \defeq \ceil{\frac{|J|}{\floor{\delta\size(J)}+1}}
+\le \ceil{\frac{\size(J)/\delta}{\delta\size(J)}}
+= \ceil{\frac{1}{\delta^2}} \qedhere \]
+\end{proof}
+
+\begin{lemma}
+\label{thm:hgap:pred-chain}
+%\thmdep{defn:hgap:lingroup}{thm:hgap:pred-chain}
+$J\lo \preceq J \preceq J\hi \preceq J\lo \cup J_1\hi$.
+\end{lemma}
+\begin{proof}
+It is trivial to see that $J\lo \preceq J \preceq J\hi$.
+For $j \in [t-1]$, all (1D) items in both $J_j\lo$ and $J_{j+1}\hi$ have height $h_{j+1}$,
+and $|J_{j+1}| \le q = |J_j|$. Therefore, $J_{j+1}\hi \preceq J_j\lo$ and hence
+\[ J\hi = J_1\hi \cup \bigcup_{j=1}^{t-1} J_{j+1}\hi
+\preceq J_1\hi \cup \bigcup_{j=1}^{t-1} J_j\lo = J_1\hi \cup J\lo \qedhere \]
+\end{proof}
+
+\begin{lemma}
+\label{thm:hgap:can-shelv-size}
+$\size(J) < 1 + a(\Ihat_L)$.
+\end{lemma}
+\begin{proof}
+In the canonical shelving of $\Ihat_L$, let $S_j$ be the $j\Th$ shelf.
+Let $h(S_j)$ be the height of $S_j$.
+Let $a(S_j)$ be the total area of the items in $S_j$.
+Since the shelves are tight, items in $S_j$ have height at least $h(S_{j+1})$.
+So, $a(S_j) \ge h(S_{j+1})$ and
+\[ \size(J) = \sum_{j=1}^{|J|} h(S_j) \le 1 + \sum_{j=1}^{|J|-1} h(S_{j+1})
+\le 1 + \sum_{j=1}^{|J|-1} a(S_j) < 1 + a(\Ihat_L) \qedhere \]
+\end{proof}
+
+\begin{lemma}
+\label{thm:hgap:sopt-le-optlo}
+%\thmdep{defn:hgap:lingroup}{thm:hgap:sopt-le-optlo}
+$\sopt_{\delta}(\Ihat) < \opt(J\lo \cup \Ihat_S) + \delta a(\Ihat_L) + (1 + \delta)$.
+\end{lemma}
+\begin{proof}
+By the definition of $\canShelv$, $\Ihat_L$ can be packed into $J$.
+By \thmdepcref{thm:hgap:pred-chain}{}, $J \preceq J\hi$, so $\Ihat_L$ can be packed into $J\hi$.
+By \thmdepcref{thm:hgap:n-pivots}{}, the number of distinct sizes in $J\hi$
+is at most $\ceildeltsq$.
+So, the optimal 1D bin packing of $J\hi \cup \Ihat_S$ will
+give us a structured $\delta$-fractional bin packing of $\Ihat$.
+Hence, $\sopt_{\delta}(\Ihat) \le \opt(J\hi \cup \Ihat_S)$.
+
+By \thmdepcref{thm:hgap:pred-chain,obs:pred-pack}{} we get
+\[ \opt(J\hi \cup \Ihat_S) \le \opt(J\lo \cup J_1\hi \cup \Ihat_S)
+\le \opt(J\lo \cup \Ihat_S) + \opt(J_1\hi) \]
+By \thmdepcref{thm:hgap:can-shelv-size}{},
+\[ \opt(J_1\hi) \le |J_1\hi| \le q \le 1 + \delta\size(J)
+< 1 + \delta(1 + a(\Ihat_L)) \qedhere \]
+\end{proof}
+
+\subsubsection{LP for Packing \texorpdfstring{$J\lo \cup \Ihat_S$}{J\^{}lo + I\^{}\_S}}
+
+We will formulate an integer linear program for bin packing $J\lo \cup \Ihat_S$.
+
+Let $C \in \mathbb{Z}_{\ge 0}^{t-1}$ such that $h_C \defeq \sum_{j=1}^{t-1} C_jh_{j+1} \le 1$.
+Then $C$ is called a \config{}.
+$C$ represents a set of 1D items that can be packed into a bin
+and where $C_j$ items are from $J_j\lo$.
+Let $\Ccal$ be the set of all \config{}s.
+We can pack at most $\ceil{1/\delta}-1$ items into a bin because $h_t > \delta$.
+By \cref{thm:nos-sum}, we get
+$|\Ccal| \le \binom{\ceil{1/\delta}-1+t-1}{t-1} \le \ceildeltsq^{1/\delta}$.
+
+Let $x_C$ be the number of bins packed according to \config{} $C$.
+Bin packing $J\lo \cup \Ihat_S$ is equivalent to finding the optimal integer solution
+to the following linear program, which we denote as $\LP(\Ihat)$.
+\[ \begin{array}{*3{>{\displaystyle}l}}
+\min_{x \in \mathbb{R}^{|\Ccal|}} & \sum_{C \in \Ccal} x_C
+\\[1.5em] \textrm{where }
+    & \sum_{C \in \Ccal} C_j x_C \ge q & \forall j \in [t-1]
+\\[1.5em] & \sum_{C \in \Ccal} (1-h_C)x_C \ge a(\Ihat_S)
+\\[1em] & x_C \ge 0 & \forall C \in \Ccal
+\end{array} \]
+Here the first set of constraints say that for each $j \in [t-1]$,
+all of the $q \defeq \floor{\delta\size(J)}+1$ shelves $J\lo_j$
+should be covered by the configurations in $x$.
+The second constraint says that we should be able to pack $a(\Ihat_S)$
+into the non-shelf space in the bins.
+\begin{lemma}
+\label{thm:hgap:opt-to-lp}
+$\opt(J\lo \cup \Ihat_S) \le \opt(\LP(\Ihat)) + t$.
+\end{lemma}
+\begin{proof}
+Let $x^*$ be an optimal extreme-point solution to $\LP(\Ihat)$.
+By rank-lemma, $x^*$ has at most $t$ non-zero entries.
+Let $\xhat$ be a vector where $\xhat_C \defeq \ceil{x_C^*}$.
+Then $\xhat$ is an integral solution to $\LP(\Ihat)$ and
+$\sum_C \xhat_C < t + \sum_C x_C^* = \opt(\LP(\Ihat)) + t$.
+\end{proof}
+%
+The dual of $\LP(\Ihat)$, denoted by $\DLP(\Ihat)$, is
+\begin{align*}
+\max_{y \in \mathbb{R}^{t-1}, z \in \mathbb{R}}
+    & a(\Ihat_S)z + q \sum_{j=1}^{t-1} y_j
+\\ \textrm{ where } & \sum_{j=1}^{t-1} C_j y_j + (1-h_C)z \le 1 \quad \forall C \in \Ccal
+\\ & z \ge 0 \textrm{ and } y_j \ge 0 \quad \forall j \in [t-1]
+\end{align*}
+
+\subsubsection{Weighting Function for a Feasible Solution to
+\texorpdfstring{$\DLP(\Ihat)$}{DLP(I\^{})}}
+
+We will now see how to obtain a monotonic weighting function
+$\eta: [0, 1] \mapsto [0, 1]$ from a feasible solution to $\DLP(\Ihat)$.
+To do this, we adapt techniques from Caprara's analysis of $\hdhk$~\cite{caprara2008}.
+Such a weighting function will help us upper-bound $\opt(\LP(\Ihat))$
+in terms of $\optdbp(I)$.
+
+We first describe a transformation that helps us convert any feasible
+solution of $\DLP(\Ihat)$ to a feasible solution that is \emph{monotonic}.
+We then show how to obtain a weighting function from this monotonic solution.
+
+\begin{transformation}
+\label{trn:hgap:half-mono}
+Let $(y, z)$ be a feasible solution to $\DLP(\Ihat)$. Let $s \in [t-1]$.
+Define $y_t \defeq 0$ and $h_{t+1} \defeq 0$.
+Then change $y_s$ to $\max(y_s, y_{s+1} + (h_{s+1} - h_{s+2})z)$.
+\end{transformation}
+\begin{lemma}
+\label{thm:hgap:half-mono-feas}
+Let $(y, z)$ be a feasible solution to $\DLP(\Ihat)$.
+Let $(\yhat, z)$ be the new solution obtained by applying \cref{trn:hgap:half-mono}
+with parameter $s \in [t-1]$. Then $(\yhat, z)$ is feasible for $\DLP(\Ihat)$.
+\end{lemma}
+\begin{proof}
+For a \config{} $C$, let $f(C, y, z) \defeq C^Ty + (1-h_C)z$,
+where $C^Ty \defeq \sum_{j=1}^{t-1} C_jy_j$.
+Since $(y, z)$ is feasible for $\DLP(\Ihat)$, $f(C, y, z) \le 1$.
+As per \cref{trn:hgap:half-mono},
+\[ \yhat_j \defeq \begin{cases} \max(y_s, y_{s+1} + (h_{s+1} - h_{s+2})z) & j = s
+\\ y_j & j \neq s \end{cases} \]
+If $y_s \ge y_{s+1} + (h_{s+1} - h_{s+2})z$, then $\yhat = y$,
+so $(\yhat, z)$ would be feasible for $\DLP(\Ihat)$.
+So now assume that $y_s < y_{s+1} + (h_{s+1} - h_{s+2})z$.
+
+Let $C$ be a \config{}. Define $C_t \defeq 0$. Let
+\[ \Chat_j \defeq \begin{cases} 0 & j = s \\ C_s + C_{s+1} & j = s+1
+\\ C_j & \textrm{otherwise} \end{cases} \]
+Then, $C^T\yhat - \Chat^Ty
+= C_s\yhat_s + C_{s+1}\yhat_{s+1} - \Chat_sy_s - \Chat_{s+1}y_{s+1}
+= C_s(h_{s+1} - h_{s+2}) z$.
+
+Also, $h_{\Chat} - h_C
+= \Chat_sh_{s+1} + \Chat_{s+1}h_{s+2} - C_sh_{s+1} - C_{s+1}h_{s+2}
+= - C_s(h_{s+1} - h_{s+2})$.
+
+Since $h_{\Chat} \le h_C \le 1$, $\Chat$ is a \config{}.
+\begin{align*}
+f(C, \yhat, z) &= C^T\yhat + (1-h_C)z
+\\ &= (\Chat^Ty + C_s(h_{s+1} - h_{s+2})z)
+    + (1 - h_{\Chat} - C_s(h_{s+1} - h_{s+2}))z
+\\ &= f(\Chat, y, z) \le 1
+\end{align*}
+Therefore, $(\yhat, z)$ is feasible for $\DLP(\Ihat)$.
+\end{proof}
+
+\begin{definition}
+Let $(y, z)$ be a feasible solution to $\DLP(\Ihat)$. Let
+\[ \yhat_j \defeq \begin{cases}
+\max(y_{t-1}, zh_t) & j = t-1
+\\ \max(y_j, \yhat_{j+1} + (h_{j+1} - h_{j+2})z) & j < t-1
+\end{cases} \]
+Then $(\yhat, z)$ is called the monotonization of $(y, z)$.
+\end{definition}
+\begin{lemma}
+\label{thm:hgap:mono-feas}
+Let $(y, z)$ be a feasible solution to $\DLP(\Ihat)$.
+Let $(\yhat, z)$ be the monotonization of $(y, z)$.
+Then $(\yhat, z)$ is a feasible solution to $\DLP(\Ihat)$.
+\end{lemma}
+\begin{proof}
+$(\yhat, z)$ can be obtained by multiple applications of \cref{trn:hgap:half-mono}:
+first with $s = t-1$, then with $s = t-2$, and so on till $s = 1$.
+Then by \thmdepcref{thm:hgap:half-mono-feas}{}, $(\yhat, z)$ is feasible for $\DLP(\Ihat)$.
+\end{proof}
+
+Let $(y^*, z^*)$ be an optimal solution to $\DLP(\Ihat)$.
+Let $(\yhat, z^*)$ be the monotonization of $(y^*, z^*)$.
+Then define the function $\eta: [0, 1] \mapsto [0, 1]$ as
+\[ \eta(x) \defeq \begin{cases}
+\yhat_1 & \textrm{if } x \in [h_2, 1]
+\\ \yhat_j & \textrm{if } x \in [h_{j+1}, h_j), \textrm{ for } 2 \le j \le t-1
+\\ xz^* & \textrm{if } x < h_t
+\end{cases} \]
+
+\begin{lemma}
+\label{thm:hgap:eta-dff}
+$\eta$ is a monotonic \dff{}.
+\end{lemma}
+\begin{proof}
+$\eta$ is monotonic by the definition of monotonization.
+
+Let $X \subseteq (0, 1]$ be a finite set such that $\Sum(X) \le 1$.
+Let $X_0 \defeq X \cap [0, h_t)$,
+let $X_1 \defeq X \cap [h_2, 1]$
+and for $2 \le j \le t-1$, let $X_j \defeq X \cap [h_{j+1}, h_j)$.
+Let $C \in \mathbb{Z}^{t-1}_{\ge 0}$ such that $C_j \defeq |X_j|$.
+Let $h_C \defeq \sum_{j=1}^{t-1} C_jh_{j+1}$.
+\begin{align*}
+1 \ge \Sum(X) &= \Sum(X_0) + \sum_{j=1}^{t-1} \Sum(X_j)
+\\ &\ge \Sum(X_0) + \sum_{j=1}^{t-1} C_jh_{j+1}
+\tag{for $j \ge 1$, each element in $X_j$ is at least $h_{j+1}$}
+\\ &= \Sum(X_0) + h_C
+\end{align*}
+Since $h_C \le 1 - \Sum(X_0) \le 1$, $C$ is a \config{}. Therefore,
+\begin{align*}
+\sum_{x \in X} \eta(x)
+&= \sum_{j=0}^{t-1} \sum_{x \in X_j} \eta(x)
+= z^*\Sum(X_0) + \sum_{j=1}^{t-1} C_j\yhat_j
+\tag{by definition of $\eta$}
+\\ &\le (1-h_C)z^* + C^T\yhat
+\tag{$h_C \le 1 - \Sum(X_0)$}
+\\ &\le 1
+\tag{$C$ is a \config{} and $(\yhat, z^*)$ is feasible for $\DLP(\Ihat)$
+    by \thmdepcref{thm:hgap:mono-feas}{}}
+\end{align*}
+\end{proof}
+
+\begin{lemma}
+\label{thm:hgap:p-vs-opt}
+For $i \in I$, let $p(i) \defeq \eta(h(i))w(i)$.
+Then $\opt(\LP(\Ihat)) \le p(I) \le T_k^{d-1}\optdbp(I)$.
+\end{lemma}
+\begin{proof}
+Let $(y^*, z^*)$ be an optimal solution to $\DLP(\Ihat)$.
+Let $(\yhat, z^*)$ be the monotonization of $(y^*, z^*)$.
+
+In the canonical shelving of $I$, suppose a rectangular item $i$ (or a slice thereof)
+lies in shelf $S$ where $S \in J_j$.
+Then $h(i) \in [h_{j+1}, h_j]$, where $h_{t+1} \defeq 0$.
+This is because shelves in $J \defeq \canShelv(\Ihat)$ are tight.
+If $j = 1$, then $\eta(h(i)) = \yhat_1 \ge y^*_1$.
+If $2 \le j \le t-1$, then $\eta(h(i)) \in \{\yhat_{j-1}, \yhat_j\} \ge \yhat_j \ge y^*_j$.
+We are guaranteed that for $j \in [t-1]$, and each shelf $S \in J_j$, $w(S) = 1$.
+\begin{align*}
+p(I) &= \sum_{j=1}^t \sum_{S \in J_j} \sum_{i \in S} \eta(h(i))w(i)
+    + \sum_{i \in \Ihat_S} \eta(h(i))w(i)
+    \tag{by definition of $p$}
+\\ &\ge \sum_{j=1}^{t-1} \sum_{S \in J_j} \sum_{i \in S} y^*_j w(i)
+    + \sum_{i \in \Ihat_S} (h(i)z^*)w(i)
+\tag{by definition of $\eta$}
+\\ &= \sum_{j=1}^{t-1} y^*_j q + a(\Ihat_S)z^*
+\tag{since $w(J_j) = q$ for $j \in [t-1]$}
+\\ &= \opt(\DLP(\Ihat))
+\tag{$(y^*, z^*)$ is optimal for $\DLP(\Ihat)$}
+\end{align*}
+By strong duality of linear programs, $\opt(\LP(\Ihat)) = \opt(\DLP(\Ihat)) \le p(I)$.
+
+Since $\eta$ and $H_k$ are \dff{}s (by \thmdepcref{thm:hgap:eta-dff}{}),
+% \thmdep{thm:h-dff}{}
+we get that $p(I) \le T_k^{d-1}\optdbp(I)$ by \thmdepcref{thm:dff-pack}{}.
+\end{proof}
+
+\rthmHgapStruct*
+\begin{proof}
+\begin{align*}
+& a(\Ihat_L) \le a(\Ihat)
+= \sum_{i \in I} \left(\ell_d(i)\prod_{j=1}^{d-1} f_k(\ell_j(i))\right)
+\le T_k^{d-1}\optdbp(I)
+\tag{by \thmdepcref{thm:dff-pack}{thm:hgap:struct}}
+\end{align*}
+\begin{align*}
+\sopt_{\delta}(\Ihat) &< \opt(J\lo \cup \Ihat_S) + \delta a(\Ihat_L) + (1+\delta)
+\tag{by \thmdepcref{thm:hgap:sopt-le-optlo}{thm:hgap:struct}}
+\\ &\le \opt(\LP(\Ihat)) + \ceil{\frac{1}{\delta^2}} + \delta T_k^{d-1}\optdbp(I) + (1+\delta)
+\tag{by \thmdepcref{thm:hgap:opt-to-lp,thm:hgap:n-pivots}{thm:hgap:struct}}
+\\ &\le T_k^{d-1}(1+\delta)\optdbp(I) + \ceil{\frac{1}{\delta^2}} + 1 + \delta
+\tag{by \thmdepcref{thm:hgap:p-vs-opt}{thm:hgap:struct}}
+\end{align*}
+\end{proof}
+
+\subsection{Guessing Shelves and Bins}
+\label{sec:hgap:guess-shelves}
+
+We want $\guessShelves(\Icalhat, \delta)$ to return all possible packings
+of empty shelves into at most $n \defeq |\Icalhat|$ bins such that
+each packing is structured for $(\flatten(\Icalhat), \delta)$.
+
+Let $H = \{h(i): i \in \flatten(\Icalhat)\}$. Let $N \defeq |\flatten(\Icalhat)|$.
+$\guessShelves(\Icalhat, \delta)$ starts by picking the distinct heights of shelves
+by iterating over all subsets of $H$ of size at most $\ceildeltsq$.
+The number of such subsets is at most $N^{\ceildeltsq}+1$.
+Let $\Htild \defeq \{h_1, h_2, \ldots, h_t\}$ be one such guess, where $t \le \ceildeltsq$.
+\WLoG, assume $h_1 > h_2 > \ldots > h_t > \delta$.
+
+Next, $\guessShelves$ needs to decide the number of shelves of each height
+and a packing of those shelves into bins.
+Let $C \in \mathbb{Z}_{\ge 0}^t$ such that $h_C \defeq \sum_{j=1}^{t-1} C_jh_j \le 1$.
+Then $C$ is called a \config{}.
+$C$ represents a set of shelves that can be packed into a bin
+and where $C_j$ shelves have height $h_j$.
+Let $\Ccal$ be the set of all \config{}s.
+We can pack at most $\ceil{1/\delta}-1$ items into a bin because $h_t > \delta$.
+By \thmdepcref{thm:nos-sum}{thm:hgap:guess-shelves}, we get
+\[ |\Ccal| \le \binom{\ceil{1/\delta}-1+t}{t}
+\le \binom{\ceil{1/\delta}-1+\ceildeltsq}{\ceil{1/\delta}-1}
+\le \left(\ceil{\frac{1}{\delta^2}}+1\right)^{1/\delta}. \]
+There can be at most $n$ bins, and $\guessShelves$ has to decide the \config{} of each bin.
+By \thmdepcref{thm:nos-sum}{thm:hgap:guess-shelves},
+the number of ways of doing this is at most
+$\binom{|\Ccal|+n}{|\Ccal|} \le (n+1)^{|\Ccal|}$.
+Therefore, $\guessShelves$ computes all \config{}s and then
+iterates over all $\binom{|\Ccal|+n}{|\Ccal|}$ combinations of these configs.
+
+This completes the description of $\guessShelves$ and proves
+\cref{thm:hgap:guess-shelves}.
+
+\subsection{\texorpdfstring{$\chooseAndPack$}{choose-and-pack}}
+\label{sec:hgap:choose-and-pack}
+
+$\chooseAndPack(\Icalhat, P, \delta)$ takes as input a set $\Icalhat$ of 2D itemsets,
+a packing $P$ of empty shelves into bins and constant $\delta \in (0, 1)$.
+It tries to pack $\Icalhat$ into $P$ and one additional shelf.
+Before we design $\chooseAndPack$, let us see how to handle a special case,
+i.e., where $\Icalhat$ is \emph{simple}.
+\begin{definition}
+A set $\Icalhat$ of 2D itemsets is \emph{$\delta$-simple} iff
+the width of each $\delta$-large item in $\flatten(\Icalhat)$
+is a multiple of $1/|\Icalhat|$.
+\end{definition}
+
+Let $P$ be a bin packing of empty shelves.
+Let $h_1 > h_2 > \ldots > h_t$ be the distinct heights of
+the shelves in $P$, where $h_t > \delta$.
+We will use dynamic programming to either pack a simple instance $\Icalhat$
+into $P$ or claim that no assortment of $\Icalhat$ can be packed into $P$.
+Call this algorithm $\simpleChooseAndPack(\Icalhat, P, \delta)$.
+
+Let $\Icalhat \defeq \{I_1, I_2, \ldots, I_n\}$.
+For $j \in \{0, 1, \ldots, n\}$, define $\Icalhat_j \defeq \{I_1, I_2, \ldots, I_j\}$,
+i.e., $\Icalhat_j$ contains the first $j$ itemsets from $\Icalhat$.
+Let $\vec{u} \defeq [u_1, u_2, \ldots, u_t] \in \{0, 1, \ldots, n^2\}^t$ be a vector.
+Let $\Phi(j, \vec{u})$ be the set of all assortments of $\Icalhat_j$ that can be
+packed into $t$ shelves, where the $r\Th$ shelf has height $h_r$ and width $u_r/n$.
+For a set $K$ of items, define $\smallArea(K)$ as
+the total area of $\delta$-small items in $K$.
+Define $g(j, \vec{u}) \defeq \min_{K \in \Phi(j, \vec{u})} \smallArea(K)$.
+If $\Phi(j, \vec{u}) = \emptyset$, then we let $g(j, \vec{u}) = \infty$.
+
+We will show how to compute $g(j, \vec{u})$ for all $j \in \{0, 1, \ldots, n\}$
+and all $\vec{u} \in \{0, 1, \ldots, n^2\}^t$ using dynamic programming.
+Let there be $n_r$ shelves in $P$ having height $h_r$.
+Then for $j = n$ and $u_r = n_r n$, $\Icalhat$ can be packed into $P$ iff
+$g(j, \vec{u})$ is at most the area of non-shelf space in $P$.
+
+Note that in any solution $K$ corresponding to $g(j, \vec{u})$,
+we can assume without loss of generality that the item $i$ from $K \cap I_j$
+is placed in the smallest shelves possible.
+This is because we can always swap $i$ with the slices of items in those shelves.
+This observation gives us the following recurrence relation for $g(j, \vec{u})$:
+\begin{equation}
+\label{eqn:g-rec}
+g(j, \vec{u}) = \begin{cases}
+\infty & \textrm{ if } u_j < 0 \textrm{ for some } j \in [t]
+\\ 0 & \textrm{ if } n = 0 \textrm{ and } u_j \ge 0 \textrm{ for all } j \in [t]
+\\ \min_{i \in I_j} \left(\begin{array}{ll}\smallArea(\{i\})
+        \\ + \, g(j-1, \reduce(\vec{u}, i))\end{array} \right)
+    & \textrm{ if } n > 0 \textrm{ and } u_j \ge 0 \textrm{ for all } j \in [t]
+\end{cases}
+\end{equation}
+Here $\reduce(\vec{u}, i)$ is a vector obtained as follows:
+If $i$ is $\delta$-small, then $\reduce(\vec{u}, i) \defeq \vec{u}$.
+Otherwise, initialize $x$ to $w(i)$.
+Let $p_i$ be the largest integer $r$ such that $h(i) \le h_r$.
+For $r$ varying from $p_i$ to 2, subtract $\min(x, u_j)$ from $x$ and $u_j$.
+Then subtract $x$ from $u_1$. The new value of $\vec{u}$ is defined to be
+the output of $\reduce(\vec{u}, i)$.
+
+The recurrence relation allows us to compute $g(j, \vec{u})$
+for all $j$ and $\vec{u}$ using dynamic programming
+in time $O(Nn^{2t})$ time, where $N \defeq |\flatten(\Icalhat)|$.
+With a bit more work, we can also compute the corresponding assortment $K$, if one exists.
+Therefore, $\simpleChooseAndPack(\Icalhat, P, \delta)$ computes a packing of $\Icalhat$
+into $P$ if one exists, or returns \Null{} if no assortment of $\Icalhat$ can be packed into $P$.
+
+Now we will look at the case where $\Icalhat$ is not $\delta$-simple.
+Let $\Icalhat'$ be the instance obtained by rounding up the width
+of each $\delta$-large item in $\Icalhat$ to a multiple of $1/n$, where $n \defeq |\Icalhat|$.
+Let $\Pbar$ be the bin packing obtained by adding another bin to $P$
+containing a single shelf of height $h_1$.
+$\chooseAndPack(\Icalhat, P, \delta)$ computes $\Icalhat'$ and $\Pbar$,
+and then returns the output of $\simpleChooseAndPack(\Icalhat', \Pbar, \delta)$.
+
+\rthmCAPCorrect*
+\begin{proof}
+Follows from the definition of $\simpleChooseAndPack$.
+\end{proof}
+
+\rthmCAPNotNull*
+\begin{proof}
+Let $\Khat'$ be the items obtained by rounding up the width of each item in $\Khat$
+to a multiple of $1/n$. Then $\Khat'$ is an assortment of $\Icalhat'$.
+We will show that $\Khat'$ fits into $\Pbar$,
+so $\simpleChooseAndPack(\Icalhat', \Pbar, \delta)$ will not output \Null.
+
+Slice each item $i \in \Khat'$ into two pieces using a vertical cut such that
+one piece has width equal to the original width of $i$ in $\Khat$,
+and the other piece has width less than $1/n$.
+This splits $\Khat'$ into sets $\Khat$ and $T$.
+$T$ contains at most $n$ items, each of width less than $1/n$.
+Therefore, we can pack $\Khat$ into $P$ and we can pack $T$ into
+the newly-created shelf of height $h_1$.
+Therefore, $\Khat'$ can be packed into $\Pbar$,
+so $\simpleChooseAndPack(\Icalhat', \Pbar, \delta)$ won't output \Null.
+\end{proof}
+
+\rthmCAPTime*
+\begin{proof}
+The running time of $\chooseAndPack(\Icalhat, P, \delta)$
+is dominated by computing $g(j, \vec{u})$ for all $j$ and $\vec{u}$,
+which takes $O(Nn^{2t})$ time.
+Since $P$ is structured for $(\Icalhat, \delta)$, the number of distinct shelves
+in $P$, which is $t$, is at most $\ceildeltsq$.
+\end{proof}
+
+\subsection{\texorpdfstring{$\inflate$}{inflate}}
+\label{sec:hgap:inflate}
+
+Let $I$ be a set of $d$D items. Let $P$ be a shelf-based $\delta$-fractional
+bin packing of $\Ihat \defeq \round(I)$ into $m$ bins.
+Let there be $t$ distinct heights of shelves in $P$: $h_1 > h_2 > \ldots > h_t > \delta$.
+We want to design an algorithm $\inflate(P)$ that returns a packing
+of $I$ into approximately $|P|$ bins.
+
+Define $\Ihat_L \defeq \{i \in \Ihat: h(i) > \delta\}$ and $\Ihat_S \defeq \Ihat - \Ihat_L$.
+Let there be $Q$ distinct base types in $I$ (so $Q \le k^{d-1}$).
+
+\subsubsection{Separating Base Types}
+\label{sec:hgap:sep-btype}
+
+We will now impose an additional constraint over $P$:
+items in each shelf must have the same $\btype$.
+This will be helpful later, when we will try to compute a packing of $d$D items $I$.
+
+Separating base types of $\Ihat_S$ is easy, since we can slice them
+in both directions. An analogy is to think of a mixture of
+multiple immiscible liquids of different densities settling into equilibrium.
+%See \cref{fig:split-base-small} for an example.
+
+\begin{comment}
+\begin{figure}[!ht]
+\centering
+\input{img/split-base-small.tikz}
+\caption{Separating base types of $\Khat_S$ in a bin.
+This example has 3 different base types in $\Khat_S$.}
+\label{fig:split-base-small}
+\end{figure}
+\end{comment}
+
+Let there be $n_j$ shelves of height $h_j$.
+Let $\Ihat_j$ be the items packed into shelves of height $h_j$.
+Therefore, $w(\Ihat_j) \le n_j$.
+Let $\Ihat_{j,q} \subseteq \Ihat_j$ be the items of base type $q \in [Q]$.
+
+For each $q$, pack $\Ihat_{j,q}$ into $\smallceil{w(\Ihat_{j,q})}$ shelves of height $h_j$
+(slicing items if needed). For these newly-created shelves, define the $\btype$
+of the shelf to be the $\btype$ of the items in it.
+Let the number of newly-created shelves of height $h_j$ be $n_j'$. Then
+\[ n_j' = \sum_{q=1}^Q \smallceil{w(\Ihat_{j,q})}
+< \sum_{q=1}^Q w(\Ihat_{j,q}) + Q
+\le n_j + Q \implies n_j' \le n_j + Q - 1 \]
+$n_j$ of these shelves can be packed into existing bins in place of the old shelves.
+The remaining $n_j' - n_j \le Q-1$ shelves can be packed on the base of new bins.
+
+Therefore, by using at most $t(Q-1)$ new bins,
+we can ensure that for every shelf,
+all items in that shelf have the same $\btype$.
+These new bins don't contain any items from $\Ihat_S$.
+Call this new bin packing $P'$.
+
+\subsubsection{Forbidding Horizontal Slicing}
+\label{sec:hgap:forbid-hslice}
+
+We will now use $P'$ to compute a shelf-based bin packing $P''$ of $\Ihat$ where
+items in $\Ihat$ can be sliced using vertical cuts only.
+
+Let $\Ihat_{q,S}$ be the items in $\Ihat_S$ of base type $q$.
+Pack items $\Ihat_{q,S}$ into shelves using $\canShelvHyp$.
+Suppose $\canShelv$ used $m_q$ shelves to pack $\Ihat_{q,S}$.
+For $j \in [m_q]$, let $h_{q,j}$ be the height of the $j\Th$ shelf.
+Let $H_q \defeq \sum_{j=1}^{m_q} h_{q,j}$ and $H \defeq \sum_{q=1}^Q H_q$.
+Since for $j \in [m_q-1]$, all items in the $j\Th$ shelf have height at least $h_{q,j+1}$,
+\[ a(\Ihat_{q,S}) > \sum_{j=1}^{m_q-1} h_{q,j+1} \ge H_q - h_{q,1} \ge H_q - \delta. \]
+Therefore, $H < a(\Ihat_S) + Q\delta$.
+Let $\Jhat_S$ be the set of these newly-created shelves.
+
+Use Next-Fit to pack $\Jhat_S$ into the space used by $\Ihat_S$ in $P'$.
+$\Ihat_S$ uses at most $m$ bins in $P'$ (recall that $m \defeq |P|$).
+A height of less than $\delta$ will remain unpacked in each of those bins.
+The total height occupied by $\Ihat_S$ in $P'$ is $a(\Ihat_S)$.
+Therefore, Next-Fit will pack a height of more than $a(\Ihat_S) - \delta m$.
+
+Some shelves in $\Jhat_S$ may still be unpacked.
+Their total height will be less than
+$H - (a(\Ihat_S) - \delta m) < \delta(Q + m)$.
+We will pack these shelves into new bins using Next-Fit.
+The number of new bins used is at most $\ceil{\delta(Q + m)/(1-\delta)}$.
+Call this bin packing $P''$. The number of bins in $P''$
+is at most $m' \defeq m + t(Q-1) + \ceil{\delta(Q+m)/(1-\delta)}$.
+
+\subsubsection{Shelf-Based \texorpdfstring{$d$}{d}D packing}
+\label{sec:hgap:2d-to-dd}
+
+We will now show how to convert the packing $P''$ of $\Ihat$ that uses $m'$ bins
+into a packing of $I$ that uses $m'$ $d$D bins.
+
+First, we repack the items into the shelves.
+For each $q \in [Q]$, let $\Jhat_q$ be the set of shelves in $P''$ of $\btype$ $q$.
+Let $\Ihat^{[q]}$ be the items packed into $\Jhat_q$.
+Compute $\Jhat^*_q \defeq \canShelvHyp(\Ihat^{[q]})$ and pack the shelves
+$\Jhat^*_q$ into $\Jhat_q$. This is possible by
+\thmdepcref{thm:hgap:can-shelv-pred}{thm:hgap:inflate}.
+
+This repacking gives us an ordering of shelves in $\Jhat_q$.
+Number the shelves from 1 onwards.
+All items have at most 2 slices. If an item has 2 slices, and one slice is packed
+into shelf number $p$, then the other slice is packed into shelf number $p+1$.
+The slice in shelf $p$ is called the leading slice.
+Every shelf has at most one leading slice.
+
+Let $S_j$ be the $j\Th$ shelf of $\Jhat_q$.
+Let $R_j$ be the set of unsliced items in $S_j$
+and the item whose leading slice is in $S_j$.
+Order the items in $R_j$ arbitrarily, except that the sliced item, if any, should be last.
+Then $w(R_j - \last(R_j)) < 1$.
+So, we can use $\hdhkunitHyp^{[q]}(R_j)$ to pack $R_j$ into a $(d-1)$D bin.
+This $(d-1)$D bin gives us a $d$D shelf whose height is the same as that of $S_j$.
+On repeating this process for all shelves in $\Jhat_q$ and for all $q \in [Q]$,
+we get a packing of $I$ into shelves.
+Since each $d$D shelf corresponds to a shelf in $P''$ of the same height,
+we can pack these $d$D shelves into bins in the same way as $P''$.
+This gives us a bin packing of $I$ into $m'$ bins.
+
+\subsubsection{The Algorithm}
+
+\Cref{sec:hgap:sep-btype,sec:hgap:forbid-hslice,sec:hgap:2d-to-dd}
+describe how to convert a shelf-based $\delta$-fractional packing $P$
+of $\Ihat$ having $t$ distinct shelf heights into a shelf-based $d$D bin packing of $I$.
+We call this conversion algorithm $\inflate$.
+
+It is easy to see that the time taken by $\inflate$ is $O(|I|\log|I|)$.
+
+If $P$ has $m$ bins, then the number of bins in $\inflate(P)$ is at most
+\[ m + t(Q-1) + \ceil{\frac{\delta(Q+m)}{1-\delta}}
+< \frac{m}{1-\delta} + t(Q-1) + 1 + \frac{\delta Q}{1-\delta} \]
+This proves \cref{thm:hgap:inflate}.
+
+\subsection{Improving Running Time}
+\label{sec:hgap:improve-time}
+
+For simplicity of presentation, we left out some opportunities for improving the running
+time of $\hgapk$. Here we briefly describe a way of speeding up $\hgapk$
+which reduces its running time from $O(N^{1+\ceildeltsq}n^{R+2\ceildeltsq})$ to
+$O(N^{1+\ceildeltsq}n^{2\ceildeltsq})$.
+Here $N \defeq |\flatten(\Icalhat)|$, $n \defeq |\Icalhat|$, $\delta \defeq \eps/(2+\eps)$
+and $R \defeq \binom{\ceildeltsq + \ceil{1/\delta}-1}{\ceil{1/\delta}-1}
+\le (1+\ceildeltsq)^{1/\delta}$.
+
+In $\guessShelves$, we guess two things simultaneously:
+(i) the number and heights of shelves
+(ii) the packing of the shelves into bins.
+This allows us to guess the optimal structured $\delta$-fractional packing.
+But we don't need that; an approximate structured packing would do.
+
+Therefore, we only guess the number and heights of shelves.
+We guess at most $N^{\ceildeltsq}+1$ distinct heights of shelves,
+and by \cref{thm:nos-sum}, we guess at most $(n+1)^{\ceildeltsq}$ vectors
+of shelf-height frequencies.
+Then we can use Lueker and De La Vega's $O(n\log n)$-time APTAS for
+1BP~\cite{bp-aptas} to pack the shelves into bins.
+
+Also, once we guess the distinct heights of shelves,
+we don't need to run $\chooseAndPack$ afresh for every packing of empty shelves.
+We can reuse the dynamic programming table.
+
+The running time is, therefore,
+\[ O\left(N^{\ceildeltsq}\left(n^{\ceildeltsq} n\log n + Nn^{2\ceildeltsq}\right)\right)
+= O(N^{1+\ceildeltsq}n^{2\ceildeltsq}) \]
