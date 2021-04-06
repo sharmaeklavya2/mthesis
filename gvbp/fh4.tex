@@ -1,0 +1,63 @@
+\section{The \texorpdfstring{$\fhk[4]$}{fullh4} Algorithm}
+\label{sec:fh4}
+
+In this section, we describe the $\fhk[4]$ algorithm
+and prove an important result about it.
+Although a more detailed analysis is given in \cref{sec:fhk},
+the analysis here is simpler because we only focus on the part relevant
+to \geomvec{$d_g$}{$d_v$} BP.
+
+Define $f_4: [0, 1] \mapsto [0, 1]$ and $\type: [0, 1] \mapsto [4]$ as
+\begin{align*}
+f_4(x) &= \begin{cases}
+\frac{1}{q} & x \in \left(\left.\frac{1}{q+1}, \frac{1}{q}\right]\right. \textrm{ for } q \in [3]
+\\ 2x & x \le \frac{1}{4} \end{cases}
+& \type(x) &= \begin{cases}
+q & x \in \left(\left.\frac{1}{q+1}, \frac{1}{q}\right]\right. \textrm{ for } q \in [3]
+\\ 4 & x \le \frac{1}{4} \end{cases}
+\end{align*}
+Note that $x \le f_4(x) \le 2x$.
+\begin{comment}
+\right)\right) % to fix syntax highlighting in Vim
+\end{comment}
+
+Let $i$ be a $d_g$-dimensional cuboid.
+Define $f_4(i)$ as the cuboid of length $f_4(\ell_j(i))$ in the $j\Th$ dimension.
+Therefore, $\vol(i) \le \vol(f_4(i)) \le 2^{d_g}\vol(i)$.
+For a set $I$ of cuboids, $f_4(I) \defeq \{f_4(i): i \in I\}$.
+Define $\type(i) \in [4]^{d_g}$ to be a vector
+whose $j\Th$ component is $\type(\ell_j(i))$.
+
+Caprara~\cite{caprara2008} (implicitly) defines a recursive algorithm $\hdhkunit^{[t]}(I)$
+(see \cref{sec:hdhk-prelims:hdhkunit} for more details),
+that takes as input a sequence $I$ of $d$D cuboidal items, such that
+all items have the same $\type$ $t$ and $\vol(f_4(I-\{\last(I)\})) < 1$,
+and returns a packing of $I$ into a $d$D bin.
+Here $\last(I)$ is the last item in sequence $I$.
+$\hdhkunit^{[t]}(I)$ runs in $O(|I|\log|I|)$ time.
+
+We now describe the $\fhk[4]$ algorithm.
+First, partition the items $I$ by $\type$. The number of partitions is at most $Q = 4^{d_g}$.
+Let $I^{[q]}$ be the partition containing items of $\type$ $q$.
+Order the items in $I^{[q]}$ arbitrarily.
+Then repeatedly pick the smallest prefix $J$ of $I^{[q]}$ such that
+either $J = I^{[q]}$ or $\vol(f_4(J)) \ge 1$, and pack $J$ into a bin using
+$\hdhkunit^{[q]}(J)$.
+
+\begin{lemma}
+\label{lem:fh4}
+Let $I$ be a non-empty set of $d_g$-dimensional cuboidal items.
+Then $\fhk[4](I)$ packs $I$ into less than $4^{d_g} + 2^{d_g}\vol(I)$ bins.
+\end{lemma}
+\begin{proof}
+Suppose $\fhk[4](I^{[q]})$ produces $m^{[q]}$ bins. Let $B_j^{[q]}$ be the $j\Th$ of these bins.
+Given the way we choose prefixes, $\vol(f_4(B_j^{[q]})) \ge 1$ for $j \in [m^{[q]}-1]$,
+i.e., at most 1 bin is partially-filled. Hence,
+\[ \vol(f_4(I^{[q]})) = \sum_{j=1}^{m^{[q]}} \vol(f_4(B_j^{[q]})) > m^{[q]}-1 \]
+So, the total number of bins used is
+\[ \sum_{q=1}^Q m^{[q]} < \sum_{q=1}^Q (1 + \vol(f_4(I^{[q]})))
+= Q + \vol(f_4(I)) \le 4^{d_g} + 2^{d_g}\vol(I) \qedhere \]
+\end{proof}
+
+Therefore, if a set $I$ of $d_g$-dimensional cuboidal items have total volume at most 1,
+then $|\fhk[4](I)| \le 4^{d_g} + 2^{d_g} - 1$.

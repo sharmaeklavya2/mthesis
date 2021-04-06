@@ -83,14 +83,19 @@
 \DeclareMathOperator{\smallArea}{smallArea}
 \DeclareMathOperator{\reduce}{reduce}
 
+% GVBP
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\vmax}{v_{\max}}
+
 % ALGORITHMS ===================================================================
 
 % dD GBP
 \newcommand*{\hdhk}[1][k]{\operatorname{\mathtt{HDH}}_{#1}}
-\newcommand*{\hgapk}{\operatorname{\mathtt{HGaP}}_k}
-\newcommand*{\fhk}{\operatorname{\mathtt{fullh}}_k}
-\newcommand*{\hdhkunit}{\operatorname{\mathtt{HDH-unit-pack}}_k}
-\newcommand*{\hdhkunitHyp}{\operatorname{\hyperref[sec:hdhk-prelims:hdhkunit]{\mathtt{HDH-unit-pack}}}_k}
+\newcommand*{\hgapk}[1][k]{\operatorname{\mathtt{HGaP}}_{#1}}
+\newcommand*{\fhk}[1][k]{\operatorname{\mathtt{fullh}}_{#1}}
+\newcommand*{\hdhkunit}[1][k]{\operatorname{\mathtt{HDH-unit-pack}}_{#1}}
+\newcommand*{\hdhkunitHyp}[1][k]{\operatorname{%
+\hyperref[sec:hdhk-prelims:hdhkunit]{\mathtt{HDH-unit-pack}}}_{#1}}
 \newcommand*{\hdhksp}[1][k]{\operatorname{\mathtt{HDH-SP}}_{#1}}
 \newcommand*{\hdhkspHyp}[1][k]{\operatorname{\hyperref[algo:hdhksp]{\mathtt{HDH-SP}}}_{#1}}
 \newcommand*{\hdhknf}[1][k]{\operatorname{\mathtt{HDH-NF}}_{#1}}

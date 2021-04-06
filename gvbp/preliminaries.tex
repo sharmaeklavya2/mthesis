@@ -1,2 +1,46 @@
 \section{Preliminaries}
 \label{sec:gvbp-prelims}
+
+For \geomvecdim{$d_g$}{$d_v$} items,
+define $\vmax(i) \defeq \max_{j=1}^{d_v} v_j(i)$.
+For convenience, let $v_0(i) \defeq \vol(i)$.
+Define $\Span(i) \defeq \max(\vol(i), \vmax(i)) = \max_{j=0}^{d_v} v_j(i)$.
+$\Span(i)$ is, intuitively, the measure of \emph{largeness} of item $i$.
+See \cref{sec:preliminaries:items} to recall the definition of
+$\vol(X)$, $\vmax(X)$ and $\Span(X)$,
+where $X$ is a set of \geomvecdim{$d_g$}{$d_v$} items.
+
+Note that unlike geometric packing problems,
+we cannot trivially handle items of zero volume in \geomvec{$d_g$}{$d_v$} BP.
+Assume \wLoG{} that $\vol(i) = 0$ implies $(\forall j \in [d_g], \ell_j(i) = 0)$.
+
+For simplicity, throughout this chapter, we will assume that the bins are squares of side length 1.
+This assumption isn't true when items can be rotated, but our algorithms
+$\simplePack$ and $\betterSimplePack$ can be easily extended to handle
+rotation and non-square bins.
+
+\begin{lemma}
+\label{thm:span-lb-opt}
+For \geomvec{$d_g$}{$d_v$} items $I$, $\ceil{\Span(I)} \le (d_v+1)\opt(I)$.
+This holds for both the rotational and non-rotational versions.
+\end{lemma}
+\begin{proof}
+Let $J_1, \ldots, J_m$ be an optimal bin packing of $I$. Therefore,
+\begin{align*}
+\ceil{\Span(I)} &= \ceil{\sum_{k=1}^m \sum_{i \in J_k} \max_{j=0}^{d_v} v_j(i)}
+\le \ceil{\sum_{k=1}^m \sum_{i \in J_k} \sum_{j=0}^{d_v} v_j(i)}
+= \ceil{\sum_{k=1}^m \sum_{j=0}^{d_v} \sum_{i \in J_k} v_j(i)}
+\\ &\le \ceil{\sum_{k=1}^m \sum_{j=0}^{d_v} 1}
+= (d_v+1)m  \qedhere
+\end{align*}
+\end{proof}
+
+\begin{lemma}
+\label{lem:vmax-lb-opt}
+For \geomvec{$d_g$}{$d_v$} items $I$, $\ceil{\vmax(I)} \le d_v\opt(I)$.
+This holds for both the rotational and non-rotational versions.
+\end{lemma}
+\begin{proof}[Proof sketch]
+In the proof of \cref{thm:span-lb-opt}, replace $j \in \{0, \ldots, d_v\}$
+by $j \in \{1, \ldots, d_v\}$.
+\end{proof}

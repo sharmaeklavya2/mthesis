@@ -1,2 +1,139 @@
 \section{Simple Algorithms}
 \label{sec:simple-algos}
+\label{sec:span-pack}
+
+In this section, we look at simple algorithms for \geomvec{2}{$d$} BP
+and \geomvec{$d_g$}{$d_v$} BP.
+We will not rotate the items while packing them.
+Nevertheless, we will show that our approximation guarantees
+hold for both the rotational and non-rotational versions.
+
+\subsection{Steinberg's Algorithm}
+
+A key ingredient in our algorithms for \geomvec{2}{$d$} BP is
+Steinberg's algorithm~\cite{steinberg1997strip} for rectangle packing.
+
+\begin{lemma}[Steinberg's algorithm~\cite{steinberg1997strip}]
+\label{thm:steinberg}
+Let $I$ be a set of rectangles. Let $w_{\max} \defeq \max_{i \in I} w(i)$
+and $h_{\max} \defeq \max_{i \in I} h(i)$. Consider a bin of width $W$ and height $H$,
+where $w_{\max} \le W$ and $h_{\max} \le H$.
+Then there is a $O(n\log^2 n/\log\log n)$-time algorithm to pack $I$ into the bin if
+\[ 2a(I) \le WH - \max(2w_{\max} - W, 0) \cdot \max(2h_{\max} - H, 0) \]
+\end{lemma}
+
+\begin{lemma}
+\label{corr:steinberg}
+Let $I$ be a set of rectangles, where $a(I) \le 1$.
+Then there is a $O(n\log^2 n/\log\log n)$-time algorithm to pack $I$ into
+3 square bins of side length 1.
+\end{lemma}
+\begin{proof}
+Pack $I$ into a bin of width 2 and height 1 using Steinberg's algorithm
+(see \cref{thm:steinberg}).
+Then cut the bin vertically into 2 unit-sized squares.
+The items which lie completely inside the left half can be packed into a unit-sized bin.
+The items which lie completely inside the right half can be packed into a unit-sized bin.
+The items which lie on the cutting line are stacked one-over-the-other,
+so we can pack them into a unit-sized bin.
+\end{proof}
+
+\subsection{Algorithms \texorpdfstring{$\simplePack$}{simple-pack}
+and \texorpdfstring{$\betterSimplePack$}{better-simple-pack}}
+
+Let $I$ be a \geomvec{2}{$d$} BP instance.
+Let $\Ihat \defeq \{\Span(i): i \in I\}$, i.e., $\Ihat$ is a classical bin packing instance.
+The algorithm $\simplePack(I)$ first runs the Next-Fit algorithm on $\Ihat$.
+Let $[\Jhat_1,$ $\Jhat_2,$ $\ldots,$ $\Jhat_m]$
+be the resulting bin packing of $\Ihat$ into $m$ bins.
+For each $\Jhat_j \subseteq \Ihat$, let $J_j$ be the corresponding items from $I$.
+Then $\forall k \in [d_v],$ $v_k(J_j) \le 1$ and $\vol(J_j) \le 1$.
+$\simplePack$ then uses Steinberg's algorithm to pack each $J_j$ into at most 3 bins,
+giving a packing of $I$ into at most $3m$ bins.
+
+By the property of Next-Fit (see \cref{thm:next-fit} in \cref{sec:preliminaries:simple-algos}),
+we get that $m \le \ceil{2\Span(I)}$.
+By \cref{thm:span-lb-opt}, we get $3m \le 6(d+1)\opt(I)$.
+This gives us the following theorem.
+\begin{theorem}
+\label{thm:span-pack}
+For \geomvec{2}{$d$} BP, $\simplePack(I)$ uses at most $3\ceil{2\Span(I)}$ bins,
+so $\simplePack$ is a $6(d+1)$-approximation algorithm.
+$\simplePack$ runs in $O(nd + n\log^2 n/\log\log n)$ time,
+where $n \defeq |I|$.
+\end{theorem}
+
+The algorithm $\betterSimplePack$ first computes $\Itild$,
+which is a $(d+1)$D VBP instance obtained by
+replacing the geometric dimensions of each item $i \in I$ by a single vector dimension $a(i)$.
+It computes a bin packing of $\Itild$ using any algorithm $\Acal$.
+It then uses Steinberg's algorithm to obtain a bin packing
+of $I$ into at most $3|\Acal(\Itild)|$ bins.
+
+Note that $\opt(\Itild) \le \opt(I)$.
+If $\Acal$ has an AAR of $\alpha$, then $|\Acal(\Itild)| \le \alpha\opt(\Itild) + O(1)$.
+Therefore, $\betterSimplePack$ has an AAR of $3\alpha$.
+The $(d+1)$D VBP algorithm by Bansal, Caprara and Sviridenko~\cite{rna}
+(parametrized by a constant $\eps > 0$) gives $\alpha = 1+\ln(d+1)+\eps$
+and the algorithm by Bansal, Elias and Khan~\cite{bansal2016improved} gives
+$\alpha = 1.5+\ln((d+2)/2)+\eps$ (improves to $\alpha = 1+\ln(1.5)+\eps$ for $d=1$).
+
+Although $\simplePack$ has a worse AAR than $\betterSimplePack$,
+the number of bins used by $\simplePack$ is upper-bounded in terms of $\Span$,
+which is a useful property. Because of this,
+we will use it as a subroutine in other algorithms (like $\cbPack$).
+
+Since $|\simplePack(I)|$ is upper-bounded in terms of $\Span(I)$,
+and $|\betterSimplePack(I)|$ is upper-bounded in terms of $\opt(\Itild)$,
+their approximation guarantees hold for both the
+rotational and non-rotational versions of \geomvec{2}{$d$} BP.
+
+\subsection{Extending to Higher Geometric Dimensions}
+
+The algorithms for \geomvec{2}{$d$} BP can be extended to \geomvec{$d_g$}{$d_v$} BP.
+We just need an algorithm for the following problem:
+\textsl{given a set $J$ of $d_g$-dimensional cuboids where $\vol(J) \le 1$,
+pack $J$ into a small number of bins.}
+
+We used Steinberg's algorithm when $d_g = 2$.
+For $d_g > 2$, we can use the $\fhk[4]$ algorithm, which is a variant of
+Caprara's $\hdhk$ algorithm~\cite{caprara2008},
+to pack $J$ into at most $4^{d_g} + 2^{d_g} - 1$ bins.
+We fully describe and analyze $\fhk$ in \cref{sec:fhk},
+but we give a smaller, self-contained analysis in \cref{sec:fh4}.
+
+Therefore, $\simplePack$ will use
+$b\ceil{2\Span(I)}$ bins, where $b \defeq 3$ when $d_g=2$
+and $b \defeq 4^{d_g}+2^{d_g}-1$ when $d_g > 2$.
+Hence, $\simplePack$ is $2b(d_v+1)$-approximate.
+Similarly, the AAR of $\betterSimplePack$ is $b(1 + \ln(d_v + 1) + \eps)$.
+
+\subsection{Simple Algorithm for the Knapsack Problem}
+
+Using similar ideas, we can get an algorithm for the \geomvec{$d_g$}{$d_v$} KS problem.
+Let $I$ be a set of \geomvecdim{$d_g$}{$d_v$} items. Let $p(i)$ be the profit of item $i$.
+We want to pack a maximum-profit subset of $I$ into a bin.
+
+Let $\Itild$ be a set of $(d_v+1)$D vectors obtained by replacing the
+geometric dimensions of each item $i$ by a single vector dimension $\vol(i)$.
+Let $\Acal$ be a $(d_v+1)$D vector knapsack (VKS) algorithm
+having approximation ratio $\alpha \ge 1$.
+$\Acal$ gives us a packing of items $\Jhat \subseteq \Itild$ into a bin.
+Let $J$ be the corresponding items in $I$.
+Then $\vol(J) \le 1$ and $\forall k \in [d_v], v_k(J) \le 1$.
+We can pack $J$ into at most $b$ bins, where $b=3$ for $d_g=2$ (by Steinberg's algorithm)
+and $b = 4^{d_g} + 2^{d_g} - 1$ for $d_g > 2$ (by the $\fhk[4]$ algorithm).
+
+Let $J_1, J_2, \ldots, J_b$ be the bins that $J$ is packed into.
+\WLoG, assume $p(J_1) \ge p(J_2) \ge \ldots \ge p(J_b)$. Then output the packing $J_1$
+as the answer to the \geomvec{$d_g$}{$d_v$} KS problem.
+Since any feasible solution to the \geomvec{$d_g$}{$d_v$} KS instance $I$ also gives a
+feasible solution to the VKS instance $\Itild$, we get
+$\opt_{\mathrm{KS}}(\Itild) \ge \opt_{\mathrm{KS}}(I)$.
+Since $\Acal$ is $\alpha$-approximate, we get $p(J) \ge \opt(\Itild)/\alpha$. Hence,
+\[ p(J_1) \ge \frac{p(J)}{b}
+\ge \frac{\opt(\Itild)}{b\alpha}
+\ge \frac{\opt(I)}{b\alpha} \]
+Therefore, we get a $b\alpha$-approximation algorithm for \geomvec{$d_g$}{$d_v$} KS.
+Using the PTAS for $(d_v+1)$D VKS by Frieze and Clarke~\cite{frieze1984approximation},
+we get $\alpha = 1+\eps$.
