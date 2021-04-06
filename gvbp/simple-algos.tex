@@ -96,15 +96,17 @@ We just need an algorithm for the following problem:
 pack $J$ into a small number of bins.}
 
 We used Steinberg's algorithm when $d_g = 2$.
-For $d_g > 2$, we can use the $\fhk[4]$ algorithm, which is a variant of
+When $d_g = 3$, we can use the algorithm of \cite[Section 2]{diedrich2008approximation}
+to pack $J$ into at most 9 bins.
+For $d_g > 3$, we can use the $\fhk[4]$ algorithm, which is a variant of
 Caprara's $\hdhk$ algorithm~\cite{caprara2008},
 to pack $J$ into at most $4^{d_g} + 2^{d_g} - 1$ bins.
 We fully describe and analyze $\fhk$ in \cref{sec:fhk},
 but we give a smaller, self-contained analysis in \cref{sec:fh4}.
 
 Therefore, $\simplePack$ will use
-$b\ceil{2\Span(I)}$ bins, where $b \defeq 3$ when $d_g=2$
-and $b \defeq 4^{d_g}+2^{d_g}-1$ when $d_g > 2$.
+$b\ceil{2\Span(I)}$ bins, where $b \defeq 3$ when $d_g=2$,
+$b \defeq 9$ when $d_g=3$, and $b \defeq 4^{d_g}+2^{d_g}-1$ when $d_g > 3$.
 Hence, $\simplePack$ is $2b(d_v+1)$-approximate.
 Similarly, the AAR of $\betterSimplePack$ is $b(1 + \ln(d_v + 1) + \eps)$.
 
@@ -121,8 +123,9 @@ having approximation ratio $\alpha \ge 1$.
 $\Acal$ gives us a packing of items $\Jhat \subseteq \Itild$ into a bin.
 Let $J$ be the corresponding items in $I$.
 Then $\vol(J) \le 1$ and $\forall k \in [d_v], v_k(J) \le 1$.
-We can pack $J$ into at most $b$ bins, where $b=3$ for $d_g=2$ (by Steinberg's algorithm)
-and $b = 4^{d_g} + 2^{d_g} - 1$ for $d_g > 2$ (by the $\fhk[4]$ algorithm).
+We can pack $J$ into at most $b$ bins, where $b=3$ for $d_g=2$ (by Steinberg's algorithm),
+$b=9$ for $d_g=3$ (by \cite{diedrich2008approximation}),
+and $b = 4^{d_g} + 2^{d_g} - 1$ for $d_g > 3$ (by the $\fhk[4]$ algorithm).
 
 Let $J_1, J_2, \ldots, J_b$ be the bins that $J$ is packed into.
 \WLoG, assume $p(J_1) \ge p(J_2) \ge \ldots \ge p(J_b)$. Then output the packing $J_1$
