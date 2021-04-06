@@ -10,14 +10,19 @@ Define $\poly(n)$ as the set of polynomial and sub-polynomial functions of $n$.
 For a set $X$, define $|X|$ as the cardinality of the set
 and define $\Sum(X) \defeq \sum_{x \in X} x$.
 
-For a vector $\xvec \in \mathbb{R}^d$, define $\Sum(\xvec) \defeq \sum_{i=1}^d \xvec_i$.
+For a vector $\xvec \in \mathbb{R}^d$, we denote the $i\Th$ entry by $\xvec_i$ or $\xvec[i]$.
+Define $\Sum(\xvec) \defeq \sum_{i=1}^d \xvec_i$.
 Define the support of $\xvec$ as the set of indices of $\xvec$ with non-zero value,
 i.e., $\support(\xvec) \defeq \{i \in [d]: \xvec_i \neq 0\}$.
 The $\ell_p$-norm of $\xvec$, denoted as $\norm{\xvec}_p$, is defined as
 \[ \norm{\xvec}_p \defeq \left( \sum_{i=1}^d \abs{\xvec_i}^p \right)^{1/p}. \]
 Note that if all entries of $\xvec$ are non-negative, then $\Sum(\xvec) = \norm{\xvec}_1$.
 
+For a matrix $A$, we define the entry at the $i\Th$ row and $j\Th$ column
+by $A_{i,j}$ or $A[i, j]$.
+
 \subsection{Items}
+\label{sec:preliminaries:items}
 
 Let $i$ be a $d$D cuboidal item
 (this means that $i$ is the cross-product of $d$ intervals on the real line).
@@ -81,16 +86,16 @@ Note that $\alpha$ is always at least 1.
 
 The algorithm $\Acal$ is called a PTAS (Polynomial-Time Approximation Scheme)
 iff it takes a constant $\eps > 0$ as a parameter, is $(1+\eps)$-approximate,
-and has a running time that is polynomial in $n$.
+and runs in time polynomial in $n$.
 Note that $\eps$ is a constant, so $n^{1/\eps}$ is polynomial in $n$.
-A PTAS is called an FPTAS iff it is a PTAS and its running time is polynomial
+A PTAS is called an FPTAS iff it is a PTAS and runs in time polynomial
 in both $n$ and $1/\eps$.
 
 \subsection{Maximization Problems}
 \label{sec:appx:max}
 
 In a maximization problem, there is a set of feasible solutions associated with each input,
-and each feasible solution has a score associated with it.
+and each feasible solution has a score.
 Our task is to output a feasible solution of maximum score for the given input.
 For an input $I$, let $\opt(I)$ denote the score of the maximum-score feasible solution.
 The knapsack problem is an example of a maximization problem.
@@ -105,8 +110,8 @@ Note that $\alpha$ is always at least 1.
 
 The algorithm $\Acal$ is called a PTAS (Polynomial-Time Approximation Scheme)
 iff it takes a constant $\eps > 0$ as a parameter, is $(1+\eps)$-approximate,
-and has a running time that is polynomial in $n$.
-A PTAS is called an FPTAS iff it is a PTAS and its running time is polynomial
+and runs in time polynomial in $n$.
+A PTAS is called an FPTAS iff it is a PTAS and runs in time polynomial
 in both $n$ and $1/\eps$.
 
 (Some authors use a slightly different definition of $\alpha$-approximate.
@@ -115,11 +120,13 @@ for each input $I$, the score of $\Acal(I)$ is at least $\alpha\opt(I)$.
 Note that $\alpha$ is always at most 1 by this definition.)
 
 \section{Simple Packing Algorithms}
+\label{sec:preliminaries:simple-algos}
 
 \begin{lemma}
 \label{thm:next-fit}
 Let $I$ be a classical bin packing instance. Then
 $|\operatorname{Next-Fit}(I)| < 2\size(I) + 1$.
+Equivalently, $|\operatorname{Next-Fit}(I)| \le \ceil{2\size(I)}$.
 \end{lemma}
 \begin{proof}
 Let $m \defeq |\operatorname{Next-Fit}(I)|$.
@@ -131,8 +138,8 @@ Therefore, $\size(J_j) + \size(J_{j+1}) > 1$. This gives us
 & \size(I)
 = \frac{\size(J_1) + \size(J_m)}{2} + \sum_{j=1}^{m-1} \frac{\size(J_j) + \size(J_{j+1})}{2}
 > \sum_{j=1}^{m-1} \frac{1}{2} = \frac{m-1}{2}
-\\ &\implies m < 2\size(I) + 1
-\qedhere \end{align*}
+\\ &\implies m < 2\size(I) + 1 \iff m \le \ceil{2\size(I)}  \qedhere
+\end{align*}
 \end{proof}
 
 \begin{lemma}[NFDH for strip packing~\cite{coffman1980performance}]
@@ -182,7 +189,7 @@ Therefore, $a(S_j) > (W-\delta_W)h_{j+1}$ for $j \le p-1$. This gives us
 \ge (W-\delta_W)\sum_{j=1}^{p-1} h_{j+1}
 = (W-\delta_W)(\Htild - h_1)
 \\ &\implies H - \delta_H > \Htild - h_1
-\\ &\implies \Htild < H - (\delta_H - h_1) \le H
+\quad\implies \Htild < H - (\delta_H - h_1) \le H
 \qedhere \end{align*}
 \end{proof}
 
@@ -215,6 +222,12 @@ where $x_C \in \{0, 1\}$ denotes the number of bins that have configuration $C$:
 \\[1.5em] \textrm{where } & \sum_{C \ni i} x_C \ge 1 & \forall i \in [n]
 \\[1em] \textrm{and } & x_C \ge 0 & \forall C \in \Ccal
 \end{array} \]
+
+Define the configuration matrix $A \in \{0, 1\}^{n \times |\Ccal|}$
+as a matrix where $A[i, C]$ is 1 if configuration $C$ contains item $i$ and 0 otherwise.
+We can also write the configuration LP as
+\[ \min_{x \in \mathbb{R}^{|\mathcal{C}|}} \Sum(x)
+\quad\textrm{where}\quad Ax \ge \mathbf{1} \quad\textrm{and}\quad x \ge 0 \]
 
 Linear programs are a useful tool in the area of approximation algorithms.
 Many optimization problems can be expressed as integer programs.
