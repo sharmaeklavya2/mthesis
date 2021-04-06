@@ -285,6 +285,7 @@ $1 + \ln(1.5) + \eps \approx 1.40547 + \eps$~\cite{bansal2016improved}.
 In this thesis, we address the following four problems related to geometric bin packing.
 
 \subsection{Generalized Multidimensional Bin Packing}
+\label{sec:intro:gvbp}
 
 Geometric packing and vector packing are well-studied generalizations of
 the classical bin packing problem.
@@ -365,12 +366,13 @@ We combine R\&A with the $\simplePack$ algorithm to get an AAR of
 $2(1 + \ln(3(d+1))) + \eps$ for \geomvec{2}{$d$} BP.
 This improves upon the AAR of $\betterSimplePack$ for $d \ge 3$.
 
-Next, we obtain a more sophisticated algorithm for \geomvec{2}{$d$} BP, called $\cbPack$,
+Next, we obtain a more sophisticated algorithm for \geomvec{2}{$d$} BP,
+called $\cbPack$ (abbreviation for \emph{container-based packing}),
 that fits into the R\&A framework and has an even better AAR.
 \begin{theorem}
 \label{thm:2-d-gvbp}
-For any $\eps > 0$, there is a polynomial-time algorithm for \geomvec{2}{$d$} BP,
-called $\cbPack$, having AAR $2(1+\ln((d+4)/2))+\eps$
+The $\cbPack$ algorithm for \geomvec{2}{$d$} BP accepts a parameter $\eps > 0$,
+and has an AAR of $2(1+\ln((d+4)/2))+\eps$
 (improves to $2(1+\ln((d+3)/2))+\eps$ when items can be rotated by $90^{\circ}$).
 For $d=1$, the AAR improves to $2(1+\ln(19/12))+\eps$ $\approx 2.919 + \eps$
 (further improves to $2(1+\ln(3/2))+\eps$ $\approx 2.811 + \eps$ when items can be rotated).
@@ -624,8 +626,10 @@ when all items in the input are $\delta$-thin rectangles.
     (problems of \cref{sec:well-known-problems} and other related problems).
 \item In \cref{chap:preliminaries}, we describe the notation and preliminaries
     needed for the rest of the thesis.
-\item In \cref{chap:gvbp}, we describe our algorithms for generalized multidimensional
+\item In \cref{chap:gvbp}, we describe our simple algorithms for generalized multidimensional
     bin packing (\geomvec{2}{$d$} BP) and our extension of the Round-and-Approx framework.
+\item In \cref{chap:gv-rbbp}, we describe the $\cbPack$ algorithm for \geomvec{2}{$d$} BP,
+    which improves upon the algorithms of \cref{chap:gvbp}.
 \item In \cref{chap:hdhk}, we describe our algorithms for $d$-dimensional
     multiple-choice geometric packing problems (which generalize packing with item rotations).
     We mostly focus on multiple-choice bin packing but also describe algorithms for
