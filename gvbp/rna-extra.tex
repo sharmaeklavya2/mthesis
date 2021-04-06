@@ -1,2 +1,274 @@
 \section{Details of the R\&A Framework}
 \label{sec:rna-extra}
+
+Let $\cLP(I)$ denote the \config{} LP of items $I$ and let $\cLP^*(I)$ denote the
+optimal objective value of $\cLP(I)$.
+
+\begin{lemma}
+\label{thm:pr-elem-in-residual}
+$\forall i \in I$, $\Pr(i \in S)
+\le \exp\left(-\frac{T}{\norm{\widehat{x}}_1}\right) \le \frac{1}{\beta}$.
+\end{lemma}
+\begin{proof}
+Let $C_1, C_2, \ldots, C_T$ be the \config{}s chosen during randomized rounding
+(line \ref{alg-line:rna-pack:rround-choose} in \cref{algo:rna-pack}).
+Let $\Ccal_i$ be the \config{}s that contain the element $i$.
+\begin{align*}
+\Pr(i \in S) &= \Pr\left(\bigwedge_{t=1}^T (C_t \not\in \Ccal_i) \right)
+= \prod_{t=1}^T \Pr(C_t \not\in \Ccal_i)  \tag{all $C_t$ are independent}
+\\ &= \prod_{t=1}^T \left(1 - \sum_{C \in \Ccal_i} \Pr(C_t = C)\right)
+= \left(1 - \sum_{C \in \Ccal_i} \frac{\widehat{x}_C}{\norm{\widehat{x}}_1} \right)^T
+\\ &\le \left(1 - \frac{1}{\norm{\widehat{x}}_1} \right)^T
+\tag{constraint in \config{} LP for item $i$}
+\\ &\le \exp\left( - \frac{T}{\norm{\widehat{x}_1}} \right)
+\le \frac{1}{\beta}
+\qedhere
+\end{align*}
+\end{proof}
+
+\begin{definition}[Fractional \Config{} LP]
+Let $(\Itild, D) \in \round(I)$. Suppose $\round$ partitioned $\Itild$ into classes
+$\Ktild_1, \Ktild_2, \ldots \Ktild_q$.
+Let $\Scal$ be the set of all structured fractional \config{}s of $\Itild$.
+The fractional structured \config{} LP of $\Stild \subseteq \Itild$,
+denoted as $\fscLP(\Stild)$, is
+\[ \begin{array}{*3{>{\displaystyle}l}}
+\min_{x \in \mathbb{R}^{|\Scal|}}
+    & \multicolumn{2}{>{\displaystyle}l}{\sum_{C \in \Scal} x_C}
+\\ \textrm{where} & \sum_{C \in \Scal} \Span(C \cap \Ktild_j)x_C
+    \ge \Span(\Stild \cap \Ktild_j) & \forall j \in [q]
+\\ & x_C \ge 0 & \forall C \in \Scal
+\end{array} \]
+The integer version of this program is denoted as $\fscIP(\Stild)$.
+The optimal objective values of $\fscLP(\Stild)$ and $\fscIP(\Stild)$
+are denoted as $\fscLP^*(\Stild)$ and $\fscIP^*(\Stild)$.
+\end{definition}
+
+\begin{lemma}
+\label{thm:fcip-eq-fopt}
+$\fsopt(\Stild) \le \fscIP^*(\Stild) \le \fsopt(\Stild) + q$.
+\end{lemma}
+\begin{proof}
+Due to the downward closure property, changing inequality constraints to equality constraints
+doesn't affect the optimum values of the above LP and IP.
+Therefore, $\fscIP(\Stild)$ is equivalent to the fractional structured bin packing problem.
+
+A problem with the above definition of $\fscLP(\Itild)$ is that
+the number of variables can be infinite if certain classes allow slicing.
+We circumvent this problem by \emph{discretizing} the \config{}s:
+Let $\delta$ be the smallest dimension of any item, i.e.
+$\delta \defeq \min\left(\min_{j=1}^{d_g} \ell_j(i), \min_{j=1}^{d_v} v_j(i)\right)$.
+
+In any optimal integral solution to $\fscLP(\Itild)$ that uses $m$ bins,
+we can slice out some items from each class in each bin so that
+the $\Span$ of each class in each bin is a multiple of $\delta^{d_g}/n$.
+In each class, the total size of sliced out items across all bins is at most $\delta^{d_g}$.
+Therefore, for each class, slices of that class can fit into a single item of that class.
+If each such single item is packed in a separate bin,
+the total number of bins used is at most $m + q$.
+
+Therefore, we only need to consider \config{}s where either the $\Span$ of each class
+is a multiple of $\delta^{d_g}/n$ or there is a single item in the \config.
+We modify the set $\Scal$ accordingly.
+This gives us a finite number of \config{}s and completes the proof.
+\end{proof}
+
+\begin{lemma}
+\label{thm:fclp-rank-lemma}
+$\fscLP^*(\Stild) \le \fscIP^*(\Stild) \le \fscLP^*(\Stild) + q$.
+\end{lemma}
+\begin{proof}
+By rank lemma (\cref{thm:rank-lemma-corr}), the number of
+non-zero variables in an extreme-point solution
+to a linear program is at most the number of constraints (other than the
+variable non-negativity constraints).
+
+Thus, an optimal extreme-point solution to $\fscLP(\Stild)$ has at most $q$
+positive-valued variables. Rounding up those variables to the nearest integer
+will give us an integral solution and increase the objective value by at most $q$.
+Hence, $\fscIP^*(\Stild) \le \fscLP^*(\Stild) + q$.
+\end{proof}
+
+Recall that $\simplePack$ is a $2b(d_v+1)$-approximation algorithm for \geomvec{$d_g$}{$d_v$} BP
+(see \cref{sec:span-pack}), where $b \defeq 3$ for $d_g=2$,
+$b \defeq 9$ for $d_g=3$, and $b \defeq 4^{d_g}+2^{d_g}-1$ for $d_g > 3$.
+
+\begin{lemma}
+\label{thm:clp-vs-span}
+For a set $I$ of \geomvecdim{$d_g$}{$d_v$} items,
+$\cLP^*(I) \in \Theta(\Span(I)) + O(1)$.
+\end{lemma}
+\begin{proof}
+Let $A$ be the \config{} matrix of $I$.
+Let $x^*$ be the optimal solution to $\cLP(I)$.
+In $\cLP(I)$, the constraint for item $i$ gives us
+$\sum_{C \in \Ccal} A[i, C] x^*_C \ge 1$.
+Multiplying each constraint by $\Span(i)$ and adding these constraints together, we get
+\begin{align*}
+\Span(I) &\le \sum_{C \in \Ccal} \sum_{i \in I} \Span(i) A[i, C] x^*_C
+= \sum_{C \in \Ccal} \Span(C) x^*_C
+\\ &\le (d_v+1) \sum_{C \in \Ccal} x^*_C = (d_v+1)\cLP^*(I)
+\end{align*}
+Therefore, $\cLP^*(I) \ge \Span(I)/(d_v+1)$.
+We also have
+\[ \cLP^*(I) \le \opt(I) \le |\simplePack(I)| \le 2b\Span(I)+b. \]
+Therefore, $\cLP^*(I) \in \Theta(\Span(I)) + O(1)$.
+\end{proof}
+
+\begin{lemma}[Independent Bounded Difference Inequality \cite{mcdiarmid1989method}]
+\label{thm:ind-bdi}
+Let $X \defeq [X_1, X_2, \ldots, X_n]$ be random variables with $X_j \in A_j$.
+Let $\phi: \prod_{i=1}^n A_j \mapsto \mathbb{R}$ be a function such that
+$\abs{\phi(x) - \phi(y)} \le c_j$
+whenever vectors $x$ and $y$ differ only in the $j\Th$ coordinate.
+Then for any $t \ge 0$,
+\[ \Pr[ \phi(X) - \E(\phi(X)) \ge t ] \le \exp\left(-\frac{2t^2}{\sum_{j=1}^n c_j^2}\right) \]
+\end{lemma}
+
+\begin{lemma}
+\label{thm:fclp-conc}
+Let $\Stild$ be as computed by $\rnaPack(I, \beta, \eps)$. Let $\epsLP \in (0, 1)$ be a constant.
+When $\Span(I)$ is large compared to $1/\epsLP^2$, we get that with high probability
+\[ \fscLP^*(\Stild) \le \frac{\fscLP^*(\Itild)}{\beta} + 2b\mu\epsLP\opt(I) + O(1) \]
+\end{lemma}
+\begin{proof}
+Let $y \in \Ccal^T$ be the \config{}s chosen during randomized rounding.
+When viewed as a vector of length $T$, all coordinates of $y$ are independent.
+Define $\uncovered(y) \defeq I - \bigcup_{t=1}^T y_t$.
+
+Let $\Ktild_1, \Ktild_2, \ldots, \Ktild_q$ be the classes of $\Itild$.
+Let $\pi$ be the bijection from $I-D$ to $\Itild$.
+For a set $X \subseteq I$, define $\Itild[X] \defeq \{\pi(i): i \in X-D\}$.
+For $j \in [q]$, define $\phi_j \in \Ccal^T \mapsto \mathbb{R}_{\ge 0}$ as
+\[ \phi_j(y) \defeq \Span\left(\Ktild_j \cap \Itild[\uncovered(y)]\right) \]
+For any set $X \subseteq I$, define $g_j(X) \defeq \Span(\Ktild_j \cap \Itild[X])$.
+Then $\phi_j(y) = g_j(\uncovered(y))$ and $g_j$ is a non-negative additive function.
+
+Let $y^{(1)}, y^{(2)} \in \Ccal^T$ such that
+$y^{(1)}$ and $y^{(2)}$ differ only in coordinate $t$.
+Let $y^{(1)}_t = C_1$ and $y^{(2)}_t = C_2$.
+Let $S_1 = \uncovered(y^{(1)})$ and $S_2 = \uncovered(y^{(2)})$.
+
+It is easy to see (using Venn diagrams) that
+$S_1 - S_2 \subseteq C_2 - C_1$ and $S_2 - S_1 \subseteq C_1 - C_2$.
+\begin{align*}
+\abs{\phi_j(y^{(1)}) - \phi_j(y^{(2)})}
+&= \abs{g_j(S_1) - g_j(S_2)}
+\\ &= \abs{g_j(S_1 - S_2) - g_j(S_2 - S_1)}  \tag{additivity of $g_j$}
+\\ &\le \max(g_j(S_1 - S_2), g_j(S_2 - S_1))
+\\ &\le \max(g_j(C_2), g_j(C_1))
+\\ &\le \max_{C \in \Ccal} \Span(\Ktild_j \cap \Itild[C])
+\le c_{\max}  \tag{by bounded expansion lemma}
+\end{align*}
+\begin{align*}
+\E(\phi_j(y)) &= \E(g_j(S))
+\\ &= \sum_{i \in \Itild} g_j(\{i\}) \Pr(i \in S)
+    \tag{linearity of expectation and additivity of $g_j$}
+\\ &\le \sum_{i \in \Itild} g_j(\{i\}) (1/\beta)
+    \tag{by \cref{thm:pr-elem-in-residual}}
+\\ &= \frac{g_j(\Itild)}{\beta} = \frac{\Span(\Ktild_j)}{\beta}
+\end{align*}
+$\forall j \in [q]$, define $Q_j$ as the smallest prefix of $\Stild \cap \Ktild_j$
+such that either $Q_j = \Stild \cap \Ktild_j$ or $\Span(Q_j) \ge \epsLP\norm{\widehat{x}}_1/q$.
+Define $Q \defeq \bigcup_{j=1}^q Q_j$. Therefore,
+\[ \Span(Q) \le \epsLP \norm{\widehat{x}}_1 + q \le \epsLP \mu \opt(I) + O(1) \]
+\begin{align*}
+\fscLP^*(\Stild) &\le \fscLP^*(\Stild - Q) + \fscLP^*(Q)
+\\ &\le \fscLP^*(\Stild - Q) + b(2\Span(Q) + 1)  \tag{by \cref{sec:span-pack}}
+\\ &\le \fscLP^*(\Stild - Q) + 2b\mu\epsLP\opt(I) + O(1)
+\end{align*}
+Now we will try to prove that with high probability,
+$\fscLP^*(\Stild - Q) \le \fscLP^*(\Itild)/\beta$.
+
+If $Q_j = \Stild \cap \Ktild_j$, then $\Span(\Ktild_j \cap (\Stild - Q)) = 0$.
+Otherwise,
+\begin{align*}
+& \Pr\left[ \Span(\Ktild_j \cap (\Stild - Q)) \ge \frac{\Span(\Ktild_j)}{\beta} \right]
+= \Pr\left[ \Span(\Ktild_j \cap \Stild) - \frac{\Span(\Ktild_j)}{\beta} \ge \Span(Q_j) \right]
+\\ &\le \Pr\left[ \phi_j(y) - \E(\phi_j(y)) \ge \frac{\epsLP}{q} \norm{\widehat{x}}_1 \right]
+\le \exp\left( -\frac{2}{Tc_{\max}^2} \left(\frac{\epsLP}{q}\norm{\widehat{x}}_1\right)^2\right)
+\tag{\cref{thm:ind-bdi}}
+\\ &\le \exp\left( -\frac{2\epsLP^2}{\ln(\beta)c_{\max}^2q^2} \norm{\widehat{x}}_1\right)
+\end{align*}
+Therefore, by union bound, we get
+\[ \Pr\left[ \bigvee_{j=1}^q \left(\Span(\Ktild_j \cap (\Stild - Q))
+    \ge \frac{\Span(\Ktild_j)}{\beta}\right) \right]
+\le q\exp\left( -\frac{2\epsLP^2}{\ln(\beta)c_{\max}^2q^2} \norm{\widehat{x}}_1\right) \]
+Since $\cLP^*(I) \le \norm{\widehat{x}}_1 \le \mu \cLP^*(I) + O(1)$,
+and $\cLP^*(I) \in \Theta(\Span(I)) + O(1)$ (by \cref{thm:clp-vs-span}),
+we get $\norm{\widehat{x}}_1 \in \Theta(\Span(I)) + O(1)$.
+When $\Span(I)$ is very large compared to $1/\epsLP^2$, we get
+that with high probability, $\forall j \in [q]$,
+\[ \Span(\Ktild_j \cap (\Stild - Q)) \le \frac{\Span(\Ktild_j)}{\beta} \]
+Let $x^*$ be the optimal solution to $\fscLP(\Itild)$.
+Then with high probability, $x^*/\beta$ is a feasible solution to $\fscLP(\Stild - Q)$.
+Therefore,
+\begin{align*}
+\fscLP^*(\Stild)
+&\le \fscLP^*(\Stild - Q) + 2b\mu\epsLP \opt(I) + O(1)
+\\ &\le \fscLP^*(\Itild)/\beta + 2b\mu\epsLP \opt(I) + O(1)
+\qedhere \end{align*}
+\end{proof}
+
+\rthmFoptConc*
+\begin{proof}
+When $\Span(I)$ is very large compared to $1/\epsLP^2$, we get
+\begin{align*}
+\fsopt(\Stild) &\le \fscIP^*(\Stild) + O(1)  \tag{by \cref{thm:fcip-eq-fopt}}
+\\ &\le \fscLP^*(\Stild) + O(1)  \tag{by \cref{thm:fclp-rank-lemma}}
+\\ &\le \fscLP^*(\Itild)/\beta + 2b\mu\epsLP \opt(I) + O(1)  \tag{by \cref{thm:fclp-conc}}
+\\ &\le \fsopt(\Itild)/\beta + 2b\mu\epsLP \opt(I) + O(1)  \tag{by \cref{thm:fcip-eq-fopt}}
+\end{align*}
+Otherwise, if $\Span(I) \in O(1/\epsLP^2)$, we get
+\begin{align*}
+\fsopt(\Stild) &\le \rho\opt(I) + O(1)  \tag{by structural theorem}
+\\ &\le \rho|\simplePack(I)| + O(1)
+\\ &\le \Theta(\Span(I)) + O(1)  \tag{by \cref{sec:span-pack}}
+\\ &\le O(1/\epsLP^2)  \qedhere
+\end{align*}
+\end{proof}
+
+\subsection{Error in previous R\&A framework}
+\label{sec:rna-extra:bugfix}
+
+Here we describe a minor error in the R\&A framework of \cite{khan-thesis},
+and how it can be fixed.
+
+We define $(\Itild, D)$ as an output of $\round(I)$ and for the residual instance $S$,
+we define $\Stild$ as the corresponding rounded items of $S - D$.
+Our proof of \cref{thm:fopt-conc} relies on the fact that for any subset
+of rounded items, the $\Span$ reduces by a factor of at least $\beta$
+if we restrict our attention to the residual instance.
+Formally, this means that for any $\Xtild \subseteq \Itild$, we have
+\[ \E(\Span(\Xtild \cap \Stild))
+= \sum_{i \in \Xtild} \Span(i)\Pr(i \in \Stild)
+\le \Span(\Xtild)/\beta. \]
+The equality follows from linearity of expectation and the fact that
+$\Span(i)$ is deterministic, i.e., it doesn't depend on the randomness
+used in the randomized rounding of the \config{} LP.
+This is because $\round$ is not given any information about what $S$ is.
+The inequality follows from \cref{thm:pr-elem-in-residual},
+which says that $\Pr(i \in S) \le 1/\beta$.
+
+The R\&A framework of \cite{khan-thesis} used similar techniques in their analysis.
+In their algorithm, however, they round items differently.
+Specifically, they define a subroutine $\round$ and define $\Itild \defeq \round(I)$
+and $\Stild \defeq \round(S)$.
+They, too, claim that for any subset of rounded items,
+the $\Span$ reduces by a factor of at least $\beta$
+if we restrict our attention to the residual instance.
+While their claim is correct for input-agnostic rounding
+(where items are rounded up to some constant size collection
+values chosen independent of the problem instance),
+the claim is unsubstantiated for input-sensitive rounding
+(where the values are chosen based on the specific problem instance).
+So the claim is unsubstantiated if $\round$ is not deterministic, as
+then an item can be rounded differently depending on
+different residual instances.
+
+In fact, they use their R\&A framework with the algorithm of
+Jansen and Pr\"adel~\cite{jansen2016new}, which uses
+\emph{linear grouping} (along with some other techniques) for rounding.
+Linear grouping rounds items in an \emph{input-sensitive} way, i.e.,
+the rounding of each item depends on the sizes of items in $S$,
+which is a random subset.

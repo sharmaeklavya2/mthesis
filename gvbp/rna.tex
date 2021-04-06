@@ -1,2 +1,518 @@
 \section{Round-and-Approx Framework}
 \label{sec:rna}
+
+The R\&A framework is a simple but powerful technique,
+originally given by Bansal, Caprara and Sviridenko~\cite{rna},
+to improve the AAR of a bin packing algorithm by combining it with
+randomized rounding of the \config{} LP
+(recall the definition of \config{} LP from \cref{sec:config-lp}).
+R\&A may have the potential to improve the AARs of several packing problems,
+but its applicability is limited because
+it only works with \emph{subset-oblivious} bin packing algorithms,
+and proving that an algorithm is subset-oblivious is difficult.
+
+Bansal and Khan~\cite{bansal2014binpacking} partially removed this limitation
+by proving that a large class of algorithms for geometric and vector bin packing,
+called \emph{rounding-based} algorithms, is subset-oblivious.
+We make further improvements on this front by showing that an even larger class
+of algorithms is subset-oblivious.
+This class includes some of our algorithms for \geomvec{$d_g$}{$d_v$} BP,
+like $\simplePack$ and $\cbPack$.
+Algorithms in this class are characterized as a combination of
+three simpler subroutines, called $\round$, $\complexPack$ and $\unround$.
+
+We describe our version of the R\&A framework as a \emph{meta-algorithm},
+i.e., the R\&A framework takes four subroutines as input---%
+$\cLPsolve$, $\round$, $\complexPack$ and $\unround$---%
+and returns an algorithm for bin packing, called $\rnaPack$.
+$\rnaPack(I)$ first uses $\cLPsolve$ to (approximately) solve the \config{} LP of $I$.
+Based on the (approximate) solution to the \config{} LP,
+it packs a large fraction of the items in $I$.
+It then packs the remaining items using the subroutines
+$\round$, $\complexPack$ and $\unround$.
+We prove that if $\round$, $\complexPack$ and $\unround$ satisfy some special properties,
+then $\rnaPack$ has a low AAR.
+
+In \cref{sec:rna:algo}, we describe the $\rnaPack$ algorithm in detail.
+In \cref{sec:rna:old-compare}, we highlight the differences between our version of R\&A
+and the previous versions of R\&A~\cite{rna,bansal2014binpacking}.
+In \cref{sec:rna:frac-pack,sec:rna:round,sec:rna:complex-pack,sec:rna:unround},
+we describe the subroutines $\round$, $\complexPack$ and $\unround$,
+and mention the properties that they should satisfy.
+In \cref{sec:rna:aar}, we prove an upper-bound on the AAR of $\rnaPack$.
+In \cref{sec:rna:simple-pack}, we show how to apply the R\&A framework
+to the $\simplePack$ algorithm.
+
+\subsection{Comparison to Previous Versions of R\&A}
+\label{sec:rna:old-compare}
+
+To use R\&A, we need to solve the \config{} LP.
+All previous applications ($d$D VBP and 2D GBP) of R\&A solved the \config{} LP
+$(1+\eps)$-approximately using a $(1+O(\eps))$-approximate solution to
+the corresponding knapsack problem.
+Due to the unavailability of a PTAS for \geomvec{2}{$d$} KS,
+we had to adapt and use a different linear programming algorithm~\cite{eku-pst}
+that uses an $\eta$-approximation algorithm for the knapsack problem to
+$(1+\eps)\eta$-approximately solve the \config{} LP,
+for any constants $\eta > 1$ and $0 < \eps < 1$.
+
+Second, we introduce more freedom in choosing the packing structure.
+Unlike the R\&A framework in \cite{bansal2014binpacking},
+that worked only for container-based packing,
+we allow either relaxing the packing structure to non-container-based (like in $\simplePack$)
+or imposing packing constraints in addition to being container-based (like in $\cbPack$).
+This generalization can help in finding better algorithms for other variants of bin packing.
+
+The \emph{rounding-based} algorithms in \cite{bansal2014binpacking}
+work by rounding up the large dimensions of items to $O(1)$ different types.
+In addition, we also allow \emph{rounding down} some dimensions, if we can find
+a suitable way of \emph{unrounding} a packing of rounded items.
+For example, in $\cbPack$, we round down the width and height of some items to 0.
+It was shown in \cite{khan-thesis} that if the large coordinates of items are
+rounded to $O(1)$ types, we cannot obtain AARs better than $d$ and $4/3$
+for $d$D VBP and 2D GBP, respectively.
+However, as we now allow rounding down, we may be able to use the R\&A framework
+with algorithms having better approximation ratios.
+
+We also fix a minor error in the R\&A framework of \cite{bansal2014binpacking}
+(see \cref{sec:rna-extra:bugfix} for details).
+
+\subsection{Description of the R\&A Algorithm}
+\label{sec:rna:algo}
+
+The algorithm $\rnaPack(I, \beta, \eps)$
+takes as input a set $I$ of \geomvecdim{$d_g$}{$d_v$} items
+and parameters $\beta \ge 1$ and $\eps \in (0, 1)$.
+The steps of the algorithm are as follows
+(see \cref{algo:rna-pack} for a more formal description).
+
+\begin{enumerate}
+\item \textbf{Solve the \Config{} LP} of $I$.
+Use $\cLPsolve$ to obtain a $\mu$-asymptotic-approximate solution $\xhat$ to the
+\config{} LP of $I$. Note that each index of $\xhat$ corresponds to a \config{}.
+
+\item \textbf{Randomized rounding of \config{} LP}:
+For $T \defeq \ceil{(\ln\beta)\smallnorm{\xhat}_1}$ steps, do the following:
+Select a \config{} $C$ with probability $\xhat_C/\smallnorm{\xhat}_1$.
+Pack $T$ bins according to each of these selected $T$ \config{}s.
+Let $S$ be the remaining items that are not packed, called the \emph{residual instance}.
+
+\item \textbf{Rounding of items}:
+We define a subroutine $\round$ that takes items $I$ and parameter $\eps$ as input%
+\footnote{The input to $\round$ is $I$ instead of $S$ because $S$ is random
+and we want to round items deterministically, i.e.,
+the rounding of each item $i \in S$ should
+not depend on which other items from $I$ lie in $S$.
+In fact, this is where the old R\&A framework~\cite{khan-thesis} introduced an error.
+See \cref{sec:rna-extra:bugfix} for details.}.
+It \emph{discards} a set $D \subseteq I$ of items such that $\Span(D) \le \eps\Span(I)$
+and then \emph{modifies} each item in $I-D$ to get a set $\Itild$ of items.
+We denote the output of $\round(I, \eps)$ as $(\Itild, D)$, where
+items in $\Itild$ are called \emph{rounded items}.
+Intuitively, after rounding, the items in $\Itild$ are of $O(1)$ types,
+which makes packing easier.
+Also, since $\Span(D)$ is small, $D \cap S$ can be packed
+into a small number of bins using $\simplePack$.
+
+We impose some restrictions on $\round$, which we denote as conditions C1 and C2,
+that we describe in \cref{sec:rna:round}.
+We also allow $\round$ to output a $O(\poly(n))$-sized list of guesses of $(\Itild, D)$.
+
+\item \textbf{Pack rounded items}:
+Let $\Stild$ be the rounded items corresponding to $S - D$.
+Pack $\Stild$ into bins using any bin packing algorithm that satisfies `condition C3',
+which we describe in \cref{sec:rna:complex-pack}.
+Let us name this algorithm $\complexPack$.
+
+\item \textbf{Unrounding}:
+Given a bin packing of $\Stild$, let $\unround$ be a subroutine that
+computes a bin packing of $S - D$.
+$\unround$ is trivial in previous versions of R\&A, because they only increase dimensions
+of items during rounding. In our applications, we may round down items,
+so $\unround$ can be non-trivial.
+$\unround$ can be any algorithm that satisfies `condition C4',
+which we describe in \cref{sec:rna:unround}.
+\end{enumerate}
+
+\begin{algorithm}[htb]
+\caption{$\rnaPack(I, \beta, \eps)$: Computes a bin packing of $I$.
+$I$ is a set of \geomvecdim{$d_g$}{$d_v$} items and $\beta \ge 1$}
+\label{algo:rna-pack}
+\begin{algorithmic}[1]
+\State $\xhat = \cLPsolve(I)$
+\RepeatN{$T \defeq \ceil{(\ln\beta)\smallnorm{\xhat}_1}$}
+    \State \label{alg-line:rna-pack:rround-choose}Select
+        a \config{} $C$ with probability $\xhat_C/\smallnorm{\xhat}_1$.
+    \State \label{alg-line:rna-pack:rround-pack}Pack a bin according to $C$.
+\EndRepeatN
+\State Let $S$ be the unpacked items from $I$.
+    \Comment{$S$ is called the set of \emph{residual items}.}
+\State Initialize $J_{\best}$ to \texttt{null}.
+\For{$(\Itild, D) \in \round(I)$}
+    \Comment{$\round(I)$ outputs a set of pairs.}
+    \State $J_D = \simplePack(S \cap D)$
+    \State Let $\pi$ be a bijection from $I-D$ to $\Itild$.
+        Let $\Stild \defeq \{\pi(i): i \in S-D\}$.
+    \State $\Jtild = \complexPack(\Stild)$
+    \State $J = \unround(\Jtild)$
+    \If{$J_{\best}$ is \texttt{null} or $|J_D \cup J| < |J_{\best}|$}
+        \State $J_{\best} = J_D \cup J$
+    \EndIf
+\EndFor
+\State Pack $S$ according to $J_{\best}$.
+\end{algorithmic}
+\end{algorithm}
+
+The R\&A framework requires that $\round$, $\complexPack$ and $\unround$
+satisfy four conditions C1, C2, C3, C4, which we describe in
+\cref{sec:rna:round,sec:rna:complex-pack,sec:rna:unround}.
+Prospective users of the R\&A framework need to design these three subroutines
+and prove that they satisfy these four conditions.
+In \cref{sec:rna:aar}, we prove that if these conditions are satisfied,
+then $\rnaPack$ has a small AAR.
+
+Intuitively, $\rnaPack$ first packs some items into $T$ bins using randomized rounding of $\xhat$.
+We can prove that $\Pr[i \in S] \le 1/\beta$,
+so $S$ contains a small fraction of the items in $I$
+(see \cref{thm:pr-elem-in-residual} in \cref{sec:rna-extra}).
+We will then try to prove that if the rest of the algorithm
+($\round + \complexPack + \unround$)
+packs $I$ into $m$ bins, then it will pack $S$ into roughly $m/\beta$ bins.
+This notion was referred to in \cite{rna} as \emph{subset-obliviousness}.
+We will use subset-obliviousness to bound the AAR of $\rnaPack$.
+
+\Cref{sec:rna:simple-pack} shows how $\simplePack$
+can be broken up into $\round$, $\complexPack$ and $\unround$
+and used with the R\&A framework.
+
+\subsection{Fractional structured packing}
+\label{sec:rna:frac-pack}
+
+Let $(\Itild, D)$ be an output of $\round(I)$ and let $\Xtild$
+be an arbitrary subset of $\Itild$.
+Our analysis of $\rnaPack$ is based around a concept called
+\emph{fractional structured packing} of $\Xtild$.
+Note that the notion of fractional structured packing only appears in the
+analysis of $\rnaPack$. It is not needed to describe the algorithm.
+
+We first define what it means to slice an item.
+From a geometric perspective, slicing an item perpendicular to the $k\Th$ dimension
+means cutting the item into 2 parts using a hyperplane perpendicular to the $k\Th$ axis.
+E.g., for $d_g=2$, if $k=1$ for item $i$, then we slice $i$ using a vertical cut,
+and if $k=2$, we slice $i$ using a horizontal cut.
+The vector dimensions get split proportionately across the slices.
+
+\begin{definition}[Slicing an item]
+Let $i$ be a \geomvecdim{$d_g$}{$d_v$} item.
+Slicing $i$ perpendicular to geometric dimension $k$
+with proportionality $\alpha$ (where $0 < \alpha < 1$)
+is the operation of replacing $i$ by two items $i_1$ and $i_2$ such that:
+(i) $\forall j \neq k, \ell_j(i) = \ell_j(i_1) = \ell_j(i_2)$,
+(ii) $\ell_k(i_1) = \alpha \ell_k(i)$ and $\ell_k(i_2) = (1-\alpha)\ell_k(i)$,
+(iii) $\forall j \in [d_v], v_j(i_1) = \alpha v_j(i) \wedge v_j(i_2) = (1-\alpha) v_j(i)$.
+\end{definition}
+
+\begin{definition}[Fractional packing]
+Let $\Itild$ be \geomvecdim{$d_g$}{$d_v$} items, where for each item $i \in \Itild$,
+we are given a set $X(i)$ of axes perpendicular to which we can repeatedly slice $i$
+($X(i)$ can be empty, which would mean that the item $i$ cannot be sliced).
+If we slice items as per their given axes and then pack the slices into bins,
+then the resulting packing is called a \emph{fractional} bin packing.
+\end{definition}
+
+\begin{figure}[htb]
+\centering
+\input{img/frac-pack.tikz}
+\caption{Example of a fractional packing of two items into a bin.}
+\label{fig:frac-pack}
+\end{figure}
+
+We will now review a common approach used in the design of
+approximation algorithms for packing problems,
+which we will use to define \emph{fractional structured packing}.
+
+Suppose we wanted to use a brute-force algorithm for bin packing.
+Such an algorithm would enumerate all possible packings of the items into bins,
+and pick the packing that required the minimum number of bins.
+Of course, such an approach wouldn't work,
+since the number of possible packings is exponential.
+So, instead of enumerating all possible packings,
+we will only consider a small subset of packings.
+We will do this by carefully choosing a set of constraints,
+and we will only consider packings that satisfy those constraints.
+We call such packings \emph{structured}.
+By carefully choosing the constraints, we hope that the
+optimal structured packing would be a good approximation to the optimal packing,
+and that the optimal structured packing would be easier to find than the optimal packing.
+
+This idea of using structured packings isn't always enough by itself.
+However, this idea has been successfully combined with the idea of fractional packing.
+For example, Jansen and Pr\"adel~\cite{jansen2016new} showed that
+given any packing of a 2D GBP instance into $m$ bins,
+we can slice (a carefully chosen subset of) the items and then repack the items
+into $(1.5+\eps)m + O(1)$ bins such that the resulting packing is \emph{container-based}.
+\emph{Container-based} roughly means that in each bin,
+items are packed into rectangular regions called containers,
+and containers' heights and widths belong to a fixed set of $O(1)$ values.
+In their algorithm, they find an almost-optimal fractional container-based packing
+of the input, and show how to convert such a fractional packing into
+a non-fractional packing without increasing the number of bins by too much.
+
+This approach of using fractional packing together with structured packing
+has been used in many approximation algorithms for bin packing
+~\cite{jansen2016new,bansal2005tale} and knapsack~\cite{galvez2017approximating}.
+Each of these algorithms uses a different definition of \emph{structured}.
+For example, according to Jansen and Pr\"adel's algorithm,
+a packing is structured iff it is container-based.
+The common idea in these algorithms is to first show that the optimal
+\emph{fractional structured packing} is a good approximation to the optimal packing
+and then find a non-fractional packing that is roughly as good as the
+optimal fractional structured packing.
+We would like to formalize this idea and see if we can show that
+such algorithms are subset-oblivious.
+
+Formally, a fractional \config{} of $\Itild$ is a packing of slices of
+some items from $\Itild$ into a bin.
+Let $\Scal$ be a set of fractional \config{}s of $\Itild$.
+Intuitively, $\Scal$ is the set of all structured fractional configurations.
+For a set $\Xtild \subseteq \Itild$, a fractional bin packing of $\Xtild$
+is said to be \emph{structured} (with respect to $\Scal$) iff
+the \config{} of each bin in the packing belongs to $\Scal$.
+
+We will assume that $\Scal$ is \emph{downward-closed}.
+Intuitively, downward-closed means that if we remove some items from a structured packing,
+the packing will remain structured. Formally,
+for two fractional \config{}s $C_1$ and $C_2$, we say that $C_1$ is a sub\config{} of $C_2$
+iff we can remove some items (or slices thereof) from $C_2$ to get $C_1$.
+We say that $\Scal$ is downward-closed iff
+for each $C \in \Scal$, all sub\config{}s of $C$ also lie in $\Scal$.
+This assumption is necessary in our analysis of $\rnaPack$,
+but this is a very mild assumption, since all published examples of structured packing
+that we have come across are downward closed.
+
+The R\&A framework of Bansal and Khan~\cite{bansal2014binpacking},
+only worked with bin packing algorithms that used `container-based'
+as their definition of structured packing.
+Our R\&A framework, on the other hand, gives algorithm designers the freedom to define
+the notion of structured packing (i.e., deciding on $\Scal$) in any way they want,
+as long as it satisfies the downward closure property.
+Typically, the choice of which definition of structured packing to use will depend
+on the ease of proving Conditions C2 and C3
+(which we describe in \cref{sec:rna:round,sec:rna:complex-pack}) for that definition.
+
+Define $\fsopt(\Xtild)$ as the number of bins used in the optimal
+fractional structured packing of $\Xtild \subseteq \Itild$.
+To analyze the AAR of $\rnaPack$, we will bound the number of bins used to pack
+the residual instance $S$ in terms of $\fsopt(\Stild)$,
+and then we will bound $\fsopt(\Stild)$ in terms of $\opt(I)$.
+
+\subsection{Properties of \texorpdfstring{$\round$}{round}}
+\label{sec:rna:round}
+
+\begin{definition}[Density vector]
+The density vector of a \geomvecdim{$d_g$}{$d_v$} item $i$ is the vector
+$v_{\Span} \defeq \left[v_0(i)/{\Span(i)}, {v_1(i)}/{\Span(i)}, \ldots, {v_{d_v}(i)}/{\Span(i)}\right]$.
+Recall that $v_0(i) \defeq \vol(i)$
+and note that $\|v_{\Span}\|_{\infty} = 1$.
+\end{definition}
+
+The subroutine $\round(I)$ returns a set of pairs of the form $(\Itild, D)$.
+\textbf{Condition C1} is defined as the following constraints over each pair $(\Itild, D)$:
+\begin{itemize}
+\item {\bf C1.1.} {\em Small discard:} $D \subseteq I$ and $\Span(D) \le \eps\Span(I)$.
+\item {\bf C1.2.} {\em Bijection from $I-D$ to $\Itild$:}
+    Each item in $\Itild$ is obtained by modifying an item in $I-D$.
+    Let $\pi$ be the bijection from $I-D$ to $\Itild$ that captures this relation.
+\item {\bf C1.3.} {\em Homogeneity properties:}
+    $\round$ partitions items in $\Itild$ into a constant number of classes:
+    $\Ktild_1, \Ktild_2, \ldots, \Ktild_q$. These classes should satisfy the following properties,
+    which we call \emph{homogeneity} properties:
+    \begin{itemize}
+    \item All items in a class have the same density vector.
+    \item For each class $\Ktild_j$, we decide the set $X$ of axes perpendicular to which we can
+        slice items in $\Ktild_j$. If items in a class $\Ktild_j$ are not allowed to be
+        sliced perpendicular to dimension $k$, then all items in that class have
+        the same length along dimension $k$.
+        (For example, if $d_g=2$ and vertical cuts are forbidden, then all items
+        have the same width.)
+    \end{itemize}
+\item {\bf C1.4.} {\em Bounded expansion:}
+    Let $C$ be any \config{} of $I$ and $\Ktild$ be any one of the classes of $\Itild$.
+    Let $\Ctild \defeq \{\pi(i): i \in C - D\}$. Then we need to prove that
+    $\Span(\Ktild \cap \Ctild) \le c_{\max}$ for some constant $c_{\max}$.
+    Let us call this result `bounded expansion lemma'.
+\end{itemize}
+
+Intuitively, the homogeneity properties allow us to replace (a slice of) an item
+in a fractional packing by slices of other items of the same class.
+Thus, while trying to get a fractional packing, we can focus on the item classes,
+which are constant in number, instead of focusing on the $n$ items.
+Intuitively, the bounded expansion lemma ensures that we do not round up items too much.
+
+\textbf{Condition C2} (also called \emph{structural theorem}):
+For some constant $\rho > 0$ and for some $(\Itild, D) \in \round(I)$,
+$\fsopt(\Itild) \le \rho\opt(I) + O(1)$.
+
+Intuitively, the structural theorem says that allowing slicing as per $\round$
+and imposing a structure on the packing
+does not increase the minimum number of bins by too much.
+The AAR of $\rnaPack$ increases with $\rho$, so we want $\rho$ to be small.
+
+\subsection{\texorpdfstring{$\complexPack$}{complex-pack}}
+\label{sec:rna:complex-pack}
+
+\textbf{Condition C3}:
+For some constant $\alpha > 0$ and for any $(\Itild, D) \in \round(I)$
+and any $\Xtild \subseteq \Itild$, $\complexPack(\Xtild)$ packs $\Xtild$ into at most
+$\alpha\fsopt(\Xtild) + O(1)$ bins.
+
+Intuitively, condition C3 says that we can find a packing that is
+close to the optimal fractional structured packing.
+The AAR of $\rnaPack$ increases with $\alpha$, so we want $\alpha$ to be small.
+
+\subsection{\texorpdfstring{$\unround$}{unround}}
+\label{sec:rna:unround}
+
+\textbf{Condition C4}:
+For some constant $\gamma > 0$, if $\complexPack(\Stild)$ outputs a packing
+of $\Stild$ into $m$ bins, then $\unround$ modifies that packing
+to get a packing of $S-D$ into $\gamma m + O(1)$ bins.
+
+Intuitively, condition C4 says that unrounding does not increase the number of bins by too much.
+The AAR of $\rnaPack$ increases with $\gamma$, so a small $\gamma$ is desirable.
+If $\round$ only increases the dimensions of items,
+then unrounding is trivial and $\gamma = 1$.
+
+\subsection{AAR of R\&A}
+\label{sec:rna:aar}
+
+Recall that $\simplePack$ is a $2b(d_v+1)$-approximation algorithm for
+\geomvec{$d_g$}{$d_v$} BP (see \cref{sec:span-pack}), where
+$b \defeq 3$ when $d_g=2$, $b \defeq 9$ when $d_g = 3$,
+and $b \defeq 4^{d_g}+2^{d_g}-1$ when $d_g > 3$.
+
+\begin{restatable}{lemma}{rthmFoptConc}
+\label{thm:fopt-conc}
+%Let $\epsLP \in (0, 1)$ be a constant.
+Let $\Stild$ be as computed by $\rnaPack(I, \beta, \eps)$. Then\\
+$\fsopt(\Stild) \le \fsopt(\Itild)/\beta + 2b\mu\epsLP\opt(I) + O(1/\epsLP^2)$
+with high probability.
+\end{restatable}
+
+\Cref{thm:fopt-conc} (proved in \cref{sec:rna-extra})
+is the key ingredient in the analysis of R\&A.
+Our proof of \cref{thm:fopt-conc} is inspired by the analysis in \cite{khan-thesis}.
+We prove it by analyzing the \emph{fractional structured} \config{} LP of $\Itild$.
+By the homogeneity property (C1.3), the number of constraints in this LP is a constant.
+So by rank lemma (\cref{thm:rank-lemma-corr}) and downward closure
+property (see \cref{thm:fcip-eq-fopt} in Appendix), we can show
+$\fsopt$ to be approximately equal to the optimal solution to the LP.
+We then harness the randomness of $\Stild$ and bounded expansion
+property (C1.4) to use the
+independent bounded difference inequality \cite{mcdiarmid1989method}
+to compare the optimal LP objectives of $\Stild$ and $\Itild$.
+
+\begin{theorem}
+\label{thm:rna-pack}
+The number of bins used by $\rnaPack(I, \beta, \eps)$ is at most
+\[ \left( (\ln\beta)\mu + \frac{\gamma\alpha\rho}{\beta}
+    + 2b(d_v+1+\gamma\alpha\mu)\eps \right) \opt(I) + O(1/\eps^2) \]
+\end{theorem}
+\begin{proof}
+Let $J_{\LP}$ be the set of bins packed in the {\em randomized rounding of
+configuration LP} step
+(see line \ref{alg-line:rna-pack:rround-pack} in \cref{algo:rna-pack}
+in \cref{sec:rna-extra}),
+$J_D$ be the set of bins used to pack the discarded items $D \cap S$,
+$J$ be the set of bins used to pack the rest of the items $S - D$,
+and $\Jtild$ be the set of bins used by $\complexPack$ to pack items in $\Stild$.
+
+Then $|J_{\LP}| \le T = \smallceil{(\ln\beta)\smallnorm{\xhat}_1} \le (\ln\beta)\mu\opt(I) + O(1)$.
+
+Now, we have $|J_D| \le b\ceil{2\Span(D)} \le 2b\eps\Span(I) + b \le 2b(d_v+1)\eps\opt(I) + b$.
+The first inequality follows from the property of $\simplePack$, the second follows from
+C1.1 (Small Discard) and the last follows from \cref{thm:span-lb-opt}.
+
+\begin{align*}
+\text{Finally, } |J| &\le \gamma|\Jtild| + O(1)  \tag{property of $\unround$ (C4)}
+\\ &\le \gamma\alpha\fsopt(\Stild) + O(1)  \tag{property of $\complexPack$ (C3)}
+\\ &\le \gamma\alpha\left( {\fsopt(\Itild)}/{\beta} + 2b\mu\eps\opt(I) \right) + O(1/\eps^2)
+    \tag{by \cref{thm:fopt-conc}}
+\\ &\le \gamma\alpha\left(\rho/\beta + 2b\mu\eps\right)\opt(I) + O(1/\eps^2)
+\end{align*}
+Here, the last inequality follows from the structural theorem (C2),
+which says that $\exists (\Itild, D) \in \round(I)$ such that
+$\fsopt(\Itild) \le \rho\opt(I) + O(1)$.
+Hence, the total number of bins is at most
+\begin{align*}
+& |J_{\LP}| + |J_D| + |J|
+\le \left( (\ln\beta)\mu + \frac{\gamma\alpha\rho}{\beta}
+    + 2b(d_v+1+\gamma\alpha\mu)\eps \right)\opt(I) + O(1/\eps^2)
+\qedhere \end{align*}
+\end{proof}
+
+%When $\beta = 1$, we get $\alpha\gamma\rho$ as the asymptotic approximation factor.
+
+The AAR of $\rnaPack(I)$ is roughly $\mu\ln\beta + \gamma\alpha\rho/\beta$.
+This is minimized for $\beta = \gamma\alpha\rho/\mu$ and the minimum value is
+$\mu\left(1 + \ln\left(\alpha\gamma\rho/\mu\right)\right)$.
+As we require $\beta \ge 1$, we get this AAR only when $\gamma\alpha\rho \ge \mu$.
+If $\mu \ge \gamma\alpha\rho$, the optimal $\beta$ is 1 and the AAR is roughly $\gamma\alpha\rho$.
+
+\subsection{Example: \texorpdfstring{$\simplePack$}{simple-pack}}
+\label{sec:rna:simple-pack}
+
+We will show how to use $\simplePack$ with the R\&A framework.
+Recall that $\simplePack$ is a $2b(d_v+1)$-approximation algorithm for \geomvec{$d_g$}{$d_v$} BP
+(see \cref{sec:span-pack}), where
+$b \defeq 3$ when $d_g=2$, $b \defeq 9$ when $d_g = 3$,
+and $b \defeq 4^{d_g}+2^{d_g}-1$ when $d_g > 3$.
+Using the R\&A framework on $\simplePack$ will
+improve its AAR from $2b(d_v+1)$ to $b(1+\ln(2(d_v+1))) + O(\eps)$.
+To do this, we need to show how to implement $\cLPsolve$, $\round$, $\complexPack$ and $\unround$.
+
+\begin{enumerate}
+\item $\cLPsolve(I)$:
+Using the knapsack algorithm of \cref{sec:simple-gvks} and the LP algorithm of \cite{eku-pst},
+we get a $b(1+\eps)$-approximate solution to $\cLP(I)$. Therefore, $\mu = b(1+\eps)$.
+
+\item $\round(I)$:
+returns just one pair: $(\Itild, \{\})$, where $\Itild \defeq \{\pi(i): i \in I\}$
+and $\pi(i)$ is an item having height ($d_g\Th$ geometric dimension) equal to $\Span(i)$,
+all other geometric dimensions equal to 1, and all vector dimensions equal to $\Span(i)$.
+There is just one class in $\Itild$ and all items are allowed to be sliced
+perpendicular to the height, so the homogeneity properties are satisfied.
+Also, $c_{\max} = d_v+1$ by \cref{thm:span-lb-opt}.
+
+\item \textbf{Structural theorem}:
+We take structured packing to be the set of all possible packings
+(i.e., $\Scal$ is the set of all possible fractional configurations).
+Then $\fsopt(\Itild) = \ceil{\Span(I)} \le (d_v+1)\opt(I)$. Therefore, $\rho = d_v+1$.
+
+\item $\complexPack(\Stild)$:
+We can treat $\Stild$ as the classical bin packing instance $\{\Span(i): i \in S\}$
+and pack it using Next-Fit. Therefore, by \cref{thm:next-fit}, we get
+$|\complexPack(\Stild)| \le \ceil{2\Span(S)} \le 2\ceil{\Span(S)} = 2\fsopt(\Stild)$.
+Therefore, $\alpha = 2$.
+
+\item $\unround(\Jtild)$:
+For each bin in $\Jtild$, we can pack the corresponding unrounded items into $b$ bins
+(using Steinberg's algorithm or \cite{diedrich2008approximation} or $\fhk[4]$).
+Therefore, $\gamma = b$.
+\end{enumerate}
+
+Therefore, we get an AAR of
+$\mu(1+\ln(\gamma\alpha\rho/\mu)) + O(\eps) \approx b(1+\ln(2(d_v+1))) + O(\eps)$.
+
+For $d_g = 2$, we can slightly improve the AAR by using the
+$(2+\eps)$-approximation algorithm of \cite{aco-gvks} for \geomvec{2}{$d_v$} KS.
+This gives us an AAR of $2(1 + \ln(3(d_v+1))) + O(\eps)$.
+This is better than the AAR of $\betterSimplePack$ for $d_v \ge 3$.
+
+The above example is presented only to illustrate an easy use of the R\&A framework.
+It doesn't exploit the full power of the R\&A framework.
+The algorithm $\cbPack$, which we outline in \cref{chap:gv-rbbp},
+uses more sophisticated subroutines $\round$, $\complexPack$ and $\unround$,
+and uses a more intricate definition of fractional structured packing
+to get an even better AAR of $2(1+\ln(\frac{d+4}{2})) + \eps$
+(improves to $2(1+\ln(19/12))+\eps$ $\approx 2.919+\eps$ for $d=1$).

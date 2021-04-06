@@ -1,6 +1,5 @@
 \section{Simple Algorithms}
 \label{sec:simple-algos}
-\label{sec:span-pack}
 
 In this section, we look at simple algorithms for \geomvec{2}{$d$} BP
 and \geomvec{$d_g$}{$d_v$} BP.
@@ -40,6 +39,7 @@ so we can pack them into a unit-sized bin.
 
 \subsection{Algorithms \texorpdfstring{$\simplePack$}{simple-pack}
 and \texorpdfstring{$\betterSimplePack$}{better-simple-pack}}
+\label{sec:span-pack}
 
 Let $I$ be a \geomvec{2}{$d$} BP instance.
 Let $\Ihat \defeq \{\Span(i): i \in I\}$, i.e., $\Ihat$ is a classical bin packing instance.
@@ -111,6 +111,7 @@ Hence, $\simplePack$ is $2b(d_v+1)$-approximate.
 Similarly, the AAR of $\betterSimplePack$ is $b(1 + \ln(d_v + 1) + \eps)$.
 
 \subsection{Simple Algorithm for the Knapsack Problem}
+\label{sec:simple-gvks}
 
 Using similar ideas, we can get an algorithm for the \geomvec{$d_g$}{$d_v$} KS problem.
 Let $I$ be a set of \geomvecdim{$d_g$}{$d_v$} items. Let $p(i)$ be the profit of item $i$.
