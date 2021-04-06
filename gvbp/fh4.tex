@@ -16,17 +16,17 @@ f_4(x) &= \begin{cases}
 q & x \in \left(\left.\frac{1}{q+1}, \frac{1}{q}\right]\right. \textrm{ for } q \in [3]
 \\ 4 & x \le \frac{1}{4} \end{cases}
 \end{align*}
-Note that $x \le f_4(x) \le 2x$.
 \begin{comment}
 \right)\right) % to fix syntax highlighting in Vim
 \end{comment}
 
 Let $i$ be a $d_g$-dimensional cuboid.
 Define $f_4(i)$ as the cuboid of length $f_4(\ell_j(i))$ in the $j\Th$ dimension.
-Therefore, $\vol(i) \le \vol(f_4(i)) \le 2^{d_g}\vol(i)$.
+Note that $x \le f_4(x) \le 2x$.
+Hence, $\vol(i) \le \vol(f_4(i)) \le 2^{d_g}\vol(i)$.
 For a set $I$ of cuboids, $f_4(I) \defeq \{f_4(i): i \in I\}$.
-Define $\type(i) \in [4]^{d_g}$ to be a vector
-whose $j\Th$ component is $\type(\ell_j(i))$.
+Define $\type(i) \in [4]^{d_g}$ as a vector
+where $\type(i)_j \defeq \type(\ell_j(i))$.
 
 Caprara~\cite{caprara2008} (implicitly) defines a recursive algorithm $\hdhkunit^{[t]}(I)$
 (see \cref{sec:hdhk-prelims:hdhkunit} for more details),
@@ -46,8 +46,7 @@ $\hdhkunit^{[q]}(J)$.
 
 \begin{lemma}
 \label{lem:fh4}
-Let $I$ be a non-empty set of $d_g$-dimensional cuboidal items.
-Then $\fhk[4](I)$ packs $I$ into less than $4^{d_g} + 2^{d_g}\vol(I)$ bins.
+For a non-empty $d_g$D GBP instance $I$, $|\fhk[4](I)| < 4^{d_g} + 2^{d_g}\vol(I)$.
 \end{lemma}
 \begin{proof}
 Suppose $\fhk[4](I^{[q]})$ produces $m^{[q]}$ bins. Let $B_j^{[q]}$ be the $j\Th$ of these bins.
@@ -59,5 +58,4 @@ So, the total number of bins used is
 = Q + \vol(f_4(I)) \le 4^{d_g} + 2^{d_g}\vol(I) \qedhere \]
 \end{proof}
 
-Therefore, if a set $I$ of $d_g$-dimensional cuboidal items have total volume at most 1,
-then $|\fhk[4](I)| \le 4^{d_g} + 2^{d_g} - 1$.
+Therefore, $\vol(I) \le 1 \implies |\fhk[4](I)| \le 4^{d_g} + 2^{d_g} - 1$.
