@@ -1925,7 +1925,7 @@ We can use $\partWide$ as a subroutine in $\iterFineParts$.
 Let $\Pcal \defeq \{W_{p,q}^w: \forall q\} \cup \{W_{p,r}^h: \forall r\}$ be
 a balanced fine partitioning of a slicing of $W_p$.
 We want $\partWide$ to find a fine partitioning
-$\Pcalhat \defeq \{\widehat{W}_{p,q}^w: \forall q\} \cup \{\widehat{W}_{p,r}^h: \forall r\}$
+$\Pcalhat \defeq \{\What_{p,q}^w: \forall q\} \cup \{\What_{p,r}^h: \forall r\}$
 of a large subset of $W_p$ such that
 after applying \cref{trn:round-geom} to $\Pcal$ and $\Pcalhat$,
 every fine partition in $\Pcalhat$ is a predecessor of
@@ -1945,55 +1945,341 @@ we will guess the value of $w(W^h_{p,r})$ and
 we will guess very close lower bounds on $h(W^w_{p,q})$ and $h(W^h_{p,r})$.
 We will then try to pack most of the items from $W_p$ into these boxes.
 
-Let $\widehat{W}^w_{p,q}$ be the items packed into $s^w_q$ and
-let $\widehat{W}^h_{p,r}$ be the items packed into $s^h_r$.
-Then $\Pcalhat \defeq \{\widehat{W}_{p,q}^w: \forall q\} \cup \{\widehat{W}_{p,r}^h: \forall r\}$
+Let $\What^w_{p,q}$ be the items packed into $s^w_q$ and
+let $\What^h_{p,r}$ be the items packed into $s^h_r$.
+Then $\Pcalhat \defeq \{\What_{p,q}^w: \forall q\} \cup \{\What_{p,r}^h: \forall r\}$
 is a fine partitioning of a large subset of $W_p$.
 After applying \cref{trn:round-geom} to $\Pcal$ and $\Pcalhat$,
-each item in $W^w_{p,q}$ and $\widehat{W}^w_{p,q}$ has width $q\epsLarge^2/4$.
-Since $h(\widehat{W}^w_{p,q}) \le h(s^w_q) \le h(W^w_{p,q})$,
-we get $\widehat{W}^w_{p,q} \preceq W^w_{p,q}$ after \cref{trn:round-geom}.
-We can similarly prove that $\widehat{W}^h_{p,r} \preceq W^h_{p,r}$.
+each item in $W^w_{p,q}$ and $\What^w_{p,q}$ has width $q\epsLarge^2/4$.
+Since $h(\What^w_{p,q}) \le h(s^w_q) \le h(W^w_{p,q})$,
+we get $\What^w_{p,q} \preceq W^w_{p,q}$ after \cref{trn:round-geom}.
+We can similarly prove that $\What^h_{p,r} \preceq W^h_{p,r}$.
 Therefore, $\Pcalhat$ is a suitable fine partitioning.
 
 The details on how to approximately guess the size of boxes
 and how to pack a large subset of items into boxes can be deduced from
-section 3.3.1 of \cite{pradel-thesis}.
-% TODO: add back details
+Section 3.3.1 of Pr\"adel's thesis~\cite{pradel-thesis}.
+However, for the sake of completeness, we give the details
+in \cref{sec:gv-rbbp:greedy-stack,sec:gv-rbbp:part-wide-details}.
 
 Formally, $\partWide(W_p)$ outputs a set of pairs of the form $(D, \Pcalhat)$,
 where items in $D$ are called \emph{discarded} items and $\Pcalhat$ is supposed to be
 a fine partitioning of $W_p - D$.
+In \cref{sec:gv-rbbp:part-wide-details}, we prove the following important
+results about $\partWide$.
 
-\begin{claim}
+\begin{restatable}{lemma}{rthmPartWideDiscard}
 \label{lem:part-wide-discard}
 For every output $(D, \Pcalhat)$ of $\partWide(W_p)$,
 \[ h(D) \le (3\epsSmall)\left( \frac{d+1}{\eps\epsLarge} + \frac{4}{\epsLarge^2}
     - \frac{4}{\epsLarge} \right) \]
-\end{claim}
+\end{restatable}
 
-\begin{claim}
+\begin{restatable}{lemma}{rthmPartWide}
 \label{lem:part-wide}
 Let $\Pcal \defeq \{W_{p,q}^w: \forall q\} \cup \{W_{p,r}^h: \forall r\}$ be
 a balanced fine partitioning of a slicing of $W_p$.
 Then for some output $(D, \Pcalhat)$ of $\partWide(W_p)$,
 $\Pcalhat$ is a fine partitioning of $W_p - D$
-and after applying \cref{trn:round-geom} to $\Pcal$ and $\Pcalhat$,
-\[ (\forall q, \widehat{W}^w_{p,q} \preceq W^w_{p,q})
-\textrm{ and } (\forall r, \widehat{W}^h_{p,r} \preceq W^h_{p,r}) \]
-\end{claim}
+and after applying \cref{trn:round-geom} to $\Pcal$ and $\Pcalhat$, we get
+$(\forall q, \What^w_{p,q} \preceq W^w_{p,q})
+\textrm{ and } (\forall r, \What^h_{p,r} \preceq W^h_{p,r})$.
+\end{restatable}
 
-\begin{claim}
+\begin{restatable}{claim}{rthmPartWideTime}
 \label{claim:part-wide-time}
-Let there be $n$ items in $W_p$. Let
-$n_q \defeq q_{\max} - q_{\min} + 1 = 4/\epsLarge^2 - 4/\epsLarge$
+Let there be $n$ items in $W_p$. Let $n_q \defeq 4/\epsLarge^2 - 4/\epsLarge$.
 Then $\partWide(W_p)$ outputs at most $\deltaLG n^{n_q + 1 + 1/\deltaLG}$
 distinct values. The running time per value is $O(n\log n)$.
-\end{claim}
+\end{restatable}
 
 $\partWide$ can analogously be used for sub-partitioning coarse partitions of tall items.
 
 When item rotations are allowed, $\partWide(W_p)$ gives us $H^w_{p,r}$ instead of $W^h_{p,r}$.
+
+\subsubsection{Rectangle Stacking Problem}
+\label{sec:gv-rbbp:greedy-stack}
+
+We will describe a problem, called the rectangle stacking problem,
+and look at an efficient algorithm for this problem, called $\greedyStack$.
+We will later see how to use $\greedyStack$ to implement $\partWide$.
+
+In the rectangle stacking problem, we are given a set $S$ of rectangular boxes
+and a set $I$ of rectangles.
+For any rectangle or box $i$, let $w(i)$ and $h(i)$ be the width and height of $i$, respectively.
+For any set $T$ of rectangles, $w(T)$ is defined as $\max_{i \in T} w(i)$,
+and $h(T)$ is defined as $\sum_{i \in T} h(i)$.
+
+Our aim is to pack a large subset of rectangles from $I$ into the boxes $S$.
+In each box $s$, the rectangles should be stacked, i.e., placed one-over-the-other.
+This means that if $T$ is the set of rectangles assigned to box $s$,
+then $h(T) \le h(s)$ and $w(T) \le w(s)$.
+
+We will analyze a simple algorithm for this problem, called $\greedyStack$.
+% TODO: give an intuitive description
+$\greedyStack$ first sorts the rectangles and boxes in decreasing order of height.
+Starting from the first box, it repeatedly packs rectangles into the box
+till the box overflows, i.e., the rectangles packed inside the box
+have height more than the height of the box.
+It then discards the overflowing rectangle and resumes from the next box.
+If $\greedyStack$ ever comes across a rectangle whose width is more than
+the width of the current box, it returns \texttt{fail}.
+If $\greedyStack$ uses up all boxes but some rectangles haven't yet been
+packed or discarded, it returns \texttt{fail}.
+Otherwise it returns the tuple $(D, T_1, T_2, \ldots, T_{|S|})$,
+where $D$ is the set of discarded rectangles
+and $T_j$ is the set of rectangles packed into box $j$.
+See \cref{algo:greedy-stack} for a more precise description of $\greedyStack$.
+See \cref{fig:greedy-stack-output} for an example output of $\greedyStack$.
+
+\begin{algorithm}[htb]
+\caption{$\greedyStack(I, S)$:
+Horizontally stack a large subset of rectangles from $I$ into rectangular boxes $S$.
+Returns a set $D \subseteq I$ of discarded rectangles and a partitioning
+$T_1, T_2, \ldots, T_{|S|}$ of $I-D$ such that the rectangles in $T_j$
+can be stacked into the $j\Th$ box.}
+\label{algo:greedy-stack}
+\begin{algorithmic}[1]
+\State Sort the rectangles $I$ in non-increasing order of width.
+\State Sort the boxes $S$ in non-increasing order of width. Let $s_k$ be the $k\Th$ box.
+\State $j = 1$
+\State $D = \{\}$ \Comment{set of discarded rectangles}
+\State $T_k = \{\}$ for $k \in [|S|]$. \Comment{set of rectangles in $s_k$}
+\For{$i \in I$}
+    \If{$j > |S|$}
+        \State \label{alg-line:greedy-stack:fail-1}\Return \texttt{fail}
+    \ElsIf{$w(i) > w(s_j)$}
+        \State \label{alg-line:greedy-stack:fail-2} \Return \texttt{fail}
+    \ElsIf{$h(i) > h(s_j) - h(T_j)$}
+        \State Add rectangle $i$ to set $D$.
+        \State $j \texttt{ += } 1$
+    \Else
+        \State \label{alg-line:greedy-stack:stack} Add rectangle $i$ to $T_j$.
+            \Comment{Stack rectangle $i$ into box $s_j$.}
+    \EndIf
+\EndFor
+\State \Return $(D, T_1, T_2, \ldots, T_{|S|})$.
+\end{algorithmic}
+\end{algorithm}
+
+\begin{figure}[htb]
+\centering
+\input{img/greedy-stack-output.tikz}
+\caption{Example output of $\greedyStack$ for 9 rectangles and 3 boxes.
+The dark rectangles are discarded.}
+\label{fig:greedy-stack-output}
+\end{figure}
+
+\begin{lemma}
+\label{lem:greedy-stack-basic}
+When $\greedyStack$ doesn't return \texttt{fail}, it stacks all rectangles in $I-D$
+into boxes $S$ and $|D| \le |S|$.
+\end{lemma}
+\begin{proof}
+We discard a rectangle only when it overflows a box,
+and when a box overflows, we switch to a new box.
+Hence, there can be at most $|S|$ discarded rectangles.
+(In \cref{algo:greedy-stack}, we add a rectangle to $D$ whenever
+we increment $j$, and we only do that at most $|S|$ times. Therefore, $|D| \le |S|$.)
+
+If $\greedyStack$ didn't fail, then each rectangle either got packed or discarded.
+Therefore, all rectangles in $I-D$ are packed into boxes.
+(The conditional statements in \cref{algo:greedy-stack} ensure that when $\greedyStack$ tries to
+stack a rectangle in line \ref{alg-line:greedy-stack:stack} of \cref{algo:greedy-stack},
+it can actually do so. Since $\greedyStack$ doesn't return \texttt{fail},
+every rectangle is either stacked into a box or is added to $D$.)
+\end{proof}
+
+\begin{lemma}
+\label{lem:greedy-stack-nofail}
+If a set $I$ of rectangles can be horizontally sliced and stacked into boxes $S$,
+then $\greedyStack(I, S)$ does not return \texttt{fail}.
+\end{lemma}
+\begin{proof}
+We will prove this by contradiction.
+Let $T \defeq \bigcup_k T_k$.
+Let $d_k$ be the $k\Th$ discarded rectangle
+(i.e., $d_k$ is the rectangle that was added to $D$
+when the value of $j$ was equal to $k$ in \cref{algo:greedy-stack}).
+Then $h(d_k) + h(T_k) > h(s_k)$.
+
+Suppose $\greedyStack(I, S)$ fails because some rectangles were left in the end
+(i.e., at line \ref{alg-line:greedy-stack:fail-1} in \cref{algo:greedy-stack}). Then
+\[ h(T) + h(D) = \sum_{k=1}^{|S|} (h(T_k) + h(d_k))
+> \sum_{k=1}^{|S|} h(s_k) \ge h(I) \]
+which is a contradiction.
+
+Suppose $\greedyStack(I, S)$ fails because some rectangle $i$ was wider than box $j$,
+(i.e., at line \ref{alg-line:greedy-stack:fail-2}
+in \cref{algo:greedy-stack} because $w(i) > w(s_j)$).
+Then there cannot be any rectangle in the $j\Th$ box, because rectangles are sorted
+in non-increasing order of width and if a rectangle can fit in the $j\Th$ box,
+all subsequent rectangles can fit too.
+
+Let $X \defeq \{i' \in I: w(i') > w(i)\} \cup \{i\}$.
+In a fractional stacking of $I$ into $S$, the rectangles in $X$ are placed in the first $j-1$ bins.
+This is because $i' \in X \implies w(i') \ge w(i) > w(s_j)$.
+Therefore, $h(X) \le \sum_{k=1}^{j-1} h(s_k)$. On the other hand,
+\[ h(X-\{i\}) = h(T) + h(D) = \sum_{k=1}^{j-1} (h(T_k) + h(d_k)) > \sum_{k=1}^{j-1} h(s_k) \]
+This is a contradiction. Therefore, $\greedyStack(I, S)$ cannot fail.
+\end{proof}
+
+\begin{claim}
+The running time of $\greedyStack(I, S)$ is $O(|I|\log|I| + |S|\log|S|)$.
+\end{claim}
+
+\subsubsection{Partitioning Wide Items}
+\label{sec:gv-rbbp:part-wide-details}
+
+Let $W_p$ be a coarse partition of wide items in $I$.
+Let $\Pcal \defeq \{W_{p,q}^w: \forall q\} \cup \{W_{p,r}^h: \forall r\}$ be
+a balanced fine partitioning of a slicing of $W_p$.
+Our aim is to find a fine partitioning
+$\Pcalhat \defeq \{\What_{p,q}^w: \forall q\} \cup \{\What_{p,r}^h: \forall r\}$
+of a large subset of $W_p$ such that
+after applying \cref{trn:round-geom} to $\Pcal$ and $\Pcalhat$,
+every fine partition in $\Pcalhat$ is a predecessor of
+the corresponding fine partition in $\Pcal$.
+
+For any $J \subseteq W_p$, define
+$h(J) \defeq \sum_{i \in J} h(i)$ and $w(J) \defeq \max_{i \in J} w(i)$.
+We will create a rectangular box for each fine partition
+and then try to pack a large subset of $W_p$ into these boxes.
+Let $Q \defeq \mathbb{Z} \cap \left[\frac{4}{\epsLarge}+1, \frac{4}{\epsLarge^2}\right]$.
+For each $q \in Q$, let $s^w_q$ be a box
+of width $q\epsLarge^2/4$ and height $h(W^w_{p,q})$.
+For each $r \in [1/\deltaLG]$, let $s^h_r$ be a box
+of width $w(W^h_{p,r})$ and height $h(W^h_{p,r})$.
+Since $W_p$ can be sliced and packed into these boxes,
+we can use $\greedyStack$ to pack $|W_p| - O(1)$ items into these boxes
+(see \cref{lem:greedy-stack-basic,lem:greedy-stack-nofail}).
+Let $\What^w_{p,q}$ be the items packed into $s^w_q$ and
+let $\What^h_{p,r}$ be the items packed into $s^h_r$.
+Then $\Pcalhat \defeq \{\What_{p,q}^w: \forall q\} \cup \{\What_{p,r}^h: \forall r\}$
+is a fine partitioning of a large subset of $W_p$.
+
+After applying \cref{trn:round-geom} to $\Pcal$ and $\Pcalhat$,
+each item in $W^w_{p,q}$ and $\What^w_{p,q}$ has width $q\epsLarge^2/4$.
+Since $h(\What^w_{p,q}) \le h(s^w_q) = h(W^w_{p,q})$,
+we get $\What^w_{p,q} \preceq W^w_{p,q}$ after \cref{trn:round-geom}.
+We can similarly prove that $\What^h_{p,r} \preceq W^h_{p,r}$.
+Therefore, $\Pcalhat$ is a suitable fine partitioning.
+
+Unfortunately, the above algorithm cannot be used, because we don't know the values of
+$h(W^w_{p,q})$, $h(W^h_{p,r})$ and $w(W^h_{p,r})$, so the boxes cannot be created.
+We can work around this issue by guessing these values.
+We will guess $w(W^h_{p,r})$ exactly and
+guess $h(W^w_{p,q})$ and $h(W^h_{p,q})$ approximately.
+Guessing a value $x$ approximately means guessing the smallest multiple of $\epsSmall$
+that is greater than or equal to $x$.
+Since our guess $h(s^w_q)$ could be up to $\epsSmall$ more than $h(W^w_{p,q})$
+and our guess $h(s^h_r)$ could be up to $\epsSmall$ more than $h(W^h_{p,r})$,
+we will also discard items that intersect the top $\epsSmall$-sized section of each box.
+For each guess, we will get a fine partitioning $\Pcalhat$.
+One of our guesses will be correct, i.e., for some value of $\Pcalhat$, we will get
+$(\forall q, \What^w_{p,q} \preceq W^w_{p,q})
+\textrm{ and } (\forall r, \What^h_{p,r} \preceq W^h_{p,r})$.
+We call this algorithm $\partWide$, which is described more precisely as \cref{algo:part-wide}.
+
+\begin{algorithm}[!htb]
+\caption{$\partWide(W_p)$:
+Returns a set of pairs of the form $(D, \Pcalhat)$,
+where $\Pcalhat$ is a fine-partitioning of $W_p - D$.}
+\label{algo:part-wide}
+\begin{algorithmic}[1]
+\State $\texttt{outputs} = \{\}$
+\State $q_{\min} = 4/\epsLarge+1$, $q_{\max} = 4/\epsLarge^2$.
+\State $k = 1/\deltaLG$
+\For{$[w_1, w_2, \ldots, w_k] \in \{w(i): i \in W_p\}^k$}
+    \For{${\displaystyle [i_0, i_{q_{\min}}, i_{q_{\min}+1}, \ldots, i_{q_{\max}}] \in
+            \left[\ceil{\frac{h(W_p)}{k\epsSmall}}\right] \times
+            \left[\ceil{\frac{h(W_p)}{\epsSmall}}\right]^{q_{\max} - q_{\min} + 1}}$}
+        \LineComment{Create boxes and pack items in them.}
+        \State For $q \in [q_{\min}, q_{\max}]$, let $s_q^w$ be a box of width
+            $q\epsLarge^2/4$ and height $\epsSmall i_q$.
+        \State Let $S^w = \{s_q^w: q \in [q_{\min}, q_{\max}]\}$.
+        \State For $r \in [k]$, let $s_r^h$ be a box of width $w_r$ and height $\epsSmall i_0$.
+        \State Let $S^h = \{s_r^h: r \in [k]\}$.
+        \State $(D_1, T_{q_{\min}}^w, \ldots, T_{q_{\max}}^w, T_1^h, \ldots, T_k^h)
+            = \greedyStackHyp(W_p, S^w \cup S^h)$
+        \If{$\greedyStack$ failed}
+            \State \texttt{continue}
+        \EndIf
+        \LineComment{Clear a strip of height $\epsSmall$ in each box.}
+        \State $D_2 = \{\}$
+        \For{$q \in [q_{\min}, q_{\max}]$}
+            \While{$h(T_q^w) > h(s_q^w) - \epsSmall$ and $|T_q^w| > 0$}
+                \State Move an item from $T_q^w$ to $D_2$.
+            \EndWhile
+        \EndFor
+        \For{$r \in [k]$}
+            \While{$h(T_r^h) > h(s_r^h) - \epsSmall$ and $|T_r^h| > 0$}
+                \State Move an item from $T_r^h$ to $D_2$.
+            \EndWhile
+        \EndFor
+        \State For all $q \in [q_{\min}, q_{\max}]$,
+            use $T_q^w$ as the fine partition $\What^w_{p,q}$.
+        \State For all $r \in [k]$, use $T_r^h$ as the fine partition $\What^h_{p,r}$
+            (or $\widehat{H}^w_{p,r}$ if rotations are allowed).
+        \State $\outputAdd(D_1 \cup D_2, \{\What^w_{p,q}: \forall q\}
+            \cup \{\What^h_{p,r}: \forall r\}))$
+    \EndFor
+\EndFor
+\State \Return \texttt{outputs}
+\end{algorithmic}
+\end{algorithm}
+
+\rthmPartWideDiscard*
+\begin{proof}
+Let $D = D_1 \cup D_2$, where $D_1$ and $D_2$ are as defined in \cref{algo:part-wide}.
+\[ |S^w \cup S^h| \le k + (q_{\max} - q_{\min} + 1)
+= \frac{d+1}{\eps\epsLarge} + \frac{4}{\epsLarge^2} - \frac{4}{\epsLarge} \]
+\[ h(D_1) \le \epsSmall|D_1| \le \epsSmall|S^w \cup S^h|  \tag{by \cref{lem:greedy-stack-basic}} \]
+\[ h(D_2) \le (2\epsSmall)|S^w \cup S^h| \]
+Therefore, $h(D_1 \cup D_2) \le (3\epsSmall)|S^w \cup S^h|$.
+\end{proof}
+
+\rthmPartWide*
+\begin{proof}
+All items, except the ones in $D$, are placed into some fine partition.
+Therefore, $\Pcalhat$ is a fine partitioning of $W_p - D$.
+
+The first loop guesses $w(W^h_{p,r})$ for each $r$.
+Some iteration of the loop will guess correctly.
+The second loop guesses an integer $i_0$ such that
+$h(W^h_{p,*}) \in [k\epsSmall(i_0-1), k\epsSmall i_0]$
+and for each $q \in [q_{\min}, q_{\max}]$ guesses $i_q$ such that
+$h(W^w_{p,q}) \in [(i_q-1)\epsSmall, i_q\epsSmall]$.
+Some iteration of the loop will guess correctly.
+
+Since $\Pcal$ is balanced, $h(W^h_{p,r}) = \deltaLG h(W^h_{p,*})$.
+Therefore, for the correct guess of $i_0$,
+$h(W^h_{p,r}) \in [\epsSmall(i_0-1), \epsSmall i_0]$.
+
+All items in $W^w_{p,q}$ can fit in $s^w_q$ because
+\[ h(s^w_q) = i_q\epsSmall \ge h(W^w_{p,q}) \textrm{ and }
+w(s^w_q) = q\frac{\epsLarge^2}{4} \ge \max_{i \in W^w_{p,q}} w(i) \]
+All items in $W^h_{p,r}$ can fit in $s^h_r$ because
+\[ h(s^h_r) = i_0\epsSmall \ge h(W^h_{p,q}) \textrm{ and }
+w(s^h_r) = w_r = \max_{i \in W^h_{p,r}} w(i) \]
+Therefore, a slicing of $W_p$ can fit in the boxes $S^w \cup S^h$.
+So, for the correct guesses, \cref{lem:greedy-stack-nofail} implies that
+$\greedyStack(W_p, S^w \cup S^h)$ doesn't fail,
+
+Since we cleared a strip of height $\epsSmall$ from each box,
+$\forall q, h(T^w_q) \le (i_q-1)\epsSmall \le h(W^w_{p,q})$.
+Wide items can be sliced horizontally, all items in $W_p$ have the same weight class
+and all items in $T^w_q$ and $W^w_{p,q}$
+will have width $q\epsLarge^2/4$ after \cref{trn:round-geom}.
+Therefore, after the above transformations, $\What^w_{p,q} \preceq W^w_{p,q}$.
+
+Since we cleared a strip of height $\epsSmall$ from each box,
+$\forall r, h(T^h_r) \le (i_0-1)\epsSmall \le h(W^h_{p,r})$. All items in $T^h_r$
+and $W^h_{p,r}$ will have width $w_r$ after \cref{trn:round-geom}.
+Therefore, after the above transformations, $\What^h_{p,r} \preceq W^h_{p,r}$.
+\end{proof}
+
+\rthmPartWideTime*
 
 \subsection{Rounding Algorithm}
 

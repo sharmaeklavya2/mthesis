@@ -1,0 +1,26 @@
+\begin{tikzpicture}[
+discard/.style={fill={black!60}},
+pack/.style={fill={black!10}},
+box/.style={thick},
+box-top/.style={thick,dashed}]
+
+\coordinate (A) at (0,0);
+\draw[box] (A) rectangle +(4,1.5);
+\draw[pack] ($(A) + (0,0)$) rectangle +(3.8,0.6);
+\draw[pack] ($(A) + (0,0.6)$) rectangle +(3.4,0.5);
+\draw[discard] ($(A) + (0,1.1)$) rectangle +(3.2,0.6);
+\draw[box-top] ($(A) + (0,1.5)$) -- +(4,0);
+
+\coordinate (B) at (0,2);
+\draw[box] (B) rectangle +(3,1);
+\draw[pack] ($(B) + (0,0)$) rectangle +(2.7,0.3);
+\draw[pack] ($(B) + (0,0.3)$) rectangle +(2.4,0.6);
+\draw[discard] ($(B) + (0,0.9)$) rectangle +(2,0.3);
+\draw[box-top] ($(B) + (0,1)$) -- +(3,0);
+
+\coordinate (C) at (0,3.5);
+\draw[box] (C) rectangle +(2.5,1.5);
+\draw[pack] ($(C) + (0,0)$) rectangle +(1.6,0.4);
+\draw[pack] ($(C) + (0,0.4)$) rectangle +(1,0.3);
+\draw[pack] ($(C) + (0,0.7)$) rectangle +(0.5,0.2);
+\end{tikzpicture}
