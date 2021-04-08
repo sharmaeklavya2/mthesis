@@ -1997,9 +1997,18 @@ When item rotations are allowed, $\partWide(W_p)$ gives us $H^w_{p,r}$ instead o
 
 \subsection{Rounding Algorithm}
 
-Based on $\partBig$ and $\partWide$, we define an algorithm $\iterFineParts$ (\cref{algo:ifp})
-that returns a set of fine partitionings.
-We then use $\iterFineParts$ to design the algorithm $\round$ (\cref{algo:round}).
+We define an algorithm, called $\iterFineParts$, that takes as input a set $I$ of
+weight-rounded items and returns a set of pairs of the form $(D, \Pcalhat)$,
+where $D \subseteq I$ is the set of items to discard
+and $\Pcalhat$ is a fine partitioning of $I-D$.
+
+$\iterFineParts$ works by first computing a coarse partitioning of the items.
+Then for each coarse partition $B_p$ of big items, it calls $\partBig(B_p)$,
+for each coarse partition $W_p$ of wide items, it calls $\partWide(W_p)$,
+and for each coarse partition $H_p$ of tall items, it calls $\partWide(H_p)$.
+It then iterates over all combinations of the outputs of $\partBig$ and $\partWide$
+and outputs a pair $(D, \Pcalhat)$ for each combination.
+See \cref{algo:ifp} for a more precise description.
 
 \begin{algorithm}[htb]
 \caption{$\iterFineParts(I)$: $I$ is a set of weight-rounded items.
@@ -2028,6 +2037,14 @@ and $\Pcalhat$ is a \finePartHyp{} of $I-D$.}
 \State \Return \texttt{outputs}
 \end{algorithmic}
 \end{algorithm}
+
+We next use $\iterFineParts$ to design the algorithm $\round$ (\cref{algo:round}).
+$\round$ takes a set $I$ of items. It removes medium items from $I$ using $\remMedHyp$.
+It computes a weight-rounding (\cref{trn:wround}) of $I - \Imed$ to get $\Ihat$.
+Then for each output $(D, \Pcalhat)$ of $\iterFineParts(\Ihat)$,
+it computes $\Itild$ by applying \cref{trn:round-geom} to $\Ihat - D$
+with respect to $\Pcalhat$ and outputs $(\Itild, D \cup \Imed)$.
+See \cref{algo:round} for a more precise description.
 
 \begin{algorithm}[htb]
 \caption{$\round(I, \eps)$: Returns a set of pairs of the form $(\widetilde{I}, D')$,
