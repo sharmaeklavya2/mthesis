@@ -1700,7 +1700,7 @@ assignment of items to targets.
 \end{lemma}
 \begin{proof}
 The cut $(\{s\}, V'-\{s\})$ has value $n$.
-By the max-flow-min-cut theorem, the max-flow is at most $n$.
+By the max-flow-min-cut theorem~\cite[Theorem 26.6]{clrs:max-flow}, the max-flow is at most $n$.
 
 If there is a feasible assignment $\pi: I \mapsto J$, then we can set the flow
 $f: E' \mapsto \mathbb{R}_{\ge 0}$ as $f(s, u_i) = 1$,
@@ -1708,7 +1708,8 @@ $f(u_i, v_{\pi(i)}) = 1$, $f(v_j, t) = b_j$ and flow 0 for the remaining edges.
 This is a feasible flow of value $n$, so it must be a max-flow.
 
 Suppose there is a max-flow of value $n$. Since all capacities are integers,
-by the max-flow integrality theorem, there is an integral max-flow $f$ of value $n$.
+by the max-flow integrality theorem~\cite[Theorem 26.10]{clrs:max-flow},
+there is an integral max-flow $f$ of value $n$.
 Then by \cref{lem:cpart-flow-to-sol}, there exists a feasible assignment.
 \end{proof}
 
@@ -1724,7 +1725,8 @@ for the constrained partitioning problem, which we call $\constrPartSolve$
 \State $E' = \{(s, u_i, 1): \forall i \in I\}
     \cup \{(u_i, v_j, 1): \forall (i, j) \in E\}
     \cup \{(v_j, t, b_j): \forall j \in J\}$
-\State Get an integral max-flow $f$ for $G' = (V', E')$ using the Ford-Fulkerson algorithm.
+\State Get an integral max-flow $f$ for $G' = (V', E')$ using the
+    Ford-Fulkerson algorithm~\cite{clrs:max-flow}.
 \If{$f$ has flow-value $|I|$}
     \State Let $\pi(i)$ be the unique value of $j$ such that $f(u_i, v_j) = 1$.
     \State \Return $\pi$
