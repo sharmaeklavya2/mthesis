@@ -27,6 +27,18 @@ Let $I$ be a set of rectangles, where $a(I) \le 1$.
 Then there is a $O(n\log^2 n/\log\log n)$-time algorithm to pack $I$ into
 3 square bins of side length 1.
 \end{lemma}
+
+\begin{figure}[htb]
+\centering
+\input{img/steinberg.tikz}
+\caption[Packing items of area at most 1 into three bins using Steinberg's algorithm.]%
+{Packing items of area at most 1 into three square bins:
+First use Steinberg's algorithm to pack the items into a bin of width 2 and height 1.
+Then make a vertical cut in the middle of the bin
+and use that to split the items into three bins.}
+\label{fig:steinberg}
+\end{figure}
+
 \begin{proof}
 Pack $I$ into a bin of width 2 and height 1 using Steinberg's algorithm
 (see \cref{thm:steinberg}).
@@ -35,6 +47,7 @@ The items which lie completely inside the left half can be packed into a unit-si
 The items which lie completely inside the right half can be packed into a unit-sized bin.
 The items which lie on the cutting line are stacked one-over-the-other,
 so we can pack them into a unit-sized bin.
+See \cref{fig:steinberg} for an example.
 \end{proof}
 
 \subsection{Algorithms \texorpdfstring{$\simplePack$}{simple-pack}
