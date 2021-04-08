@@ -26,31 +26,31 @@ In the classical bin packing problem, we are given a set $I$ of $n$ items.
 Each item $i \in I$ has a size $s(i) \in (0, 1]$ associated with it.
 Our goal is to partition $I$ into the minimum number of bins,
 such that the sum of sizes of items in each bin is at most 1.
-See \cref{fig:1bp-example} for an example.
+See \cref{fig:1bp} for an example.
 
 \begin{figure}[!ht]
 \centering
 \begin{subfigure}{0.9\textwidth}
     \centering
-    \input{img/1bp-example-a.tikz}
+    \input{img/1bp-a.tikz}
     \caption{A set of six items: two items have size 0.4 and four items have size 0.3.}%
-\label{fig:1bp-example:a}
+\label{fig:1bp:a}
 \end{subfigure}
 \par\bigskip\bigskip
 \begin{subfigure}{0.45\textwidth}
     \centering
-    \input{img/1bp-example-b.tikz}
+    \input{img/1bp-b.tikz}
     \caption{A packing of the items into 3 bins.}
 \end{subfigure}
 \begin{subfigure}{0.45\textwidth}
     \centering
-    \input{img/1bp-example-c.tikz}
+    \input{img/1bp-c.tikz}
     \caption{A packing of the items into 2 bins.}
 \end{subfigure}
 \caption[An example of classical bin packing.]{An example of classical bin packing.
 We want to minimize the number of bins, so the packing into 2 bins
 is better than the packing into 3 bins.}
-\label{fig:1bp-example}
+\label{fig:1bp}
 \end{figure}
 
 Classical bin packing is known to be NP-hard.
@@ -117,15 +117,15 @@ we are given a set $I$ of $n$ rectangular items and an infinite supply
 of identical rectangular bins.
 Our task is to pack the rectangles into the minimum number of bins such that
 in each bin, the items don't overlap.
-See \cref{fig:2gbp-example} for an example.
+See \cref{fig:2gbp} for an example.
 For each 2D item $i$, let $w(i)$ denote the width and $h(i)$ denote the height.
 Let $a(i) \defeq w(i)h(i)$ be the area of item $i$.
 
 \begin{figure}[htb]
 \centering
-\input{img/2gbp-example-packed.tikz}
+\input{img/2gbp.tikz}
 \caption{Packing 13 rectangles into 3 bins (without rotation).}
-\label{fig:2gbp-example}
+\label{fig:2gbp}
 \end{figure}
 
 There are two commonly-studied versions of 2D GBP.
@@ -210,20 +210,20 @@ A packing of rectangles into a bin is said to be \emph{guillotine-separable}
 or \emph{guillotinable} iff it is $k$-stage guillotinable for some $k$.
 \end{definition}
 
-See \cref{fig:guill-example} for an example of 3-stage guillotinable packing
-and \cref{fig:non-guill-examples} for examples of non-guillotinable packing.
+See \cref{fig:guill} for an example of 3-stage guillotinable packing
+and \cref{fig:non-guill} for examples of non-guillotinable packing.
 
 \begin{figure}[htb]
 \centering
-\input{img/non-guill-examples.tikz}
+\input{img/non-guill.tikz}
 \caption{Two bins that are not guillotinable.}
-\label{fig:non-guill-examples}
+\label{fig:non-guill}
 \end{figure}
 \begin{figure}[htb]
 \centering
-\input{img/guill-example.tikz}
+\input{img/guill.tikz}
 \caption{Separating items using 3 stages of guillotine cuts.}
-\label{fig:guill-example}
+\label{fig:guill}
 \end{figure}
 
 2D GuillBP is a variant of 2D GBP where we are given a set $I$ of rectangles and
@@ -255,18 +255,18 @@ $\sum_{v \in B} v_j \le 1$ for each $j \in \{1, 2, \ldots, d\}$.
 \centering
 \begin{subfigure}{0.45\textwidth}
     \centering
-    \input{img/2vbp-example-a.tikz}
+    \input{img/2vbp-a.tikz}
     \caption{Five 2D vectors.}
 \end{subfigure}
 \begin{subfigure}{0.54\textwidth}
     \centering
-    \input{img/2vbp-example-b.tikz}
+    \input{img/2vbp-b.tikz}
     \caption{Packing the vectors into two bins.
     A set of 2D vectors lies in a bin iff their sum
     lies inside a square of side length 1.}
 \end{subfigure}
 \caption{Packing five 2D vectors into two bins.}
-\label{fig:2vbp-example}
+\label{fig:2vbp}
 \end{figure}
 
 $d$D VBP has applications in resource allocation problems.
@@ -498,15 +498,15 @@ This perspective will help us design algorithms for the rotational case.
 In $d$MCBP, we are given a set $\Ical = \{I_1, I_2, \ldots, I_n\}$,
 where for each $j$, $I_j$ is a set of items, henceforth called an {\em itemset}.
 We have to pick exactly one item from each itemset and pack those items
-into the minimum number of bins. See \cref{fig:2mcbp-example} for an example.
+into the minimum number of bins. See \cref{fig:2mcbp} for an example.
 
 \begin{figure}[htb]
 \centering
-\input{img/2mcbp-example.tikz}
+\input{img/2mcbp.tikz}
 \caption[2MCBP example]{2MCBP example: packing the input
 $\Ical = \{\{1, 2, 3\}, \{4\}, \{5, 6\}, \{7, 8\}, \{9\}\}$ into two bins.
 Here items of the same color belong to the same itemset.}
-\label{fig:2mcbp-example}
+\label{fig:2mcbp}
 \end{figure}
 
 We can model rotation using multiple-choice packing:
