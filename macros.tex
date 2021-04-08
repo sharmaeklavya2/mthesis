@@ -10,7 +10,10 @@
 % GVBP
 \newcommand*{\geomvec}[2]{(#1, #2)}
 \newcommand*{\geomvecdim}[2]{(#1, #2)-dimensional}
-\newcommand*{\epsLP}{\eps}
+\newcommand*{\weightRoundingHyp}{\hyperref[trn:wround]{weight-rounding}}
+\newcommand*{\compartmentalHyp}{\hyperref[defn:compartmental]{compartmental}}
+\newcommand*{\finePartHyp}{\hyperref[defn:fine-part]{fine partitioning}}
+\newcommand*{\semiStrucHyp}{\hyperref[defn:semi-struct]{semi-structured}}
 
 % dD GBP
 \newcommand*{\dff}{weighting function}
@@ -35,6 +38,8 @@
 \newcommand*{\Kbar}{\overline{K}}
 \newcommand*{\Ktild}{\widetilde{K}}
 \newcommand*{\Pbar}{\overline{P}}
+\newcommand*{\Pcal}{\mathcal{P}}
+\newcommand*{\Pcalhat}{\widehat{\mathcal{P}}}
 \newcommand*{\Scal}{\mathcal{S}}
 \newcommand*{\Stild}{\widetilde{S}}
 \newcommand*{\Xtild}{\widetilde{X}}
@@ -53,6 +58,30 @@
 \newcommand*{\hi}{^{\mathrm{(hi)}}}
 \newcommand*{\best}{\mathrm{best}}
 \newcommand*{\ceildeltsq}{\smallceil{1/\delta^2}}
+
+% GVBP
+\newcommand*{\precImm}{\prec_{\mathrm{imm}}}
+\newcommand*{\epsLP}{\eps}
+\newcommand*{\epsLarge}{\eps_1}
+\newcommand*{\epsSmall}{\eps_2}
+\newcommand*{\epsCont}{\eps_{\mathrm{cont}}}
+\newcommand*{\deltaDense}{\delta_d}
+\newcommand*{\deltaLG}{\delta_{\mathrm{lg}}}
+\newcommand*{\lwc}{\mathrm{lwc}}  % weight classes of dense light items
+\newcommand*{\hwc}{\mathrm{hwc}}  % weight classes of dense heavy items
+\newcommand*{\bwc}{\mathrm{bwc}}  % weight classes of big items
+\newcommand*{\wwc}{\mathrm{wwc}}  % weight classes of wide items
+\newcommand*{\swc}{\mathrm{swc}}  % weight classes of small items
+\newcommand*{\nlwcHyp}{\hyperref[lem:round-up-light-n]{n_{\lwc}}}
+\newcommand*{\nhwcHyp}{\hyperref[lem:round-up-heavy-n]{n_{\hwc}}}
+\newcommand*{\nbwcHyp}{\hyperref[lem:num-weight-classes]{n_{\bwc}}}
+\newcommand*{\nwwcHyp}{\hyperref[lem:num-weight-classes]{n_{\wwc}}}
+\newcommand*{\nswcHyp}{\hyperref[lem:num-weight-classes]{n_{\swc}}}
+\newcommand*{\nWCont}{n_{\mathrm{wcont}}}
+\newcommand*{\nTCont}{n_{\mathrm{tcont}}}
+\newcommand*{\nBig}{n_{\mathrm{big}}}
+\newcommand*{\nNConfs}{n_{\mathrm{nconfs}}}
+\newcommand*{\Imed}{I_{\mathrm{med}}}
 
 % APoG
 \newcommand*{\APoG}{\mathrm{APoG}}
@@ -96,6 +125,9 @@
 \DeclareMathOperator{\fscLP}{fsconfigLP}
 \DeclareMathOperator{\fscIP}{fsconfigIP}
 \DeclareMathOperator{\uncovered}{uncovered}
+\DeclareMathOperator{\leader}{leader}
+\DeclareMathOperator*{\cartProd}{\prod}
+\DeclareMathOperator{\outputAdd}{\mathtt{outputs.add}}
 
 % ALGORITHMS ===================================================================
 
@@ -124,6 +156,22 @@
 \DeclareMathOperator{\complexPack}{\mathtt{complex-pack}}
 \DeclareMathOperator{\unround}{\mathtt{unround}}
 \DeclareMathOperator{\cLPsolve}{\mathtt{solve-config-lp}}
+\DeclareMathOperator{\remMed}{remove-medium}
+\DeclareMathOperator{\remMedHyp}{\hyperref[defn:remmed]{\remMed}}
+\DeclareMathOperator{\iterFineParts}{\mathtt{iter-fine-parts}}
+\DeclareMathOperator{\iterFinePartsHyp}{\hyperref[algo:ifp]{\iterFineParts}}
+\DeclareMathOperator{\partBig}{\mathtt{part-big}}
+\let\partBigHyp\partBig
+\DeclareMathOperator{\partWide}{\mathtt{part-wide}}
+\let\partWideHyp\partWide
+\DeclareMathOperator{\roundHyp}{\hyperref[algo:round]{\round}}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\FPHyp}{\hyperref[eqn:fpack-fp]{\FP}}
+\DeclareMathOperator{\fpack}{\mathtt{fpack}}
+\DeclareMathOperator{\ipack}{\mathtt{ipack}}
+\DeclareMathOperator{\ipackHyp}{\hyperref[algo:ipack]{\ipack}}
+\DeclareMathOperator{\packSmall}{\mathtt{pack-small}}
+\DeclareMathOperator{\packSmallHyp}{\hyperref[algo:pack-small]{\packSmall}}
 
 % APoG
 \DeclareMathOperator{\skewPack}{\mathtt{skewPack}}
