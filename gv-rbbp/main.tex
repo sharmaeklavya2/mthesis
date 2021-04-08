@@ -1610,6 +1610,8 @@ but for the sake of completeness, we give the full details in
 
 Formally $\partBig(B_p)$ outputs a set of pairs of the form $(\{\}, \Pcalhat)$,
 where $\Pcalhat$ is supposed to be a fine partitioning of $B_p$.
+In \cref{sec:gv-rbbp:part-big:part-big}, we prove the following important
+results about $\partBig$.
 
 \begin{restatable}{claim}{rthmPartBigTime}
 \label{claim:part-big-time}
@@ -1623,12 +1625,12 @@ values, where $n \defeq |B_p|$, and the running time per value is $O(n^2/\eps\ep
 Let $\Pcal \defeq \{B^w_{p,q,r}: \forall q, \forall r\} \cup \{B^h_{p,q,r}: \forall q, \forall r\}$
 be a balanced fine partitioning of $B_p$.
 Then there is an output $(\{\}, \Pcalhat)$ of $\partBig(B_p)$ where
-$\Pcalhat \defeq \{\widehat{B}^w_{p,q,r}: \forall q, \forall r\}
-\cup \{\widehat{B}^h_{p,q,r}: \forall q, \forall r\}$ such that
+$\Pcalhat \defeq \{\Bhat^w_{p,q,r}: \forall q, \forall r\}
+\cup \{\Bhat^h_{p,q,r}: \forall q, \forall r\}$ such that
 $\Pcalhat$ is a fine partitioning of $B_p$ and
 after applying \cref{trn:round-geom},
-\[ \forall q, \forall r, \widehat{B}^w_{p,q,r} \preceq B^w_{p,q,r}
-\textrm{ and } \widehat{B}^h_{p,q,r} \preceq B^h_{p,q,r} \]
+\[ \forall q, \forall r, \Bhat^w_{p,q,r} \preceq B^w_{p,q,r}
+\textrm{ and } \Bhat^h_{p,q,r} \preceq B^h_{p,q,r} \]
 \end{restatable}
 
 $\partBig$ for the rotational case is similar to the non-rotational case:
@@ -1820,10 +1822,10 @@ Therefore, the output $\pi$ of $\constrPartSolve$ will not be \texttt{null}.
 
 All items in $B^p$ have the same weights. After applying \cref{trn:round-geom},
 all items in $B^w_{p,q,r}$ have width $q\epsLarge^2/4$ and height $h^w_{p,q,r}$
-and all items in $\widehat{B}^w_{p,q,r}$ have width $q\epsLarge^2/4$ and
+and all items in $\Bhat^w_{p,q,r}$ have width $q\epsLarge^2/4$ and
 height at most $h^w_{p,q,r}$.
-Therefore, $\widehat{B}^w_{p,q,r} \preceq B^w_{p,q,r}$.
-Similarly, $\widehat{B}^h_{p,q,r} \preceq B^h_{p,q,r}$.
+Therefore, $\Bhat^w_{p,q,r} \preceq B^w_{p,q,r}$.
+Similarly, $\Bhat^h_{p,q,r} \preceq B^h_{p,q,r}$.
 \end{proof}
 
 \subsubsection{\texorpdfstring{$\partBig$}{partBig} With Item Rotations}
@@ -1859,7 +1861,7 @@ We can find a feasible assignment of the items $B_p$ to these sets (if one exist
 The time taken to run $\constrPartSolve$ is $O(n^2/\eps\epsLarge)$.
 We summarize $\partBig$ in \cref{algo:part-big-rot}.
 
-\begin{algorithm}[H]
+\begin{algorithm}[htb]
 \caption{$\partBig(B_p)$ (with rotations):}
 \label{algo:part-big-rot}
 \begin{algorithmic}[1]
@@ -1893,10 +1895,10 @@ values, where $n \defeq |B_p|$, and the running time per value is $O(n^2/\eps\ep
 Let $\Pcal \defeq \{B^w_{p,q,r}: \forall q, \forall r\}$
 be a balanced fine partitioning of $B_p$.
 Then there is an output $(\{\}, \Pcalhat)$ of $\partBig(B_p)$ where
-$\Pcalhat \defeq \{\widehat{B}^w_{p,q,r}: \forall q, \forall r\}$
+$\Pcalhat \defeq \{\Bhat^w_{p,q,r}: \forall q, \forall r\}$
 such that $\Pcalhat$ is a fine partitioning of $B_p$ and
 after applying \cref{trn:round-geom},
-\[ \forall q, \forall r, \widehat{B}^w_{p,q,r} \preceq B^w_{p,q,r} \]
+\[ \forall q, \forall r, \Bhat^w_{p,q,r} \preceq B^w_{p,q,r} \]
 \end{lemma}
 \begin{proof}
 In each iteration, $\constrPartSolve$ ensures that each item is assigned to exactly one set.
@@ -1908,9 +1910,9 @@ Therefore, the output $\Pcalhat$ of $\constrPartSolve$ will not be \texttt{null}
 
 All items in $B^p$ have the same weights. After applying \cref{trn:round-geom},
 all items in $B^w_{p,q,r}$ have width $q\epsLarge^2/4$ and height $h^w_{p,q,r}$
-and all items in $\widehat{B}^w_{p,q,r}$ have width $q\epsLarge^2/4$ and
+and all items in $\Bhat^w_{p,q,r}$ have width $q\epsLarge^2/4$ and
 height at most $h^w_{p,q,r}$.
-Therefore, $\widehat{B}^w_{p,q,r} \preceq B^w_{p,q,r}$.
+Therefore, $\Bhat^w_{p,q,r} \preceq B^w_{p,q,r}$.
 \end{proof}
 
 \subsection{Wide and Tall Items}
