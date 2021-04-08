@@ -1598,24 +1598,26 @@ Let $\partBig$ be an algorithm that takes a coarse partition $B_p$ of big items 
 and outputs multiple fine partitionings of $B_p$.
 We can use $\partBig$ as a subroutine in $\iterFineParts$.
 
-To design $\partBig$, we will guess the cardinality of sets $B^w_{p,q,r}$ and $B^h_{p,q,r}$.
-We will then guess the maximum height in $B^w_{p,q,r}$ and the maximum width in $B^h_{p,q,r}$.
+To design $\partBig$, we will guess the cardinality of sets $B^w_{p,q,r}$ and $B^h_{p,q,r}$
+for each $q$ and $r$. We will then guess the maximum height in $B^w_{p,q,r}$
+and the maximum width in $B^h_{p,q,r}$.
 Then for each guess, we will solve a max-flow problem to check if items in $B_p$
-can be assigned to these sets. We skip the details here since this approach
-is similar to that of Pr\"adel (see Section 3.3.1 in \cite{pradel-thesis}).
-% TODO: add back details
+can be assigned to these sets. The details can be inferred from
+Section 3.3.1 of Pr\"adel's thesis~\cite{pradel-thesis},
+but for the sake of completeness, we give the full details in
+\cref{sec:gv-rbbp:part-big:cpart,sec:gv-rbbp:part-big:part-big,sec:gv-rbbp:part-big:part-big-rot}.
 
 Formally $\partBig(B_p)$ outputs a set of pairs of the form $(\{\}, \Pcalhat)$,
 where $\Pcalhat$ is supposed to be a fine partitioning of $B_p$.
 
-\begin{claim}
+\begin{restatable}{claim}{rthmPartBigTime}
 \label{claim:part-big-time}
 $\partBig(B_p)$ generates
-$O(n^{2|Q|(1/\deltaLG+1) - 1}) = O(n^{8(d+1)/\eps\epsLarge^3})$
+$O(n^{2|Q|(1+1/\deltaLG)}) \le O(n^{8(d+1)/\eps\epsLarge^3})$
 values, where $n \defeq |B_p|$, and the running time per value is $O(n^2/\eps\epsLarge)$.
-\end{claim}
+\end{restatable}
 
-\begin{claim}
+\begin{restatable}{lemma}{rthmPartBig}
 \label{lem:part-big}
 Let $\Pcal \defeq \{B^w_{p,q,r}: \forall q, \forall r\} \cup \{B^h_{p,q,r}: \forall q, \forall r\}$
 be a balanced fine partitioning of $B_p$.
@@ -1626,13 +1628,289 @@ $\Pcalhat$ is a fine partitioning of $B_p$ and
 after applying \cref{trn:round-geom},
 \[ \forall q, \forall r, \widehat{B}^w_{p,q,r} \preceq B^w_{p,q,r}
 \textrm{ and } \widehat{B}^h_{p,q,r} \preceq B^h_{p,q,r} \]
-\end{claim}
+\end{restatable}
 
 $\partBig$ for the rotational case is similar to the non-rotational case:
 When rotations are allowed, assume \wLoG{} that $B^h_{*,*,*} = \{\}$.
 We will guess the cardinality and maximum height in sets $B^w_{p,q,r}$.
 Then for each guess, we will solve a max-flow problem to check if
 items in $B_p$ can be assigned to these sets, possibly after rotating some items.
+
+\subsubsection{A Constrained Partitioning Problem}
+\label{sec:gv-rbbp:part-big:cpart}
+
+We will now describe a constrained partitioning problem
+and its solution using a max-flow algorithm.
+We will later show how to use an algorithm for this constrained partitioning problem
+to implement $\partBig$.
+
+In this problem, we are given as input a set $I$ of items and a set $J$ of targets.
+For simplicity and \wLoG, assume $I = [n]$ and $J = [m]$.
+For the $j\Th$ target, we are given a `desired cardinality' $b_j$,
+such that $\sum_{j=1}^m b_j = n$.
+We are also given a set $E \subseteq I \times J$.
+An item $i$ is said to be feasible for a target $j$ iff $(i, j) \in E$.
+
+We have to either assign each item to exactly one feasible target such that the
+number of items received by the $j\Th$ target is $b_j$, or we have to declare
+that such an assignment is not possible.
+An instance of the constrained partitioning problem is given by the tuple $(I, J, b, E)$.
+Here $b$ is a vector of length $m$.
+
+We will create a flow network $G' = (V', E')$ for this problem.
+Create a source vertex $s$ and a sink vertex $t$. Create a vertex $u_i$ for each item $i$.
+Create a vertex $v_j$ for the $j\Th$ target.
+Add an edge of capacity 1 from $s$ to each $u_i$.
+Add an edge of capacity $b_j$ from each $v_j$ to $t$.
+For each $(i, j) \in E$, add an edge of capacity 1 from $u_i$ to $v_j$.
+Therefore, we get
+\[ E' = \{(s, u_i, 1): \forall i \in I\}
+\cup \{(u_i, v_j, 1): \forall (i, j) \in E\}
+\cup \{(v_j, t, b_j): \forall j \in J\} \]
+See \cref{fig:cpart-flow} for an example.
+
+\begin{figure}[htb]
+\centering
+\input{img/cpart-flow.tex}
+\caption{Maximum flow for a network with $n=5$, $m=3$ and $b=[2,2,1]$.
+Edges are labeled with their capacities and unlabeled edges have capacity 1.
+Dashed edges have flow 0. Solid edges have flow equal to capacity.}
+\label{fig:cpart-flow}
+\end{figure}
+
+\begin{lemma}
+\label{lem:cpart-flow-to-sol}
+If we know an integral flow $f$ of value $n$ for the network $G'$,
+we can use $f$ to get a feasible solution to the constrained partitioning problem.
+\end{lemma}
+\begin{proof}
+In such a flow, $f(s, u_i) = 1$ for all $i$ and $f(v_j, t) = b_j$ for all $j$.
+By the conservation constraint at $u_i$, there will be exactly one $j$ for each $i$
+such that $f(u_i, v_j) = 1$. Assign item $i$ to this $j$.
+This gives us a feasible assignment of items to targets.
+\end{proof}
+
+\begin{lemma}
+\label{lem:cpart-flow-iff}
+The flow network $G'$ has maximum flow equal to $n$ iff there exists a feasible
+assignment of items to targets.
+\end{lemma}
+\begin{proof}
+The cut $(\{s\}, V'-\{s\})$ has value $n$.
+By the max-flow-min-cut theorem, the max-flow is at most $n$.
+
+If there is a feasible assignment $\pi: I \mapsto J$, then we can set the flow
+$f: E' \mapsto \mathbb{R}_{\ge 0}$ as $f(s, u_i) = 1$,
+$f(u_i, v_{\pi(i)}) = 1$, $f(v_j, t) = b_j$ and flow 0 for the remaining edges.
+This is a feasible flow of value $n$, so it must be a max-flow.
+
+Suppose there is a max-flow of value $n$. Since all capacities are integers,
+by the max-flow integrality theorem, there is an integral max-flow $f$ of value $n$.
+Then by \cref{lem:cpart-flow-to-sol}, there exists a feasible assignment.
+\end{proof}
+
+\Cref{lem:cpart-flow-to-sol,lem:cpart-flow-iff} give us an algorithm
+for the constrained partitioning problem, which we call $\constrPartSolve$
+(see \cref{algo:constr-part-solve}).
+
+\begin{algorithm}[htb]
+\caption{$\constrPartSolve(I, J, b, E)$}
+\label{algo:constr-part-solve}
+\begin{algorithmic}[1]
+\State $V' = \{s, t\} \cup \{u_i: i \in I\} \cup \{v_j: j \in J\}$.
+\State $E' = \{(s, u_i, 1): \forall i \in I\}
+    \cup \{(u_i, v_j, 1): \forall (i, j) \in E\}
+    \cup \{(v_j, t, b_j): \forall j \in J\}$
+\State Get an integral max-flow $f$ for $G' = (V', E')$ using the Ford-Fulkerson algorithm.
+\If{$f$ has flow-value $|I|$}
+    \State Let $\pi(i)$ be the unique value of $j$ such that $f(u_i, v_j) = 1$.
+    \State \Return $\pi$
+\Else
+    \State \Return \texttt{null}
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+\begin{lemma}
+$\constrPartSolve([n], [m], b, E)$ runs in time $O(n(n+m+|E|))$.
+\end{lemma}
+\begin{proof}
+The flow network has $n+m+2$ vertices and $n+m+|E|$ edges.
+The Ford-Fulkerson algorithm takes time $O(n(n+m+|E|))$.
+\end{proof}
+
+\subsubsection{\texorpdfstring{$\partBig$}{partBig} Without Item Rotations}
+\label{sec:gv-rbbp:part-big:part-big}
+
+We will now describe $\partBig$ for the case where item rotations are forbidden.
+Let $B_p$ be a coarse partition of big items in $I$.
+We will guess the cardinality of sets $B^w_{p,q,r}$ and $B^h_{p,q,r}$ for each $q$ and $r$.
+We will then guess the maximum height in $B^w_{p,q,r}$
+and the maximum width in $B^h_{p,q,r}$ for each $q$ and $r$.
+Then for each guess, we will check if items in $B_p$ can be assigned to these sets.
+Let
+\begin{align*}
+Q &\defeq \mathbb{Z} \cap \left[\frac{4}{\epsLarge} + 1, \frac{4}{\epsLarge^2}\right]
+& Q_q &\defeq \left\{x \in \mathbb{R}: (q-1)\frac{\epsLarge^2}{4}
+    < x \le q\frac{\epsLarge^2}{4} \right\}
+\end{align*}
+
+There are $|Q|$ sets $B^w_{p,q,*}$ and there are $|Q|$ sets $B^h_{p,q,*}$.
+We will guess the cardinality of all of them.
+The number of guesses is at most $1 + n^{2|Q|}$.
+Since the fine partitioning is balanced,
+we can find $|B^w_{p,q,r}|$ from $|B^w_{p,q,*}|$
+and we can find $|B^h_{p,q,r}|$ from $|B^h_{p,q,*}|$.
+Let $b^w_{p,q,r}$ and $b^h_{p,q,r}$ be the cardinalities of
+$B^w_{p,q,r}$ and $B^h_{p,q,r}$, respectively.
+Let $b$ be the vector containing all $b^{*}_{p,*,*}$ values.
+
+Next we will guess the maximum height in $B^w_{p,q,r}$ and the maximum width in $B^h_{p,q,r}$.
+There are a total of $2|Q|/\deltaLG = 8(d+1)(1-\epsLarge)/\eps\epsLarge^3$ sets,
+and there are $n$ items in $B_p$.
+Therefore, the number of guesses would be at most ${\displaystyle n^{8(d+1)/\eps\epsLarge^3}}$.
+Let $h^w_{p,q,r}$ be the guess of the maximum height in $B^w_{p,q,r}$
+and $w^h_{p,q,r}$ be the guess of the maximum width in $B^h_{p,q,r}$.
+
+After these guesses, we say that item $i$ is feasible for $B^w_{p,q,r}$ iff
+$w(i) \in Q_q \textrm{ and } h(i) \le h^w_{p,q,r}$,
+and item $i$ is feasible for $B^h_{p,q,r}$ iff
+$h(i) \in Q_q \textrm{ and } w(i) \le w^h_{p,q,r}$.
+Let $E$ be the pairs of feasible assignments of items to these sets.
+An item can be feasible for at most $1/\deltaLG$ sets of the form $B^w_{p,q,r}$
+and at most $1/\deltaLG$ sets of the form $B^h_{p,q,r}$
+(because $q$ is determined by width or height).
+Therefore, $|E| \le 2n/\deltaLG$.
+
+We can find a feasible assignment of the items $B_p$ to these sets (if one exists) using algorithm
+\[ \constrPartSolve\left(B_p, \left[ \frac{8(d+1)(1-\epsLarge)}{\eps\epsLarge^3} \right], b, E\right) \]
+The time taken to run $\constrPartSolve$ is $O(n^2/\eps\epsLarge)$.
+We summarize $\partBig$ in \cref{algo:part-big}.
+
+\begin{algorithm}[htb]
+\caption{$\partBig(B_p)$:}
+\label{algo:part-big}
+\begin{algorithmic}[1]
+\State $\texttt{outputs} = \{\}$
+\For{each guess $b$ (the cardinalities of the sets)}
+    \For{each guess $h^w_{p,q,r}$ and $w^h_{p,q,r}$ for each $q \in Q$ and $r \in [1/\deltaLG]$}
+        \State Compute $E$, the set of pairs of feasible assignments.
+        \State $\pi = {\displaystyle \constrPartSolveHyp\left(B_p,
+            \left[ \frac{8(d+1)(1-\epsLarge)}{\eps\epsLarge^3} \right], b, E\right) }$
+        \If{$\pi \neq \texttt{null}$}
+            \State Let $\Pcalhat$ be the fine partitioning deduced from $\pi$.
+            \State $\outputAdd((\{\}, \Pcalhat))$
+        \EndIf
+    \EndFor
+\EndFor
+\State \Return \texttt{outputs}
+\end{algorithmic}
+\end{algorithm}
+
+\rthmPartBigTime*
+
+\rthmPartBig*
+\begin{proof}
+In each iteration, $\constrPartSolve$ ensures that each item is assigned to exactly one set,
+so $\Pcalhat$ is a fine partitioning of $B_p$.
+In some iteration, the guesses $b$, $h^w_{p,q,r}$ and $w^h_{p,q,r}$ will be correct.
+In that iteration, a feasible assignment of items to the sets exists.
+Therefore, the output $\pi$ of $\constrPartSolve$ will not be \texttt{null}.
+
+All items in $B^p$ have the same weights. After applying \cref{trn:round-geom},
+all items in $B^w_{p,q,r}$ have width $q\epsLarge^2/4$ and height $h^w_{p,q,r}$
+and all items in $\widehat{B}^w_{p,q,r}$ have width $q\epsLarge^2/4$ and
+height at most $h^w_{p,q,r}$.
+Therefore, $\widehat{B}^w_{p,q,r} \preceq B^w_{p,q,r}$.
+Similarly, $\widehat{B}^h_{p,q,r} \preceq B^h_{p,q,r}$.
+\end{proof}
+
+\subsubsection{\texorpdfstring{$\partBig$}{partBig} With Item Rotations}
+\label{sec:gv-rbbp:part-big:part-big-rot}
+
+We will now describe $\partBig$ for the case where item rotations are allowed.
+Let $B_p$ be a coarse partition of big items in $I$.
+When rotations are allowed, assume \wLoG{} that $B^h_{*,*,*} = \{\}$.
+We will guess the cardinality and maximum height in sets $B^w_{p,q,r}$.
+Then for each guess, we will check if items in $B_p$ can be assigned to these sets,
+possibly after rotating some items.
+
+The number of guesses of $|B^w_{p,q,*}|$ is at most $1 + n^{|Q|}$
+Since the fine partitioning is balanced, we can find $|B^w_{p,q,r}|$ from $|B^w_{p,q,*}|$.
+Let $b^w_{p,q,r}$ be the guess of $|B^w_{p,q,r}|$.
+Let $h^w_{p,q,r}$ be the guess of the maximum height in $B^w_{p,q,r}$.
+There are at most ${\displaystyle (2n)^{|Q|/\deltaLG} = (2n)^{4(d+1)/\eps\epsLarge^3}}$
+possible guesses for maximum heights.
+
+After these guesses, we say that item $i$ is feasible for $B^w_{p,q,r}$ without rotation iff
+$w(i) \in Q_q \textrm{ and } h(i) \le h^w_{p,q,r}$
+and $i$ is feasible for $B^w_{p,q,r}$ after rotation iff
+$h(i) \in Q_q \textrm{ and } w(i) \le h^w_{p,q,r}$.
+Let $E_1$ be the pairs of feasible assignments of items to these sets without rotation
+and $E_2$ be the pairs of feasible assignments of items to these sets after rotation.
+An item can be feasible for at most $1/\deltaLG$ sets without rotation
+and feasible for at most $1/\deltaLG$ sets after rotation.
+Therefore, $|E_1 \cup E_2| \le |E_1| + |E_2| \le 2n/\deltaLG$.
+
+We can find a feasible assignment of the items $B_p$ to these sets (if one exists) using algorithm
+\[ \constrPartSolve\left(B_p, \left[ \frac{4(d+1)(1-\epsLarge)}{\eps\epsLarge^3} \right],
+    b, E_1 \cup E_2\right) \]
+The time taken to run $\constrPartSolve$ is $O(n^2/\eps\epsLarge)$.
+We summarize $\partBig$ in \cref{algo:part-big-rot}.
+
+\begin{algorithm}[H]
+\caption{$\partBig(B_p)$ (with rotations):}
+\label{algo:part-big-rot}
+\begin{algorithmic}[1]
+\State $\texttt{outputs} = \{\}$
+\For{each guess $b$ (the cardinalities of the sets)}
+    \For{each guess $h^w_{p,q,r}$ for each $q \in Q$ and $r \in [1/\deltaLG]$}
+        \State Compute $E_1$, the set of pairs of feasible assignments without rotations.
+        \State Compute $E_2$, the set of pairs of feasible assignments after rotations.
+        \State $\pi = {\displaystyle \constrPartSolveHyp\left(B_p,
+            \left[ \frac{4(d+1)(1-\epsLarge)}{\eps\epsLarge^3} \right], b, E_1 \cup E_2\right) }$
+        \If{$\pi \neq \texttt{null}$}
+            \State Let $\widehat{P}$ be the fine partitioning deduced from $\pi$.
+            \State $\forall i \in B_p$, rotate item $i$ in $\widehat{P}$
+                iff $(i, \pi(i)) \not\in E_1$.
+            \State $\outputAdd((\{\}, \widehat{P}))$
+        \EndIf
+    \EndFor
+\EndFor
+\State \Return \texttt{outputs}
+\end{algorithmic}
+\end{algorithm}
+
+\begin{claim}
+\label{claim:part-big-rot-time}
+$\partBig(B_p)$ generates $O(n^{|Q|(1+1/\deltaLG)}) = O(n^{4(d+1)/\eps\epsLarge^3})$
+values, where $n \defeq |B_p|$, and the running time per value is $O(n^2/\eps\epsLarge)$.
+\end{claim}
+
+\begin{lemma}
+\label{lem:part-big-rot}
+Let $\Pcal \defeq \{B^w_{p,q,r}: \forall q, \forall r\}$
+be a balanced fine partitioning of $B_p$.
+Then there is an output $(\{\}, \Pcalhat)$ of $\partBig(B_p)$ where
+$\Pcalhat \defeq \{\widehat{B}^w_{p,q,r}: \forall q, \forall r\}$
+such that $\Pcalhat$ is a fine partitioning of $B_p$ and
+after applying \cref{trn:round-geom},
+\[ \forall q, \forall r, \widehat{B}^w_{p,q,r} \preceq B^w_{p,q,r} \]
+\end{lemma}
+\begin{proof}
+In each iteration, $\constrPartSolve$ ensures that each item is assigned to exactly one set.
+Therefore, $\Pcalhat$ is a fine partitioning of $B_p$.
+
+In some iteration, the guesses $b$ and $h^w_{p,q,r}$ will be correct.
+In that iteration, a feasible assignment of items to the sets exists.
+Therefore, the output $\Pcalhat$ of $\constrPartSolve$ will not be \texttt{null}.
+
+All items in $B^p$ have the same weights. After applying \cref{trn:round-geom},
+all items in $B^w_{p,q,r}$ have width $q\epsLarge^2/4$ and height $h^w_{p,q,r}$
+and all items in $\widehat{B}^w_{p,q,r}$ have width $q\epsLarge^2/4$ and
+height at most $h^w_{p,q,r}$.
+Therefore, $\widehat{B}^w_{p,q,r} \preceq B^w_{p,q,r}$.
+\end{proof}
 
 \subsection{Wide and Tall Items}
 
