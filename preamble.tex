@@ -2,10 +2,11 @@
 \usepackage{amssymb,amsmath,amsthm}
 \usepackage{thm-restate}
 % from thm-restate import restatable
+\usepackage{longtable}
 \usepackage{array}
 \usepackage{booktabs}
 % from booktabs import \toprule, \midrule, \bottomrule, \abovetopsep, \defaultaddspace
-\usepackage[capitalize]{cleveref}
+\usepackage[capitalize,sort]{cleveref}
 % from cleverref import \cref, \crefname
 \usepackage{algorithm,algpseudocode}
 \usepackage{xcolor}
@@ -17,7 +18,7 @@
 \usepackage{anyfontsize}
 \usepackage{xfrac}
 % from xfrac import sfrac
-%\usepackage{enumerate}
+\usepackage[shortlabels]{enumitem}
 \usepackage{mathrsfs}
 \usepackage{tikz}
 \usetikzlibrary{decorations.pathreplacing,arrows.meta,calc,3d}
@@ -36,12 +37,14 @@
 \newtheorem{property}{Property}[chapter]
 \newtheorem{transformation}{Transformation}[chapter]
 \newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{claim}{Claim}[chapter]
 \newtheorem{mechanism}{Mechanism}[chapter]
 \newtheorem{question}{Question}[chapter]
 \newtheorem{observation}{Observation}[chapter]
 \newtheorem{fact}{Fact}[chapter]
 
 \crefname{observation}{Observation}{Observations}
+\crefname{claim}{Claim}{Claims}
 \crefname{property}{Property}{Properties}
 \crefname{transformation}{Transformation}{Transformations}
 \crefname{algorithm}{Algorithm}{Algorithms}
@@ -85,6 +88,7 @@
 \allowdisplaybreaks[1]
 \newdateformat{monthyeardate}{\monthname[\THEMONTH], \THEYEAR}
 \newcommand{\blankpage}{\newpage\thispagestyle{empty}\mbox{}\newpage}
+\hfuzz=2pt
 \abovetopsep=4pt
 \defaultaddspace=0.4em
 \algnewcommand{\LineComment}[1]{\State \textcolor{gray}{// #1}}
@@ -92,4 +96,5 @@
 \algblockdefx{RepeatN}{EndRepeatN}[1]{\textbf{repeat} #1 \textbf{times}}{\textbf{end repeat}}
 \newcommand*{\thmdep}[2]{}
 \newcommand*{\thmdepcref}[2]{\cref{#1}}
-\newenvironment*{tightemize}{\begin{itemize}}{\end{itemize}}
+\newenvironment*{tightemize}{\begin{itemize}[noitemsep]}{\end{itemize}}
+\newcolumntype{L}{>{$\displaystyle}l<{$}}
