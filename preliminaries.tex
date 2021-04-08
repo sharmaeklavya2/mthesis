@@ -193,6 +193,22 @@ Therefore, $a(S_j) > (W-\delta_W)h_{j+1}$ for $j \le p-1$. This gives us
 \qedhere \end{align*}
 \end{proof}
 
+\begin{lemma}[NFDH for bin packing]
+\label{thm:nfdh-bin}
+Let $I$ be a set of rectangular items of width and height at most 1.
+Then the number of square bins of side length 1 that
+Next-Fit Decreasing Height (NFDH) uses to pack $I$ is less than $4a(I) + 3$.
+\end{lemma}
+\begin{proof}
+The bin packing version of NFDH first packs $I$ into shelves
+and then packs the shelves into bins using Next-Fit.
+Let $H$ be the sum of heights of all the shelves.
+
+By \cref{thm:nfdh-strip}, we get $H < 2a(I) + 1$.
+By \cref{thm:next-fit}, the number of bins needed is less than $2H + 1$.
+Therefore, the number of bins needed is less than $4a(I) + 3$.
+\end{proof}
+
 \section{Configuration Linear Program}
 \label{sec:config-lp}
 
