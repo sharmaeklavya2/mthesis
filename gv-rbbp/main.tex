@@ -835,25 +835,25 @@ See \cref{table:slack-pack-ab}.
 \begin{table}[H]
 \centering
 \caption{Values of $a$ and $b$ for \cref{thm:slack-pack}.}
-\begin{tabular}{|c|c|c|c|}
-\hline & $a$ & $b$ & Lemma
-\\ \hline rotations forbidden
-    & $d+4$
+\begin{tabular}{cccc}
+\toprule & $a$ & $b$ & Lemma
+\\ \midrule rotations forbidden
+    & \quad$d+4$
     & $0$
     & \cref{lem:ws-d-pack}
-\\ \hline rotations allowed
-    & $d+3$
+\\[\defaultaddspace] rotations allowed
+    & \quad$d+3$
     & $0$
     & \cref{lem:ws-d-pack-rot}
-\\ \hline rotations forbidden and $d=1$
-    & ${\displaystyle 3 + \frac{1}{6} + \frac{\eps}{1-\eps}}$
+\\[\defaultaddspace] $d=1$ and rotations forbidden
+    & \quad${\displaystyle 3 + \frac{1}{6} + \frac{\eps}{1-\eps}}$
     & $12$
     & \cref{lem:ws-1-pack}
-\\ \hline rotations allowed and $d=1$
-    & ${\displaystyle 3 + \frac{\eps}{1-\eps}}$
+\\[\defaultaddspace] $d=1$ and rotations allowed
+    & \quad${\displaystyle 3 + \frac{\eps}{1-\eps}}$
     & $1$
     & \cref{lem:ws-1-pack-rot}
-\\ \hline
+\\ \bottomrule
 \end{tabular}
 \label{table:slack-pack-ab}
 \end{table}
@@ -2668,22 +2668,22 @@ $\left( 1 + 2\eps/(1-\eps) \right) m + 2
 \centering
 \caption{Upper bound on the number of distinct widths and heights for
 compartments of different types}
-${\displaystyle \begin{array}{*3{|>{\displaystyle}c}|}
-\hline & \textrm{no. of widths} & \textrm{no. of heights}
-\\ \hline \textrm{Division-1 wide compartments}
+\[ \begin{array}{l*2{>{\displaystyle}c}}
+\toprule \textrm{Compartment type} & \textrm{no.~of widths} & \textrm{no.~of heights}
+\\ \midrule \textrm{Division-1 wide}
     & \frac{4}{\epsLarge^2}
     & \frac{12}{\eps\epsLarge^5}
-\\ \hline \textrm{Division-1 tall compartments}
+\\[\defaultaddspace] \textrm{Division-1 tall}
     & 1
     & \left(\frac{(d+1)\nwwcHyp}{\eps\epsLarge} + 1\right)^{1/\epsLarge-1}
-\\ \hline \textrm{Division-2 wide compartments}
+\\[\defaultaddspace] \textrm{Division-2 wide}
     & \left(\frac{(d+1)\nwwcHyp}{\eps\epsLarge} + 1\right)^{1/\epsLarge-1}
     & 1
-\\ \hline \textrm{Division-2 tall compartments}
+\\[\defaultaddspace] \textrm{Division-2 tall}
     & \frac{12}{\eps\epsLarge^5}
     & \frac{4}{\epsLarge^2}
-\\ \hline
-\end{array} }$
+\\ \bottomrule
+\end{array} \]
 \end{table}
 
 Since division-1 tall items have $(d+1)n_{\wwc}/\eps\epsLarge$ possible heights,
