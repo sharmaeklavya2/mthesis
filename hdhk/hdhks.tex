@@ -25,7 +25,7 @@ that we will use to design an algorithm for $d$MCKS.
 
 \begin{algorithm}[!ht]
 \caption{$\hdhknf(I)$:
-Returns a bin-packing of $d$D items $I$ ($d \ge 2$).}
+Returns a bin packing of $d$D items $I$ ($d \ge 2$).}
 \label{algo:hdhknf}
 \begin{algorithmic}[1]
 \State Let $P$ be the list of shelves output by $\hdhkspHyp(I)$.
@@ -96,7 +96,7 @@ See \cref{algo:hdhks} for a more detailed description.
 \State Let $\Jhat$ be a $(1+\eps)$-\appx{} solution to the 1MCKS instance $\Icalhat$
     output by the FPTAS for 1MCKS.
 \State Let $J$ be the items of $\Ical$ corresponding to $\Jhat$.
-\State Let $[J_1, J_2, \ldots, J_b]$ be the bin-packing of $J$ produced using $\hdhknf[3]$.
+\State Let $[J_1, J_2, \ldots, J_b]$ be the bin packing of $J$ produced using $\hdhknf[3]$.
 \State ${\displaystyle j_{\max} = \argmax_{j=1}^b p(J_j)}$
 \State \Return $J_{j_{\max}}$.
 \end{algorithmic}
