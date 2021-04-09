@@ -2326,13 +2326,13 @@ and $\Pcalhat$ is a \finePartHyp{} of $I-D$.}
 \end{algorithmic}
 \end{algorithm}
 
-We next use $\iterFineParts$ to design the algorithm $\round$ (\cref{algo:round}).
+We next use $\iterFineParts$ to design the algorithm $\round$.
 $\round$ takes a set $I$ of items. It removes medium items from $I$ using $\remMedHyp$.
 It computes a weight-rounding (\cref{trn:wround}) of $I - \Imed$ to get $\Ihat$.
 Then for each output $(D, \Pcalhat)$ of $\iterFineParts(\Ihat)$,
 it computes $\Itild$ by applying \cref{trn:round-geom} to $\Ihat - D$
 with respect to $\Pcalhat$ and outputs $(\Itild, D \cup \Imed)$.
-See \cref{algo:round} for a more precise description.
+See \cref{algo:round} for a more precise description of $\round$.
 
 \begin{algorithm}[htb]
 \caption{$\round(I, \eps)$: Returns a set of pairs of the form $(\widetilde{I}, D')$,
