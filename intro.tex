@@ -111,6 +111,13 @@ Lawler improved the running time to $O(n\log(1/\eps) + 1/\eps^4)$~\cite{lawler19
 
 \subsection{Geometric Bin Packing}
 
+\begin{figure}[htb]
+\centering
+\input{img/2gbp.tikz}
+\caption{Packing 13 rectangles into 3 bins (without rotation).}
+\label{fig:2gbp}
+\end{figure}
+
 In the 2-dimensional geometric bin packing problem
 (abbreviated as 2D GBP; also called \emph{rectangle bin packing problem}),
 we are given a set $I$ of $n$ rectangular items and an infinite supply
@@ -120,13 +127,6 @@ in each bin, the items don't overlap.
 See \cref{fig:2gbp} for an example.
 For each 2D item $i$, let $w(i)$ denote the width and $h(i)$ denote the height.
 Let $a(i) \defeq w(i)h(i)$ be the area of item $i$.
-
-\begin{figure}[htb]
-\centering
-\input{img/2gbp.tikz}
-\caption{Packing 13 rectangles into 3 bins (without rotation).}
-\label{fig:2gbp}
-\end{figure}
 
 There are two commonly-studied versions of 2D GBP.
 In the non-rotational version, rotating the items is forbidden.
