@@ -129,6 +129,7 @@ $|\operatorname{Next-Fit}(I)| < 2\size(I) + 1$.
 Equivalently, $|\operatorname{Next-Fit}(I)| \le \ceil{2\size(I)}$.
 \end{lemma}
 \begin{proof}
+Assume $I$ is non-empty (otherwise, the lemma is trivially true).
 Let $m \defeq |\operatorname{Next-Fit}(I)|$.
 Let $J_j$ be the items packed into the $j\Th$ bin by Next-Fit.
 For $j \le m-1$, by the definition of Next-Fit,
@@ -142,10 +143,28 @@ Therefore, $\size(J_j) + \size(J_{j+1}) > 1$. This gives us
 \end{align*}
 \end{proof}
 
+\begin{lemma}
+\label{thm:next-fit-small}
+Let $I$ be a classical bin packing instance, where each item has size at most $\eps$. Then
+$|\operatorname{Next-Fit}(I)| \le \ceil{\size(I)/(1-\eps)}$.
+\end{lemma}
+\begin{proof}
+Assume $I$ is non-empty (otherwise, the lemma is trivially true).
+Let $m \defeq |\operatorname{Next-Fit}(I)|$.
+Let $J_j$ be the items packed into the $j\Th$ bin by Next-Fit.
+For $j \le m-1$, we have $\size(J_j) > 1-\eps$.
+Therefore,
+\begin{align*}
+& \size(I) > \sum_{j=1}^{m-1} \size(J_j) \ge (m-1)(1-\eps)
+\\ &\implies m < 1 + \frac{\size(I)}{1-\eps}
+\quad\iff m \le \ceil{\frac{\size(I)}{1-\eps}}
+\qedhere \end{align*}
+\end{proof}
+
 \begin{lemma}[NFDH for strip packing~\cite{coffman1980performance}]
 \label{thm:nfdh-strip}
 Let $I$ be a set of rectangular items of width at most 1.
-$I$ can be packed (without rotation) into a rectangular bin of width 1
+Then $I$ can be packed (without rotation) into a rectangular bin of width 1
 and height less than $2a(I) + max_{i \in I} h(i)$
 using the Next-Fit Decreasing Height (NFDH) algorithm.
 \end{lemma}
