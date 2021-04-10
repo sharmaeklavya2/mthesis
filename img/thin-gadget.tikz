@@ -1,0 +1,37 @@
+\ifcsname pGameL\endcsname\else\newlength{\pGameL}\fi
+\setlength{\pGameL}{0.3cm}
+\tikzset{bin/.style={draw,thick}}
+%\tikzset{binGrid/.style={draw,step=1\pGameL,{black!20}}}
+\tikzset{item/.style={draw,fill={black!15}}}
+\begin{tikzpicture}
+%\path[binGrid] (0\pGameL, 0\pGameL) grid (16\pGameL, 16\pGameL);
+\path[item] (7\pGameL, 15\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (0\pGameL, 0\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (7\pGameL, 14\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (7\pGameL, 13\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (7\pGameL, 12\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (7\pGameL, 11\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (7\pGameL, 10\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (7\pGameL, 9\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (0\pGameL, 1\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (0\pGameL, 2\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (0\pGameL, 3\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (0\pGameL, 4\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (0\pGameL, 5\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (0\pGameL, 6\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (0\pGameL, 7\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (15\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (1\pGameL, 7\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (2\pGameL, 7\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (3\pGameL, 7\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (4\pGameL, 7\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (5\pGameL, 7\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (6\pGameL, 7\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (14\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (13\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (12\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (11\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (10\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (9\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[bin] (0\pGameL, 0\pGameL) rectangle (16\pGameL, 16\pGameL);
+\end{tikzpicture}

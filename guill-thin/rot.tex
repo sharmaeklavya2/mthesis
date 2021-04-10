@@ -1,0 +1,34 @@
+\section{APoG for the Rotational Case}
+\label{sec:guill-rot}
+
+\begin{theorem}
+\label{thm:guill-rot}
+For a set $I$ of rectangular items,
+let $\opt\nonrot(I)$ and $\opt\rot(I)$ be the minimum number of bins
+needed to pack $I$ in the non-rotational and rotational versions, respectively.
+Let $\opt\nonrot_g(I)$ and $\opt\rot_g(I)$ be the minimum number of guillotinable bins
+needed to pack $I$ in the non-rotational and rotational versions, respectively.
+
+Let $\Scal$ be a family of inputs that is closed under rotation, i.e.,
+for a set $I \in \Scal$ of items, if we rotate some items in $I$ to get a set $J$ of items,
+then $J \in \Scal$.
+Let $\APoG\nonrot$ and $\APoG\rot$ be the APoG for the non-rotational
+and rotational versions, respectively, restricted to the family $\Scal$.
+Then $\APoG\rot \le \APoG\nonrot$.
+\end{theorem}
+\begin{proof}
+Let $I$ be any set of items in $\Scal$. Let $K$ be the corresponding rotated items
+in the optimal rotational packing of $I$, i.e., $\opt\rot(I) = \opt\nonrot(K)$. Then
+\begin{align*}
+\opt\rot_g(I) &\le \opt\nonrot_g(K)
+\\ &\le \APoG\nonrot\opt\nonrot(K) + O(1)
+\\ &= \APoG\nonrot\opt\rot(I) + O(1)
+\end{align*}
+Since this is true for all $I \in \Scal$, we get $\APoG\rot \le \APoG\nonrot$.
+\end{proof}
+
+Assume without loss of generality that bins have width and height at least 1.
+The class of $(\delta, \delta)$-thin rectangles is closed under rotation,
+so by \cref{thm:guill-rot}, the APoG for the rotational case is upper-bounded by
+\[ \frac{4}{3}\left(1+\frac{4\delta}{1-\delta}\right). \]
+When $\delta$ is very small, this is close to $4/3$.

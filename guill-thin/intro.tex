@@ -1,0 +1,67 @@
+In this chapter, we consider the problem of obtaining tight upper and lower bounds
+on the Asymptotic Price of Guillotinability (APoG).
+See \cref{sec:intro:guill-thin} to recall the definition and significance of APoG.
+See \cref{sec:intro:guill-bp} to recall the definition of guillotinable packing
+and $k$-stage packing.
+
+We focus on the special case where the items are
+$(\delta_W, \delta_H)$-thin rectangles, i.e., each item has
+width at most $\delta_W$ or height at most $\delta_H$,
+where $\delta_W$ and $\delta_H$ are constants.
+We give lower and upper bounds of roughly $4/3$ when
+$\delta_W$ and $\delta_H$ are very small constants.
+
+\section{Overview of the Chapter}
+
+In \cref{sec:apog-lb}, we show a lower bound of $4/3$ on APoG
+for thin rectangles. Formally, we prove the following theorem.
+
+\begin{restatable}[Hard instance]{definition}{rdefHardItems}
+Let $m$ and $k$ be positive integers and $\eps \in (0, 1)$.
+Define $\hardItems(m, k, \eps)$ as a set of $4mk$ rectangular items,
+where $2mk$ items have width $(1+\eps)/2$ and height $(1-\eps)/2k$,
+and $2mk$ items have height $(1+\eps)/2$ and width $(1-\eps)/2k$.
+\end{restatable}
+
+\begin{restatable}{theorem}{rthmAPoGLB}
+\label{thm:apog-lb}
+Let $I \defeq \hardItems(m, k, \eps)$. Let $\opt(I)$ be the number of bins in the
+optimal packing of $I$ and $\opt_g(I)$ be the number of bins in the
+optimal guillotinable packing of $I$. Then
+\[ \frac{\opt_g(I)}{\opt(I)} \ge \frac{4}{3} (1-\eps). \]
+This holds true even if items in $I$ are allowed to be rotated.
+\end{restatable}
+
+In \cref{sec:thin-gpack}, we give an algorithm for non-rotational 2D GBP,
+called $\thinGPack_{\eps}$, that takes a parameter $\eps \in (0, 1)$ as input.
+For a set $I$ of $(\delta_W, \delta_H)$-thin rectangles, we show that when
+$\delta_W$, $\delta_H$ and $\eps$ are close to 0, $\thinGPack_{\eps}(I)$ outputs a
+guillotinable packing of $I$ into roughly $4\opt(I)/3 + O(1)$ bins.
+This proves an upper bound of roughly $4/3$ on APoG for thin rectangles.
+Formally, we prove the following theorems about $\thinGPack$.
+
+\begin{restatable}{theorem}{rthmThinGPackProps}
+\label{thm:thin-gpack-props}
+$\thinGPack_{\eps}(I)$ outputs a 4-stage packing of $I$ in time
+$O((1/\eps)^{O(1/\eps)} + n\log n)$.
+\end{restatable}
+
+\begin{restatable}{theorem}{rthmThinGPackAppx}
+\label{thm:thin-gpack-appx}
+Let $I$ be a set of items where each item has width at most $\delta_W$
+or height at most $\delta_H$. Then $\thinGPack_{\eps}(I)$ uses less than
+$\alpha(1+\eps)\opt(I) + 2\beta$ bins, where
+\begin{align*}
+\Delta &\defeq \frac{1}{2}\left(\frac{\delta_H}{1-\delta_H}
+    + \frac{\delta_W}{1-\delta_W}\right)
+\\ \alpha &\defeq \frac{4}{3}(1+4\Delta) + 4\eps\left(1 + \frac{7\Delta}{3}\right)
+    \le \frac{4}{3}(1+4\Delta)(1+3\eps)
+\\ \beta &\defeq \frac{2\Delta(1+\eps)}{\eps^2} + \frac{10}{3}
+    + \frac{19\Delta}{3} + \frac{16\Delta\eps}{3}
+\end{align*}
+\end{restatable}
+
+In \cref{sec:guill-rot}, we show that the APoG for the rotational case
+is at most the APoG for the non-rotational case.
+So, when are items are thin, we get an upper bound of $4/3$ on APoG
+in the rotational case too.

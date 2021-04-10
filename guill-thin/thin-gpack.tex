@@ -1,0 +1,614 @@
+\section{Algorithm \texorpdfstring{$\thinGPack$}{thin4Pack}}
+\label{sec:thin-gpack}
+
+\subsection{Packing With Slicing}
+
+Before we look at the problem of computing a (guillotinable) packing of thin rectangles,
+let us first look at a closely-related variant of this problem,
+called the \emph{2D sliceable bin packing problem}, denoted as 2D SBP.
+In this problem, we are given two sets of rectangular items, $W$ and $H$, where
+items in $W$ have width more than $1/2$, and items in $H$ have height more than $1/2$.
+$W$ is called the set of wide items and $H$ is called the set of tall items.
+We are allowed to \emph{slice} items in $W$ using horizontal cuts
+and slice items in $H$ using vertical cuts, and our task is to pack
+$W \cup H$ into the minimum number of bins without rotating the items.
+
+We first describe a fast and simple $4/3$-asymptotic-approximation algorithm
+for 2D SBP, called $\greedyPack$, that outputs a 2-stage packing.
+Later, we will show how to use $\greedyPack$ to design $\thinGPack$.
+
+We assume that the bin is a square of side length 1. Since we can slice items,
+we allow items in $W$ to have height more than 1
+and items in $H$ to have width more than 1.
+
+For a set $X \subseteq W$ of items, define
+\[ \hsum(X) \defeq \sum_{i \in X} h(i) \quad\textrm{and}\quad
+\wmax(X) \defeq \begin{cases}\max_{i \in X} w(i) & \textrm{ if } X \neq \emptyset
+\\ 0 & \textrm{ if } X = \emptyset\end{cases}. \]
+
+For a set $X \subseteq H$ of items, define
+\[ \wsum(X) \defeq \sum_{i \in X} w(i) \quad\textrm{and}\quad
+\hmax(X) \defeq \begin{cases}\max_{i \in X} h(i) & \textrm{ if } X \neq \emptyset
+\\ 0 & \textrm{ if } X = \emptyset\end{cases}. \]
+
+In the algorithm $\greedyPack(W, H)$, we first sort the items $W$ in decreasing order
+of width and sort the items $H$ in decreasing order of height.
+If $\hsum(W) \ge \wsum(H)$, then we pack the largest possible prefix of $W$
+into a bin such that the items touch the right edge of the bin.
+Then we pack a prefix of $H$ into the remaining space in the side of the bin.
+We call this a type-1 bin. See \cref{fig:greedy-pack} for an example.
+If $\hsum(W) < \wsum(H)$, we proceed analogously in a coordinate-swapped way,
+i.e., we first pack tall items in the bin and then pack wide items in the remaining space.
+Call this bin a type-2 bin.
+We pack the rest of the items into bins in the same way.
+See \cref{algo:greedyPack} for a more precise description of $\greedyPack$.
+
+\begin{figure}[!ht]
+\begin{subfigure}{0.45\textwidth}
+    \centering
+    \tikzset{mytransform/.style={}}
+    \tikzset{wItem/.style={draw,fill={black!20}}}
+    \tikzset{hItem/.style={draw,fill={black!10}}}
+    \input{img/greedy-pack.tikz}
+    \caption{A type-1 bin. Wide items are packed on the right. Tall items are packed on the left.}%
+\label{fig:greedy-pack:1}
+\end{subfigure}
+\hfil
+\begin{subfigure}{0.45\textwidth}
+    \centering
+    \tikzset{mytransform/.style={xscale=-1,rotate=90}}
+    \tikzset{wItem/.style={draw,fill={black!10}}}
+    \tikzset{hItem/.style={draw,fill={black!20}}}
+    \input{img/greedy-pack.tikz}
+    \caption{A type-2 bin. Tall items are packed above. Wide items are packed below.}%
+\label{fig:greedy-pack:2}
+\end{subfigure}
+\caption{Examples of type-1 and type-2 bins produced by $\greedyPack$.}
+\label{fig:greedy-pack}
+\end{figure}
+
+\begin{definition}
+\label{defn:hw-prefix}
+Let $W$ be a sequence of wide items.
+Define $\hprefix(W, \gamma)$ as the prefix of $W$ of total height $\gamma$
+if $\hsum(W) > \gamma$ (slice items if necessary).
+If $\hsum(W) \le \gamma$, define $\hprefix(W, \gamma)$ to be $W$.
+Let $H$ be a sequence of tall items.
+Define $\wprefix(H, \gamma)$ as the prefix of $H$ of total width $\gamma$
+if $\wsum(H) > \gamma$ (slice items if necessary).
+If $\wsum(H) \le \gamma$, define $\wprefix(H, \gamma)$ to be $H$.
+\end{definition}
+
+\begin{algorithm}[!ht]
+\caption{$\greedyPack(W, H)$: Packs items $W \cup H$ into bins.
+The items $W$ have width more than $1/2$ and can be sliced using horizontal cuts.
+The items $H$ have width more than $1/2$ and can be sliced using vertical cuts.}
+\label{algo:greedyPack}
+\begin{algorithmic}[1]
+\State Sort the items in $W$ in decreasing order of width.
+\State Sort the items in $H$ in decreasing order of height.
+\While{$W \neq \emptyset$ or $H \neq \emptyset$}
+    \State Create an empty bin.
+    \If{$\hsum(W) \ge \wsum(H)$}
+        \State Let $X \defeq \hprefix(W, 1)$. \Comment{see \cref{defn:hw-prefix}}
+        \State Pack $X$ in a region of width $\wmax(X)$ on the right side of the bin.
+        \State Remove $X$ from $W$.
+        \State Let $Y \defeq \wprefix(H, 1-\wmax(X))$. \Comment{see \cref{defn:hw-prefix}}
+        \State Pack $Y$ in a region of width $1 - \wmax(X)$ on the left side of the bin.
+        \State Remove $Y$ from $H$.
+        \State Label the bin as a type-1 bin.
+    \Else
+        \parState{Proceed analogous to the previous case, i.e., $X$ is a prefix of $H$ of width
+            at most 1 and $Y$ is a prefix of $W$ of total height at most $1 - \hmax(X)$.}
+        \parState{Label the bin as a type-2 bin.}
+    \EndIf
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+\begin{claim}
+\label{thm:greedy-pack}
+$\greedyPack(W, H)$ always outputs a 2-stage packing of $W \cup H$.
+It runs in time $O(m + |W|\log|W| + |H|\log|H|)$,
+where $m$ is the number of bins used.
+Furthermore, it slices items in $W$ by making at most $m-1$ horizontal cuts
+and slices items in $H$ by making at most $m-1$ vertical cuts.
+\end{claim}
+
+If all bins are of type 1, then the number of bins used is $\smallceil{\hsum(W)}$.
+If all bins are of type 2, then the number of bins used is $\smallceil{\wsum(H)}$.
+Since items in $W$ have width more than $1/2$, no two items can be placed side-by-side.
+If $H = \{\}$, then the optimal solution is to stack the items $W$ one-over-the-other.
+Therefore, $\smallceil{\hsum(W)} \le \opt(W \cup H)$.
+Similarly, $\smallceil{\wsum(H)} \le \opt(W \cup H)$.
+Hence, if all bins are of the same type, the number of bins used is at most $\opt(W \cup H)$.
+
+We will now focus on the more interesting case, i.e.,
+some bins are of type 1 and some are of type 2.
+
+\begin{definition}[Full bin]
+In a type-1 bin, let $X$ be the items from $W$ and $Y$ be the items from $H$.
+The bin is said to be \emph{full} iff $\hsum(X) = 1$ and $\wsum(Y) = 1 - \wmax(X)$.
+Define fullness for a type-2 bin analogously.
+\end{definition}
+
+We first show that full bins pack items of a large total area,
+and then we show that if some bins are of type 1 and some bins are of type 2,
+then there can be at most 2 non-full bins.
+This will help us get an upper-bound on the number of bins used by $\greedyPack(W, H)$
+in terms of $a(W \cup H)$.
+
+\begin{lemma}
+\label{thm:area-bound}
+Let there be $m_1$ full bins of type 1.
+Let $J_1$ be the items inside those bins.
+Then $m_1 \le 4a(J_1)/3 + 1/3$.
+\end{lemma}
+\begin{proof}
+In the $j\Th$ full bin of type 1, let $X_j$ be the items from $W$
+and $Y_j$ be the items from $H$. Let
+\[ \ell_j \defeq \begin{cases}\wmax(X_j) & \textrm{ if } j \le m_1
+\\ 1/2 & \textrm{ if } j = m_1 + 1 \end{cases}. \]
+Since all items have their larger dimension more than $1/2$,
+$\ell_j \ge 1/2$ and $\hmax(Y_j) > 1/2$.
+
+$a(X_j) \ge \ell_{j+1}$, since $X_j$ has height 1 and width at least $\ell_{j+1}$.
+$a(Y_j) \ge (1-\ell_j)/2$, since $Y_j$ has width $1 - \ell_j$ and height more than $1/2$.
+Therefore,
+\begin{align*}
+a(J_1) &= \sum_{j=1}^{m_1} (a(X_j) + a(Y_j))
+\ge \sum_{j=1}^{m_1} (\ell_{j+1} + (1-\ell_j)/2)
+\\ &\ge \sum_{j=1}^{m_1} \left(\frac{\ell_{j+1}}{2} + \frac{1}{4}
+    + \frac{1}{2} - \frac{\ell_j}{2}\right)  \tag{$\ell_{j+1} \ge 1/2$}
+\\ &= \frac{3m_1}{4} + \frac{1}{4} - \frac{\ell_1}{2}
+\ge \frac{3m_1-1}{4}
+\end{align*}
+Therefore, $m_1 \le 4a(J_1)/3 + 1/3$.
+% This is tight.
+\end{proof}
+
+An analogue of \cref{thm:area-bound} can be proven for type-2 bins.
+
+Let $m$ be the number of bins used by $\greedyPack(W, H)$.
+After $j$ bins have been packed, let $A_j$ be the height of the remaining items in $W$
+and $B_j$ be the width of the remaining items in $H$.
+Let $t_j$ be the type of the $j\Th$ bin (1 for type-1 bin and 2 for type-2 bin).
+So $t_j = 1 \iff A_{j-1} \ge B_{j-1}$.
+
+We first show that $|A_{j-1} - B_{j-1}| \le 1 \implies |A_j - B_j| \le 1$.
+This means that once the difference between $h(W)$ and $w(H)$ becomes at most 1,
+it continues to stay at most 1.
+Next, we show that $t_j \neq t_{j+1} \implies |A_{j-1} - B_{j-1}| \le 1$.
+This means that if there are some bins of type 1 and some bins of type 2,
+then the difference between $h(W)$ and $w(H)$ will eventually become at most 1.
+In the first non-full bin, we will use up all the wide items or the tall items.
+Then the remaining items will have total height or total width at most 1,
+so we can have at most 1 more non-full bin.
+This would imply that there can be at most 2 non-full bins
+when we have both type-1 and type-2 bins.
+
+In the $j\Th$ bin, let $a_j$ be the height of items from $W$
+and $b_j$ be the width of items from $H$.
+Hence, for all $j \in [m]$,
+$A_{j-1} = A_j + a_j$ and $B_{j-1} = B_j + b_j$.
+
+\begin{lemma}
+\label{thm:diff-capture}
+$|A_{j-1} - B_{j-1}| \le 1 \implies |A_j - B_j| \le 1$.
+\end{lemma}
+\begin{proof}
+\textbf{Case 1:} $A_{j-1} - B_{j-1} \in [0, 1]$.
+\\ This means that $t_j = 1$.
+
+Assume (for the sake of proof by contradiction) that $a_j < b_j$.
+Then $a_j < 1$, so we used up all of $W$ in the $j\Th$ bin.
+Therefore, $A_j = 0$ and $A_{j-1} = a_j$. Therefore,
+\[ A_{j-1} = a_j < b_j \le b_j + B_j = B_{j-1} \implies \bot \]
+Therefore, $a_j \ge b_j$. Since $A_{j-1} - B_{j-1} \in [0, 1]$
+and $a_j - b_j \in [0, 1]$, we get
+\[ A_j - B_j = (A_{j-1} - B_{j-1}) - (a_j - b_j) \in [-1, 1] \]
+Therefore, $|A_j - B_j| \le 1$.
+
+\textbf{Case 2:} $A_{j-1} - B_{j-1} \in [-1, 0)$.
+\\ This means that $t_j = 2$.
+By an analysis similar to case 1, we get $|A_j - B_j| \le 1$.
+\end{proof}
+
+\begin{lemma}
+\label{thm:tdiff-implies-adiff}
+$t_j \neq t_{j+1} \implies |A_{j-1} - B_{j-1}| \le 1$.
+\end{lemma}
+\begin{proof}
+\begin{align*}
+& t_j = 1 \textrm{ and } t_{j+1} = 2
+\\ &\implies A_{j-1} \ge B_{j-1} \textrm{ and } A_j < B_j
+\\ &\implies B_{j-1} \le A_{j-1} < B_{j-1} + a_j - b_j
+\\ &\implies A_{j-1} - B_{j-1} \in \ropenInterval{0, 1}
+\end{align*}
+\begin{align*}
+& t_j = 2 \textrm{ and } t_{j+1} = 1
+\\ &\implies A_{j-1} < B_{j-1} \textrm{ and } A_j \ge B_j
+\\ &\implies A_{j-1} < B_{j-1} \le A_{j-1} + (b_j - a_j)
+\\ &\implies A_{j-1} - B_{j-1} \in \ropenInterval{-1, 0}
+\qedhere \end{align*}
+\end{proof}
+
+\begin{lemma}
+\label{thm:non-full-bounded-diff}
+Let there be $p$ full bins. If all bins don't have the same type, then $|A_p - B_p| \le 1$.
+\end{lemma}
+\begin{proof}
+If $m = p$, then $A_p = B_p = 0$, so $|A_p - B_p| \le 1$ trivially holds.
+If $m = p+1$, then $A_p \le 1$ and $B_p \le 1$, so $|A_p - B_p| \le 1$ trivially holds.
+So now assume $m \ge p+2$.
+
+Suppose that in the $(p+1)\Th$ bin, we used up all items from $W$ but not $H$.
+Then $\forall i \ge p+2$, $t_i = 2$.
+Since all bins don't have the same type, $\exists k \le p+1$ such that
+$t_k = 1$ and $t_{k+1} = 2$.
+By \cref{thm:tdiff-implies-adiff,thm:diff-capture}, we get $|A_p - B_p| \le 1$.
+Similarly, if we used up all items from $H$ in the $(p+1)\Th$ bin, then $|A_p - B_p| \le 1$.
+\end{proof}
+
+\begin{lemma}
+\label{thm:non-full-ub}
+If all bins don't have the same type, then there can be at most 2 non-full bins.
+\end{lemma}
+\begin{proof}
+Let there be $p$ full bins. Assume that there are more than 2 non-full bins.
+\WLoG, assume that the first non-full bin used up all wide items.
+Hence, $A_{p+1} = 0$.
+By \cref{thm:non-full-bounded-diff}, we get $|A_p - B_p| \le 1$.
+By \cref{thm:diff-capture}, we get $|A_{p+1} - B_{p+1}| \le 1$,
+which implies that $B_{p+1} \le 1$.
+Hence, the $(p+1)\Th$ bin will have type 2 and will use up all tall items,
+so there can be at most 2 non-full bins.
+\end{proof}
+
+\begin{theorem}
+\label{thm:greedy-pack-bins}
+The number of bins used by $\greedyPack$ is at most
+\[ \max\left(\smallceil{\hsum(W)}, \smallceil{\wsum(H)},
+    \frac{4}{3}a(W \cup H) + \frac{8}{3}\right) \]
+\end{theorem}
+\begin{proof}
+Let there be $m$ bins in the output of $\greedyPack(W, H)$.
+If all bins have the same type, then $m \le \max(\smallceil{\hsum(W)}, \smallceil{\wsum(H)})$.
+
+Let there be $m_1$ full bins of type 1 and let $J_1$ be the items inside those bins.
+Let there be $m_2$ full bins of type 2 and let $J_2$ be the items inside those bins.
+Then by \cref{thm:area-bound}, we get $m_1 \le 4a(J_1)/3 + 1/3$ and $m_2 \le 4a(J_2)/3 + 1/3$.
+Hence, $m_1 + m_2 \le 4a(W \cup H)/3 + 2/3$.
+If all bins don't have the same type, then by \cref{thm:non-full-ub},
+there can be at most 2 non-full bins, so $\greedyPack(W, H)$
+uses at most $4a(W \cup H)/3 + 8/3$ bins.
+\end{proof}
+
+\subsection{Overview of \texorpdfstring{$\thinGPack$}{thin4Pack}}
+
+$\thinGPack$ takes as input a set $I$ of rectangular items
+and a parameter $\eps \in (0, 1)$.
+It outputs a 4-stage bin packing of $I$.
+
+$\thinGPack$ has the following outline:
+\begin{enumerate}
+\item Use linear grouping to round up the width or height of each item in $I$.
+    This gives us a new instance $\Ihat$.
+\item Pack $\Ihat$ into $1/\eps^2 + 1$ shelves,
+    after possibly \emph{slicing} some items.
+    Each shelf has width or height more than $1/2$ and is fully packed, i.e.,
+    the total area of items in a shelf equals the area of the shelf.
+    If we treat each shelf as an item, we get a new instance $\Itild$.
+\item Compute a packing of $\Itild$ into bins, after possibly slicing some items,
+    using $\greedyPack$.
+\item Pack most of the items of $I$ into the shelves in the bins. We will prove that
+    the remaining items have very small area, so they can be packed separately.
+\end{enumerate}
+
+To simplify our algorithm, we assume that $\eps^{-1} \in \mathbb{Z}$.
+
+\subsection{Item Classification and Rounding}
+\label{sec:bp-algo:round}
+
+Define $W \defeq \{i \in I: h(i) \le \delta_H \}$ and $H \defeq I - W$.
+Items in $W$ are called \emph{wide} and items in $H$ are called \emph{tall}.
+Let $\WLarge \defeq \{i \in W: w(i) > \eps \}$ and $\WSmall \defeq W - \WLarge$.
+Similarly, let $\HLarge \defeq \{i \in H: h(i) > \eps \}$ and $\HSmall \defeq H - \HLarge$.
+
+We will now use \emph{linear grouping}~\cite{bp-aptas,kenyon1996strip}
+to round up the widths of items in $\WLarge$ and the heights of items in $\HLarge$.
+Arrange the items of $\WLarge$ in decreasing order of width and stack them
+one-over-the-other (i.e., the widest item in $\WLarge$ is at the bottom).
+Let $h_L$ be the height of the stack.
+Let $y(i)$ be the $y$-coordinate of the bottom edge of item $i$.
+Split the stack into sections of height $\eps^2h_L$ each.
+For $j \in [1/\eps^2]$, let $w_j$ be the width of the
+widest item intersecting the $j\Th$ section from the bottom, i.e.,
+\[ w_j \defeq \max(\{w(i): i \in \WLarge \textrm{ and } (y(i), y(i) + h(i))
+    \cap ((j-1)\eps^2 h_L, j\eps^2 h_L) \neq \emptyset\}). \]
+Round up the width of each item $i$ to the smallest $w_j$ that is at least $w(i)$.
+Let $\WLarge_j$ be the items whose width got rounded to $w_j$
+and let $\WhatLarge_j$ be the resulting rounded items.
+(There may be ties, i.e., there may exist $j_1 < j_2$ such that $w_{j_1} = w_{j_2}$.
+In that case, define $\WLarge_{j_2} \defeq \WhatLarge_{j_2} = \emptyset$.
+This ensures that all $\WLarge_j$ are disjoint.)
+Let $\WhatLarge \defeq \bigcup_j \WhatLarge_j$.
+
+Allow horizontally slicing each item in $\WhatLarge$.
+Let $\WhatSmall$ be the same as $\WSmall$, except that we are allowed
+to slice items in $\WhatSmall$ both horizontally and vertically.
+Let $\What \defeq \WhatLarge \cup \WhatSmall$.
+Define $\Hhat$ analogously. Let $\Ihat \defeq \What \cup \Hhat$.
+
+\begin{claim}
+Items in $\WhatLarge$ have at most $1/\eps^2$ distinct widths.
+Items in $\HhatLarge$ have at most $1/\eps^2$ distinct heights.
+\end{claim}
+
+\begin{lemma}
+\label{thm:lingroup-opt-compare}
+$\opt(\Ihat) < (1+\eps)\opt(I) + 2$.
+\end{lemma}
+\begin{proof}
+Consider the optimal packing of $I$.
+To convert this to a packing of $\Ihat - (\WhatLarge_1 \cup \HhatLarge_1)$,
+unpack $\WLarge_1$ and $\HLarge_1$, and for each $j \in [1/\eps^2-1]$,
+pack $\WhatLarge_{j+1}$ in the place of $\WLarge_j$
+and pack $\HhatLarge_{j+1}$ in the place of $\HLarge_j$,
+possibly after slicing the items.
+Therefore,
+\begin{equation}
+\label{eqn:lingroup-1}
+\opt(\Ihat - (\WhatLarge_1 \cup \HhatLarge_1)) \le \opt(I).
+\end{equation}
+
+We can pack $\HhatLarge_1$ in a bin by stacking the items side-by-side on the base of bins.
+We can pack $\WhatLarge_1$ in a bin by stacking the items one-over-the-other.
+Let $w_L$ be the total width of items in $\HhatLarge$. The number of bins used is
+$\smallceil{\eps^2h_L} + \smallceil{\eps^2w_L}$. Also,
+\[ \opt(I) \ge \opt(\WLarge \cup \HLarge)
+\ge a(\WLarge) + a(\HLarge) \ge \eps(h_L + w_L) \]
+Therefore,
+\begin{equation}
+\label{eqn:lingroup-2}
+\opt(\WhatLarge_1 \cup \HhatLarge_1)
+\le \smallceil{\eps^2h_L} + \smallceil{\eps^2w_L} < \eps\opt(I) + 2.
+\end{equation}
+On combining \eqref{eqn:lingroup-1} and \eqref{eqn:lingroup-2}, we get
+\[ \opt(\Ihat) \le \opt(\Ihat - (\WhatLarge_1 \cup \HhatLarge_1))
+    + \opt(\WhatLarge_1 \cup \HhatLarge_1)
+< (1+\eps)\opt(I) + 2 \qedhere \]
+\end{proof}
+
+\subsection{Creating Containers}
+\label{sec:bp-algo:create-containers}
+
+We will use ideas from Kenyon and R\'emila's strip packing algorithm~\cite{kenyon1996strip}
+to pack $\Ihat$ into containers and pack the containers into shelves.
+In the strip packing problem, we are given a set of rectangular items,
+and we have to pack them into a bin of width 1 and minimum height.
+
+Since we allow horizontally slicing items in $\What$,
+a packing of $\What$ into $m$ bins gives us a
+packing of $\What$ into a strip of height $m$,
+and a packing of $\What$ into a strip of height $h'$ gives us a
+packing of $\What$ into $\smallceil{h'}$ bins.
+Hence, if we denote the optimal strip packing of $\What$ by $\optSP(\What)$,
+then $\opt(\What) = \smallceil{\optSP(\What)}$.
+We will now try to compute a near-optimal strip packing of $\What$.
+
+Define a horizontal configuration $S$ as a tuple of $1/\eps^2+1$ non-negative integers,
+where $S_0 \in \{0, 1\}$ and $\sum_{j=1}^{1/\eps^2} S_jw_j \le 1$.
+For any horizontal line at height $y$ in a strip packing of $\What$,
+the multiset of items intersecting the line corresponds to a configuration.
+$S_0$ indicates whether the line intersects items from $\WhatSmall$,
+and $S_j$ is the number of items from $\WhatLarge_j$ that the line intersects.
+Let $\Scal$ be the set of all horizontal configurations. Let $N \defeq |\Scal|$.
+
+To obtain an optimal packing, we need to determine the height of each configuration.
+This can be done with the following linear program.
+\[ \optprog{\min_{x \in \mathbb{R}^N}}{\sum_{S \in \Scal} x_S}{
+\\[1.5em] \textrm{where} & \sum_{S \in \Scal} S_jx_S = h(\WhatLarge_j)
+    & \forall j \in [1/\eps^2]
+\\ \textrm{and} & \sum_{S: S_0=1} \left(1 - \sum_{j=1}^{1/\eps^2}S_jw_j\right)x_S
+    = a(\WhatSmall)
+\\ \textrm{and} & x_S \ge 0 & \forall S \in \Scal
+} \]
+Let $x^*$ be an optimal extreme-point solution to the above LP.
+This gives us a packing where the strip is divided into rectangular regions
+called \emph{shelves} that are stacked on top of each other.
+Each shelf has a configuration $S$ associated with it
+and has height $h(S) \defeq x^*_S$ and contains $S_j$ \emph{containers} of width $w_j$.
+Containers of width $w_j$ only contain items from $\WhatLarge_j$,
+and we call them \emph{type-$j$} containers.
+If $S_0 = 1$, $S$ also contains a container of width $1 - \sum_{j=1}^{1/\eps^2} S_jw_j$
+that contains small items. We call this container a \emph{type-$0$} container.
+Each container is fully filled with items.
+Let $w(S)$ denote the width of shelf $S$, i.e., the sum of widths of all containers in $S$.
+Note that if $S_0 = 1$, then $w(S) = 1$. Otherwise, $w(S) = \sum_{j=1}^{1/\eps^2} S_jw_j$.
+
+\begin{lemma}
+\label{thm:nonneg-entries}
+$x^*$ contains at most $1/\eps^2+1$ positive entries.
+\end{lemma}
+\begin{proof}[Proof sketch]
+Follows by applying rank lemma (\cref{thm:rank-lemma-corr}) to the linear program.
+\end{proof}
+
+\begin{lemma}
+$x_S^* > 0 \implies w(S) > 1/2$.
+\end{lemma}
+\begin{proof}
+Suppose $w(S) \le 1/2$. Then we could have split $S$ into two parts by making a horizontal cut
+in the middle and packed the parts side-by-side, reducing the height of the strip by $x^*_S/2$.
+But that would contradict the fact that $x^*$ is optimal.
+\end{proof}
+
+Now treat each shelf $S$ as an item of width $w(S)$ and height $h(S)$.
+Allow each such item to be sliced using horizontal cuts.
+This gives us a new set $\Wtild$ of items such that $\What$ can be packed inside $\Wtild$.
+
+By applying an analogous approach to $\Hhat$, we get a new set $\Htild$ of items.
+Let $\Itild \defeq \Wtild \cup \Htild$.
+We call the shelves of $\Wtild$ \emph{horizontal shelves} and the shelves of $\Htild$
+\emph{vertical shelves}. The containers in horizontal shelves are called \emph{wide containers}
+and the containers in vertical shelves are called \emph{tall containers}.
+
+\begin{claim}
+\label{thm:area-eq}
+$a(\Itild) = a(\Ihat)$.
+\end{claim}
+\begin{lemma}
+\label{thm:hw-opt}
+Let $h(\Wtild)$ be the sum of heights of all items in $\Wtild$.
+Let $w(\Htild)$ be the sum of widths of all items in $\Htild$.
+%Let $\opt(\Ihat)$ be the optimal bin packing of $\Ihat$.
+Then $\max(\smallceil{h(\Wtild)}, \smallceil{w(\Htild)}) \le \opt(\Ihat)$.
+\end{lemma}
+\begin{proof}
+Since $x^*$ is the optimal solution to the linear program for strip packing $\What$,
+$h(\Wtild) = \sum_{S \in \Scal} x^*_S = \optSP(\What)$.
+Therefore, $\smallceil{h(\Wtild)} = \opt(\What) \le \opt(\Ihat)$.
+Similarly, $\smallceil{w(\Htild)} = \opt(\Hhat) \le \opt(\Ihat)$.
+\end{proof}
+
+\subsection{Packing Shelves Into Bins}
+\label{sec:bp-algo:pack-shelves-into-bins}
+
+So far, we have packed $\Ihat$ into shelves $\Wtild$ and $\Htild$.
+We will now use $\greedyPack(\Wtild, \Htild)$ to pack the shelves into bins.
+By \cref{thm:greedy-pack}, we get a 2-stage packing of $\Wtild \cup \Htild$
+into $m$ bins, where we make at most $m-1$ horizontal cuts in $\Wtild$
+and at most $m-1$ vertical cuts in $\Htild$.
+
+By \cref{thm:nonneg-entries}, we get a packing of $m+1/\eps^2$ horizontal shelves
+and $m+1/\eps^2$ vertical shelves into $m$ bins.
+
+By \cref{thm:greedy-pack-bins,thm:hw-opt,thm:area-eq}, we get that
+\[ m \le \max\left(\smallceil{h(\Wtild)}, \smallceil{w(\Htild)},
+    \frac{4}{3}a(\Itild) + \frac{8}{3}\right)
+\le \frac{4}{3}\opt(\Ihat) + \frac{8}{3} \]
+
+\subsection{Packing Items Into Containers}
+\label{sec:bp-algo:pack-into-containers}
+
+We will now try to pack a large subset of items into the containers.
+
+\begin{lemma}
+\label{thm:discard-area-ub}
+Let $P$ be a packing of $\Itild$ into $m$ bins, where we sliced horizontal shelves by making
+at most $m-1$ horizontal cuts and sliced vertical shelves by making at most $m-1$ vertical cuts.
+Then we can pack a large subset of items $I$ into the containers in $P$ such that
+the unpacked items from $W$ have area less than
+\[ \eps h(\Wtild) + \delta_H(1 + \eps)(m + 1/\eps^2) \]
+and the unpacked items from $H$ have area less than
+\[ \eps w(\Htild) + \delta_W(1 + \eps)(m + 1/\eps^2) \]
+\end{lemma}
+\begin{proof}
+For each $j \in [1/\eps^2]$, number the type-$j$ wide containers arbitrarily,
+and number the items in $\WLarge_j$ arbitrarily.
+Now greedily assign items from $\WLarge_j$ to the first container $C$ until the total height
+of the items exceeds $h(C)$. Then move to the next container and repeat.
+As per the constraints of the linear program, all items in $\WLarge_j$
+will get assigned to some type-$j$ wide container.
+Similarly, number the type-0 wide containers arbitrarily
+and number the items in $\WSmall$ arbitrarily.
+Greedily assign items from $\WSmall$ to the first container $C$ until the total area
+of the items exceeds $a(C)$. Then move to the next container and repeat.
+As per the constraints of the linear program, all items in $\WSmall$
+will get assigned to some type-0 wide container.
+Similarly, assign all items from $H$ to tall containers.
+
+Let $C$ be a type-$j$ wide container and $J$ be the items assigned to it.
+If we discard the last item from $J$, then the items can be packed into $C$.
+The area of the discarded item is at most $w(C)\delta_H$.
+Let $C$ be a type-0 wide container and $J$ be the items assigned to it.
+Arrange the items in $J$ in decreasing order of height and pack the largest
+prefix $J' \subseteq J$ into $C$ using NFDW (Next-Fit Decreasing Width),
+which is an analogue of NFDH with the coordinate axes swapped.
+
+Discard the items $J - J'$. By \cref{thm:nfdh-small},
+$a(J - J') < \eps h(C) + \delta_H w(C) + \eps\delta_H$.
+Therefore, for a horizontal shelf $S$, the total area of discarded items is less than
+$\eps h(S) + \delta_H(1 + \eps)$.
+
+After slicing the shelves in $\Itild$ to get $P$,
+we get at most $m + 1/\eps^2$ horizontal shelves
+and at most $m + 1/\eps^2$ vertical shelves.
+Therefore, the total area of discarded items from $W$ is less than
+\[ \eps h(\Wtild) + \delta_H(1 + \eps)(m + 1/\eps^2) \]
+and the total area of discarded items from $H$ is less than
+\[ \eps w(\Htild) + \delta_W(1 + \eps)(m + 1/\eps^2). \qedhere \]
+\end{proof}
+
+We will pack the discarded items into new bins using NFDH (or NFDW),
+and NFDH always outputs a 2-stage packing.
+Since $\greedyPack$ outputs a 2-stage packing of the shelves
+and the packing of items into the shelves is a 2-stage packing,
+the bin packing of non-discarded items is a 4-stage packing.
+
+\subsection{Summary}
+
+A summary of $\thinGPack$ is given in \cref{algo:thinGPack}.
+
+\begin{algorithm}[!ht]
+\caption{$\thinGPack_{\eps}(I)$: Packs items $I$ into square bins of side length 1,
+where each item in $I$ has width at most $\delta_W$ or height at most $\delta_H$.}
+\label{algo:thinGPack}
+\begin{algorithmic}[1]
+\State Let $W \defeq \{i \in I: h(i) \le \delta_H\}$ and $H \defeq I - W$.
+\State Compute $\Ihat$ using linear grouping with parameter $\eps$ as per \cref{sec:bp-algo:round}.
+\State Create shelves $\Itild$ from items $\Ihat$ as per \cref{sec:bp-algo:create-containers}.
+\State Pack $\Itild$ into bins using $\greedyPack$.
+\State Pack a large subset of $I$ into the shelves using \cref{thm:discard-area-ub}.
+Let $W^d$ be the unpacked items from $W$ and $H^d$ be the unpacked items from $H$.
+\State Pack $W^d$ into new bins using NFDH.
+\State Pack $H^d$ into new bins using NFDW.
+\end{algorithmic}
+\end{algorithm}
+
+\begin{lemma}
+\label{thm:nfdh-small-multi}
+Let $I$ be a set of rectangular items where each item has height at most $\delta$.
+Then the number of bins required by NFDH to pack $I$ is less than
+$(2a(I)+1)/(1-\delta)$.
+\end{lemma}
+\begin{proof}
+The bin packing version of NFDH first packs $I$ into shelves
+and then packs the shelves into bins using Next-Fit.
+Let $H$ be the sum of heights of all the shelves.
+By \cref{thm:nfdh-strip}, $H < 2a(I) + \delta$.
+By \cref{thm:next-fit-small}, the number of bins
+is less than $1 + H/(1-\delta) < (2a(I)+1)/(1-\delta)$.
+\end{proof}
+
+\rthmThinGPackProps*
+\begin{proof}
+$\greedyPack$ outputs a 2-stage packing, so $\thinGPack$ outputs a 4-stage packing.
+
+Linear grouping takes $O(n\log n + 1/\eps^2)$ time.
+Computing the shelves requires solving a linear program in at most
+$2(1/\eps^2)^{1/\eps}$ variables and $1+1/\eps^2$ constraints.
+$\greedyPack$ takes $O(n\log n)$ time.
+Packing $I$ into containers takes $O(n\log n)$ time.
+NFDH and NFDW take $O(n\log n)$ time.
+\end{proof}
+
+\rthmThinGPackAppx*
+\begin{proof}
+Suppose $\greedyPack$ uses at most $m$ bins. Then by \cref{thm:greedy-pack-bins},
+\[ m \le 4\opt(\Ihat)/3 + 8/3. \]
+Let $W^d$ and $H^d$ be the unpacked items from $W$ and $H$, respectively.
+By \cref{thm:discard-area-ub,thm:hw-opt},
+\[ a(W^d) < \eps\opt(\Ihat) + \delta_H(1 + \eps)(m + 1/\eps^2) \]
+\[ a(H^d) < \eps\opt(\Ihat) + \delta_W(1 + \eps)(m + 1/\eps^2) \]
+By \cref{thm:nfdh-small-multi}, the number of bins used by $\thinGPack_{\eps}(I)$ is less than
+\begin{align*}
+& m + \frac{2a(W^d)+1}{1-\delta_H} + \frac{2a(H^d)+1}{1-\delta_W}
+\\ &\le (1 + 4\Delta(1+\eps))m + 4\eps(1+\Delta)\opt(\Ihat)
+    + 2(1+\Delta) + 4\Delta(1+\eps)/\eps^2
+\\ &\le \alpha\opt(\Ihat) + 2(\beta - 1)
+< \alpha(1+\eps)\opt(I) + 2\beta
+\tag{by \cref{thm:lingroup-opt-compare}}
+\end{align*}
+\end{proof}

@@ -1,0 +1,72 @@
+\ifcsname pGameL\endcsname\else\newlength{\pGameL}\fi
+\setlength{\pGameL}{0.3cm}
+\tikzset{bin/.style={draw,thick}}
+%\tikzset{binGrid/.style={draw,step=1\pGameL,{black!20}}}
+\tikzset{item/.style={draw,fill={black!15}}}
+\tikzset{myarrow/.style={->,>={Stealth}}}
+\tikzset{gsep/.style={draw,dashed,semithick,fill={black!85}}}
+\begin{tikzpicture}
+\begin{scope}
+%\path[binGrid] (0\pGameL, 0\pGameL) grid (16\pGameL, 16\pGameL);
+\path[item] (0\pGameL, 15\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (1\pGameL, 14\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (5\pGameL, 4\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (5\pGameL, 3\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (1\pGameL, 2\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (0\pGameL, 1\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (7\pGameL, 0\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (0\pGameL, 6\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (1\pGameL, 5\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (2\pGameL, 5\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (3\pGameL, 5\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (4\pGameL, 5\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (5\pGameL, 5\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (7\pGameL, 5\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (8\pGameL, 5\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (9\pGameL, 5\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (10\pGameL, 5\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (12\pGameL, 5\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (13\pGameL, 5\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (14\pGameL, 4\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (15\pGameL, 2\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[bin] (0\pGameL, 0\pGameL) rectangle (16\pGameL, 16\pGameL);
+\path[gsep] (0\pGameL, 2\pGameL) -- +(16\pGameL, 0\pGameL);
+\path[gsep] (0\pGameL, 15\pGameL) -- +(16\pGameL, 0\pGameL);
+\path[gsep] (1\pGameL, 2\pGameL) -- (1\pGameL, 15\pGameL);
+\path[gsep] (14\pGameL, 2\pGameL) -- (14\pGameL, 15\pGameL);
+\path[gsep] (1\pGameL, 14\pGameL) -- (14\pGameL, 14\pGameL);
+\path[gsep] (1\pGameL, 5\pGameL) -- (14\pGameL, 5\pGameL);
+\end{scope}
+\draw[myarrow,semithick] (17\pGameL, 8\pGameL) -- +(6\pGameL, 0);
+\begin{scope}[xshift=24\pGameL]
+%\path[binGrid] (0\pGameL, 0\pGameL) grid (16\pGameL, 16\pGameL);
+\path[item] (0\pGameL, 15\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (0\pGameL, 14\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (0\pGameL, 13\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (0\pGameL, 12\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (0\pGameL, 11\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (0\pGameL, 10\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (0\pGameL, 9\pGameL) rectangle +(9\pGameL, 1\pGameL);
+\path[item] (0\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (1\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (2\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (3\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (4\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (6\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (7\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (8\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (9\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (11\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (12\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (13\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (14\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[item] (15\pGameL, 0\pGameL) rectangle +(1\pGameL, 9\pGameL);
+\path[bin] (0\pGameL, 0\pGameL) rectangle (16\pGameL, 16\pGameL);
+\path[gsep] (0\pGameL, 15\pGameL) -- (16\pGameL, 15\pGameL);
+\path[gsep] (0\pGameL, 13\pGameL) -- (16\pGameL, 13\pGameL);
+\path[gsep] (13\pGameL, 0\pGameL) -- (13\pGameL, 13\pGameL);
+\path[gsep] (14\pGameL, 0\pGameL) -- (14\pGameL, 13\pGameL);
+\path[gsep] (0\pGameL, 12\pGameL) -- (13\pGameL, 12\pGameL);
+\path[gsep] (0\pGameL, 9\pGameL) -- (13\pGameL, 9\pGameL);
+\end{scope}
+\end{tikzpicture}

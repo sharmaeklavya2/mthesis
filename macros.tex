@@ -6,6 +6,8 @@
 \newcommand*{\appx}{approximate}
 \newcommand*{\config}{configuration}
 \newcommand*{\Config}{Configuration}
+\newcommand*{\nonrot}{^{\mathrm{nr}}}
+\newcommand*{\rot}{^{\mathrm{r}}}
 
 % GVBP
 \newcommand*{\geomvec}[2]{(#1, #2)}
@@ -27,6 +29,7 @@
 \newcommand*{\Ccal}{\mathcal{C}}
 \newcommand*{\Chat}{\widehat{C}}
 \newcommand*{\Ctild}{\widetilde{C}}
+\newcommand*{\Hhat}{\widehat{H}}
 \newcommand*{\Htild}{\widetilde{H}}
 \newcommand*{\Ical}{\mathcal{I}}
 \newcommand*{\Icalhat}{\widehat{\mathcal{I}}}
@@ -44,6 +47,7 @@
 \newcommand*{\Scal}{\mathcal{S}}
 \newcommand*{\Stild}{\widetilde{S}}
 \newcommand*{\What}{\widehat{W}}
+\newcommand*{\Wtild}{\widetilde{W}}
 \newcommand*{\Xtild}{\widetilde{X}}
 
 \newcommand*{\itild}{\tilde{\imath}}
@@ -87,6 +91,18 @@
 
 % APoG
 \newcommand*{\APoG}{\mathrm{APoG}}
+\newcommand*{\ILarge}{I^{(L)}}
+\newcommand*{\ISmall}{I^{(S)}}
+\newcommand*{\IhatLarge}{\Ihat^{(L)}}
+\newcommand*{\IhatSmall}{\Ihat^{(S)}}
+\newcommand*{\WLarge}{W^{(L)}}
+\newcommand*{\WSmall}{W^{(S)}}
+\newcommand*{\WhatLarge}{\What^{(L)}}
+\newcommand*{\WhatSmall}{\What^{(S)}}
+\newcommand*{\HLarge}{H^{(L)}}
+\newcommand*{\HSmall}{H^{(S)}}
+\newcommand*{\HhatLarge}{\Hhat^{(L)}}
+\newcommand*{\HhatSmall}{\Hhat^{(S)}}
 
 % FUNCTIONS ====================================================================
 
@@ -130,6 +146,16 @@
 \DeclareMathOperator{\leader}{leader}
 \DeclareMathOperator*{\cartProd}{\prod}
 \DeclareMathOperator{\outputAdd}{\mathtt{outputs.add}}
+
+% APoG
+\DeclareMathOperator{\hardItems}{hardItems}
+\newcommand*{\optSP}{\opt_{\mathrm{SP}}}
+\DeclareMathOperator{\hsum}{hsum}
+\DeclareMathOperator{\hmax}{hmax}
+\DeclareMathOperator{\wsum}{wsum}
+\DeclareMathOperator{\wmax}{wmax}
+\DeclareMathOperator{\hprefix}{hprefix}
+\DeclareMathOperator{\wprefix}{wprefix}
 
 % ALGORITHMS ===================================================================
 
@@ -180,4 +206,10 @@
 \DeclareMathOperator{\packSmallHyp}{\hyperref[algo:pack-small]{\packSmall}}
 
 % APoG
-\DeclareMathOperator{\skewPack}{\mathtt{skewPack}}
+\DeclareMathOperator{\thinGPack}{\mathtt{thin4Pack}}
+\DeclareMathOperator{\greedyPack}{\mathtt{greedyPack}}
+
+% MISCELLANEOUS ================================================================
+
+\newcommand*{\ropenInterval}[1]{[#1)}
+\newcommand*{\lopenInterval}[1]{(#1]}

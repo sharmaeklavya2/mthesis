@@ -195,6 +195,7 @@ For non-rotational $d$D GBP where $d \ge 3$, the algorithm by Caprara~\cite{capr
 gives the best-known AAR of roughly $T_{\infty}^{d-1}$, where $T_{\infty} \approx 1.69103$.
 
 \subsection{Guillotine-Separable Geometric Bin Packing}
+\label{sec:intro:guill-bp}
 
 In many practical cases of 2D GBP, there are additional constraints on
 how items can be packed into bins, like in the
@@ -572,6 +573,7 @@ In \cref{sec:hard-example}, we extend that result to show that no shelf-based al
 for $d$D GBP can get an AAR better than $T_{\infty}^{d-1}$.
 
 \subsection{Guillotine-Separable Packing of Thin Rectangles}
+\label{sec:intro:guill-thin}
 
 2D GuillBP is easier than 2D GBP: there is an APTAS for 2D GuillBP~\cite{bansal2005tale}.
 A natural question, then, is whether the optimal solution to 2D GuillBP
@@ -596,8 +598,9 @@ We consider the special case where the rectangles are $\delta$-thin,
 i.e., each rectangle has height at most $\delta$ or width at most $\delta$,
 where $\delta$ is a small constant.
 We prove an upper-bound on $\APoG$ for thin rectangles by
-giving an algorithm for 2D GBP, called $\skewPack$,
-that outputs a 4-stage packing and has an AAR of $\frac{4}{3}(1+4\delta)(1+\eps)$.
+giving an algorithm for 2D GBP, called $\thinGPack$,
+that outputs a 4-stage packing and has an AAR of
+\[ \frac{4}{3}\left(1+\frac{4\delta}{1-\delta}\right)(1+\eps). \]
 We also prove a lower-bound of $4/3$ on $\APoG$ by giving
 a set of $\delta$-thin rectangles that cannot be efficiently
 packed by a guillotine-separable packing.

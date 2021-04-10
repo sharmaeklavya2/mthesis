@@ -83,18 +83,32 @@
 \DeclareMathOperator*{\argmin}{argmin}
 \DeclareMathOperator*{\argmax}{argmax}
 \DeclareMathOperator{\opt}{opt}
+\newcommand*{\optprog}[3]{
+\begin{array}{*3{>{\displaystyle}l}}
+#1 & \multicolumn{2}{>{\displaystyle}l}{#2}
+#3 \end{array}}
+
+% algorithmicx
+\algnewcommand{\LineComment}[1]{\State \textcolor{gray}{\texttt{//} \textit{#1}}}
+\renewcommand{\algorithmiccomment}[1]{\hfill\textcolor{gray}{\texttt{//} \textit{#1}}}
+\algblockdefx{RepeatN}{EndRepeatN}[1]{\textbf{repeat} #1 \textbf{times}}{\textbf{end repeat}}
+% \parState: derived from https://tex.stackexchange.com/a/200198
+\makeatletter
+\newcommand{\algmargin}{\the\ALG@thistlm}
+\makeatother
+\algnewcommand{\parState}[1]{\State\mbox{\hspace*{2em}%
+\parbox[t]{\dimexpr\linewidth-\algmargin-2em}{\hspace*{-2em}\strut #1\strut}}}
+
+% arrays and tables
+\abovetopsep=4pt
+\defaultaddspace=0.4em
+\newcolumntype{L}{>{$\displaystyle}l<{$}}
 
 % Miscellaneous
 \allowdisplaybreaks[1]
 \newdateformat{monthyeardate}{\monthname[\THEMONTH], \THEYEAR}
 \newcommand{\blankpage}{\newpage\thispagestyle{empty}\mbox{}\newpage}
 \hfuzz=2pt
-\abovetopsep=4pt
-\defaultaddspace=0.4em
-\algnewcommand{\LineComment}[1]{\State \textcolor{gray}{\texttt{//} \textit{#1}}}
-\renewcommand{\algorithmiccomment}[1]{\hfill\textcolor{gray}{\texttt{//} \textit{#1}}}
-\algblockdefx{RepeatN}{EndRepeatN}[1]{\textbf{repeat} #1 \textbf{times}}{\textbf{end repeat}}
 \newcommand*{\thmdep}[2]{}
 \newcommand*{\thmdepcref}[2]{\cref{#1}}
 \newenvironment*{tightemize}{\begin{itemize}[noitemsep]}{\end{itemize}}
-\newcolumntype{L}{>{$\displaystyle}l<{$}}

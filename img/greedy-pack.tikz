@@ -1,0 +1,20 @@
+\ifcsname pGameL\endcsname\else\newlength{\pGameL}\fi
+\setlength{\pGameL}{0.2cm}
+\tikzset{bin/.style={draw,thick}}
+%\tikzset{binGrid/.style={draw,step=1\pGameL,{black!20}}}
+\begin{tikzpicture}[mytransform]
+%\path[binGrid] (0\pGameL, 0\pGameL) grid (20\pGameL, 20\pGameL);
+\path[wItem] (5\pGameL, 0\pGameL) rectangle +(15\pGameL, 2\pGameL);
+\path[wItem] (6\pGameL, 2\pGameL) rectangle +(14\pGameL, 3\pGameL);
+\path[wItem] (6\pGameL, 5\pGameL) rectangle +(14\pGameL, 2\pGameL);
+\path[wItem] (7\pGameL, 7\pGameL) rectangle +(13\pGameL, 3\pGameL);
+\path[wItem] (8\pGameL, 10\pGameL) rectangle +(12\pGameL, 4\pGameL);
+\path[wItem] (8\pGameL, 14\pGameL) rectangle +(12\pGameL, 2\pGameL);
+\path[wItem] (9\pGameL, 16\pGameL) rectangle +(11\pGameL, 2\pGameL);
+\path[wItem] (10\pGameL, 18\pGameL) rectangle +(10\pGameL, 2\pGameL);
+\path[hItem] (1\pGameL, 4\pGameL) rectangle +(2\pGameL, 16\pGameL);
+\path[hItem] (0\pGameL, 2\pGameL) rectangle +(1\pGameL, 18\pGameL);
+\path[hItem] (3\pGameL, 5\pGameL) rectangle +(2\pGameL, 15\pGameL);
+\draw[semithick,dashed] (5\pGameL, 0\pGameL) -- +(0\pGameL, 20\pGameL);
+\path[bin] (0\pGameL, 0\pGameL) rectangle (20\pGameL, 20\pGameL);
+\end{tikzpicture}

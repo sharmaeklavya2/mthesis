@@ -1,0 +1,102 @@
+\section{Lower Bound on APoG}
+\label{sec:apog-lb}
+
+\begin{lemma}
+\label{thm:guill-hardex-area}
+Let $m$ and $k$ be positive integers and $\eps$ be a positive real number.
+Let $J$ be a set of items packed into a bin, where each item has the longer dimension
+equal to $(1+\eps)/2$ and the shorter dimension equal to $(1-\eps)/2k$.
+If the bin is guillotine-separable, then $a(J) \le 3/4 + \eps/2 - \eps^2/4$.
+\end{lemma}
+\begin{proof}
+For an item packed in the bin, if the height is $(1-\eps)/2k$, call it a wide item,
+and if the width is $(1-\eps)/2k$, call it a tall item.
+Let $W$ be the set of wide items in $J$.
+
+The packing of items in the bin can be represented as a tree,
+called the \emph{guillotine tree} of the bin,
+where each node $u$ represents a rectangular region of the bin
+and the child nodes $v_1, v_2, \ldots, v_p$ of node $u$
+represent the sub-regions obtained by parallel guillotine cuts.
+The ordering of the children has a significance here:
+if the guillotine cuts were vertical, children are ordered by increasing $x$-coordinate,
+and if the cuts were horizontal, children are ordered by increasing $y$-coordinate.
+
+We will now see how to rearrange the items in the bin so that the packing remains
+guillotine-separable but becomes more structured.
+We will exploit this structure to show that the packing has a large unpacked area.
+See \cref{fig:shift-thin} for an example.
+
+\begin{figure}[htb]
+\centering
+\input{img/shift-thin.tikz}
+\caption{Structuring a guillotine-separable packing.}
+\label{fig:shift-thin}
+\end{figure}
+
+In the guillotine tree, suppose there is a node $u$
+that has children $v_1, v_2, \ldots, v_p$.
+\WLoG, assume that the children are obtained by making vertical cuts.
+At most one of these children can contain items from $W$.
+We can assume \wLoG{} that the other children contain only one item,
+because otherwise we can separate them by vertical cuts.
+We can reorder the children (which is equivalent to repacking the guillotine partitions)
+so that the child containing items from $W$ (if any) is the first child.
+Therefore, we can assume \wLoG{} that at any level in the guillotine tree,
+only the first node has children.
+
+Based on the argument above, we can see that the first node in each level
+touches the bottom-left corner of the bin. All the other nodes either
+contain a single wide item and touch the left edge of the bin but not the bottom edge,
+or they contain a single tall item and touch the bottom edge of the bin but not the left edge.
+In each node containing a wide item, shift the item leftwards,
+and in each node containing a tall item, shift the item downwards.
+Then each wide item touches the left edge of the bin
+and each tall item touches the bottom edge of the bin.
+
+Therefore, the square region of side length $(1-\eps)/2$
+at the top-right corner of the bin is empty.
+Hence, the area occupied in each bin is at most $3/4 + \eps/2 - \eps^2/4$.
+\end{proof}
+
+\rdefHardItems*
+
+\rthmAPoGLB*
+\begin{proof}
+For an item $i \in I$, if $h(i) = (1-\eps)/2k$, call it a wide item,
+and if $w(i) = (1-\eps)/2k$, call it a tall item.
+Let $W$ be the set of wide items and $H$ be the set of tall items.
+
+We will show that $\opt(I)$ and $\opt_g(I)$ have a big difference,
+which will give us a lower-bound on $\APoG$.
+
+Partition $W$ into groups of $k$ elements.
+In each group, stack items one-over-the-other.
+This gives us $2m$ containers of width $(1+\eps)/2$ and height $(1-\eps)/2$.
+Similarly, get $2m$ containers of height $(1+\eps)/2$ and height $(1-\eps)/2$
+by stacking items from $H$ side-by-side.
+We can pack 4 containers in one bin, so $I$ can be packed into $m$ bins.
+See \cref{fig:thin-gadget} for an example.
+Therefore, $\opt(I) \le m$.
+
+\begin{figure}[htb]
+\centering
+\input{img/thin-gadget.tikz}
+\caption{Packing $4k$ items in one bin. Here $k = 7$.}
+\label{fig:thin-gadget}
+\end{figure}
+
+We will now show a lower-bound on $\opt_g(I)$.
+In any guillotine-separable packing of $I$,
+the area occupied by each bin is at most $3/4 + \eps/2 - \eps^2/4$
+(by \cref{thm:guill-hardex-area}).
+Note that $a(I) = m(1 - \eps^2)$. Therefore,
+\begin{align*}
+& \opt_g(I) \ge \frac{m(1-\eps^2)}{3/4 + \eps/2 - \eps^2/4}
+\\ &\implies \frac{\opt_g(I)}{\opt(I)}
+    \ge \frac{4}{3} \times \frac{1-\eps^2}{1 + 2\eps/3 - \eps^2/3}
+    = \frac{4}{3} \times \frac{1-\eps}{1 - \eps/3}
+    \ge \frac{4}{3}(1-\eps)
+\qedhere
+\end{align*}
+\end{proof}
