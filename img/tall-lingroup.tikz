@@ -1,0 +1,84 @@
+\ifcsname pGameL\endcsname\else\newlength{\pGameL}\fi
+\ifcsname pGameM\endcsname\else\newlength{\pGameM}\fi
+\setlength{\pGameL}{0.3cm}
+\setlength{\pGameM}{0.1cm}
+\tikzset{bin/.style={draw,thick}}
+\tikzset{binGrid/.style={draw,xstep=1\pGameL,ystep=1\pGameM,{black!20}}}
+\tikzset{item/.style={draw,fill={black!20}}}
+\tikzset{sepline/.style={draw,dashed,thick}}
+\tikzset{limline/.style={densely dashed,ultra thick}}
+\tikzset{myarrow/.style={->,>={Stealth},thick}}
+\tikzset{mybrace/.style={decoration={amplitude=7pt,brace,mirror,raise=2pt},semithick,decorate}}
+\definecolor{color1}{Hsb}{0,0.4,0.9}
+\definecolor{color1d}{Hsb}{0,0.8,0.6}
+\definecolor{color2}{Hsb}{60,0.4,0.9}
+\definecolor{color2d}{Hsb}{60,0.8,0.6}
+\definecolor{color3}{Hsb}{135,0.4,0.9}
+\definecolor{color3d}{Hsb}{135,0.8,0.6}
+\definecolor{color4}{Hsb}{240,0.4,0.9}
+\definecolor{color4d}{Hsb}{240,0.8,0.6}
+\definecolor{color5}{Hsb}{0,0.4,0.9}
+\definecolor{color5d}{Hsb}{0,0.8,0.6}
+\begin{tikzpicture}
+\begin{scope}
+%\path[binGrid] (0\pGameL, 0\pGameM) grid (50\pGameL, 50\pGameM);
+\path[item] (0\pGameL, 0\pGameM) rectangle +(2\pGameL, 48\pGameM);
+\path[item] (2\pGameL, 0\pGameM) rectangle +(3\pGameL, 46\pGameM);
+\path[item] (5\pGameL, 0\pGameM) rectangle +(3\pGameL, 46\pGameM);
+\path[item] (8\pGameL, 0\pGameM) rectangle +(2\pGameL, 42\pGameM);
+\path[item] (10\pGameL, 0\pGameM) rectangle +(3\pGameL, 39\pGameM);
+\path[item] (13\pGameL, 0\pGameM) rectangle +(3\pGameL, 37\pGameM);
+\path[item] (16\pGameL, 0\pGameM) rectangle +(2\pGameL, 32\pGameM);
+\path[item] (18\pGameL, 0\pGameM) rectangle +(4\pGameL, 27\pGameM);
+\path[item] (22\pGameL, 0\pGameM) rectangle +(4\pGameL, 27\pGameM);
+\path[item] (26\pGameL, 0\pGameM) rectangle +(3\pGameL, 27\pGameM);
+\path[item] (29\pGameL, 0\pGameM) rectangle +(3\pGameL, 27\pGameM);
+\path[item] (32\pGameL, 0\pGameM) rectangle +(2\pGameL, 26\pGameM);
+\path[item] (34\pGameL, 0\pGameM) rectangle +(3\pGameL, 23\pGameM);
+\path[item] (37\pGameL, 0\pGameM) rectangle +(5\pGameL, 20\pGameM);
+\path[item] (42\pGameL, 0\pGameM) rectangle +(2\pGameL, 20\pGameM);
+\path[item] (44\pGameL, 0\pGameM) rectangle +(3\pGameL, 15\pGameM);
+\path[item] (47\pGameL, 0\pGameM) rectangle +(3\pGameL, 14\pGameM);
+%\path[bin] (0\pGameL, 0\pGameM) rectangle (50\pGameL, 50\pGameM);
+\path[sepline] (10\pGameL, -2\pGameM) -- (10\pGameL, 50\pGameM);
+\path[sepline] (20\pGameL, -2\pGameM) -- (20\pGameL, 50\pGameM);
+\path[sepline] (30\pGameL, -2\pGameM) -- (30\pGameL, 50\pGameM);
+\path[sepline] (40\pGameL, -2\pGameM) -- (40\pGameL, 50\pGameM);
+\path[sepline] (50\pGameL, -2\pGameM) -- (50\pGameL, 50\pGameM);
+\node[rotate=90,transform shape] at (10\pGameL+0.02cm,-4\pGameM) {\large\ding{34}};
+\node[rotate=90,transform shape] at (20\pGameL+0.02cm,-4\pGameM) {\large\ding{34}};
+\node[rotate=90,transform shape] at (30\pGameL+0.02cm,-4\pGameM) {\large\ding{34}};
+\node[rotate=90,transform shape] at (40\pGameL+0.02cm,-4\pGameM) {\large\ding{34}};
+\draw[limline,color1d] (0\pGameL, 48\pGameM) -- (10\pGameL, 48\pGameM);
+\draw[limline,color2d] (10\pGameL, 39\pGameM) -- (20\pGameL, 39\pGameM);
+\draw[limline,color3d] (20\pGameL, 27\pGameM) -- (30\pGameL, 27\pGameM);
+\draw[limline,color4d] (30\pGameL, 27\pGameM) -- (40\pGameL, 27\pGameM);
+\draw[limline,color5d] (40\pGameL, 20\pGameM) -- (50\pGameL, 20\pGameM);
+\draw[mybrace] (0,0) -- node[below=6pt] {$\deltaLG W$} +(10\pGameL,0);
+\end{scope}
+\draw[myarrow] (25\pGameL, -5\pGameM) -- (25\pGameL, -25\pGameM);
+\begin{scope}[yshift=-6.5cm]
+%\path[binGrid] (0\pGameL, 0\pGameM) grid (50\pGameL, 50\pGameM);
+\path[item,fill=color1] (0\pGameL, 0\pGameM) rectangle +(2\pGameL, 48\pGameM);
+\path[item,fill=color1] (2\pGameL, 0\pGameM) rectangle +(3\pGameL, 48\pGameM);
+\path[item,fill=color1] (5\pGameL, 0\pGameM) rectangle +(3\pGameL, 48\pGameM);
+\path[item,fill=color1] (8\pGameL, 0\pGameM) rectangle +(2\pGameL, 48\pGameM);
+\path[item,fill=color2] (10\pGameL, 0\pGameM) rectangle +(3\pGameL, 39\pGameM);
+\path[item,fill=color2] (13\pGameL, 0\pGameM) rectangle +(3\pGameL, 39\pGameM);
+\path[item,fill=color2] (16\pGameL, 0\pGameM) rectangle +(2\pGameL, 39\pGameM);
+\path[item,fill=color2] (18\pGameL, 0\pGameM) rectangle +(2\pGameL, 39\pGameM);
+\path[item,fill=color3] (20\pGameL, 0\pGameM) rectangle +(2\pGameL, 27\pGameM);
+\path[item,fill=color3] (22\pGameL, 0\pGameM) rectangle +(4\pGameL, 27\pGameM);
+\path[item,fill=color3] (26\pGameL, 0\pGameM) rectangle +(3\pGameL, 27\pGameM);
+\path[item,fill=color3] (29\pGameL, 0\pGameM) rectangle +(1\pGameL, 27\pGameM);
+\path[item,fill=color4] (30\pGameL, 0\pGameM) rectangle +(2\pGameL, 27\pGameM);
+\path[item,fill=color4] (32\pGameL, 0\pGameM) rectangle +(2\pGameL, 27\pGameM);
+\path[item,fill=color4] (34\pGameL, 0\pGameM) rectangle +(3\pGameL, 27\pGameM);
+\path[item,fill=color4] (37\pGameL, 0\pGameM) rectangle +(3\pGameL, 27\pGameM);
+\path[item,fill=color5] (40\pGameL, 0\pGameM) rectangle +(2\pGameL, 20\pGameM);
+\path[item,fill=color5] (42\pGameL, 0\pGameM) rectangle +(2\pGameL, 20\pGameM);
+\path[item,fill=color5] (44\pGameL, 0\pGameM) rectangle +(3\pGameL, 20\pGameM);
+\path[item,fill=color5] (47\pGameL, 0\pGameM) rectangle +(3\pGameL, 20\pGameM);
+%\path[bin] (0\pGameL, 0\pGameM) rectangle (50\pGameL, 50\pGameM);
+\end{scope}
+\end{tikzpicture}

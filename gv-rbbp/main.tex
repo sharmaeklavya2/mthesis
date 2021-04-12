@@ -1191,7 +1191,7 @@ For each partition $S$ of big items, do the following:
     The number of distinct heights in $S$ now becomes at most $T \le 1/\deltaLG$.
 \end{enumerate}
 
-For each partition $S$ of tall items, do the following:
+For each partition $S$ of tall items, do the following (see \cref{fig:tall-lingroup}):
 \begin{enumerate}
 \item Order the items in $S$ in non-increasing order of height and arrange them side-by-side
     on the real line, starting from the origin.
@@ -1210,6 +1210,13 @@ For each partition $S$ of tall items, do the following:
     because all items in $S$ have the same weight class.
     The number of distinct heights in $S$ now becomes at most $1/\deltaLG$.
 \end{enumerate}
+
+\begin{figure}[htb]
+\centering
+\input{img/tall-lingroup.tikz}
+\caption{Linear grouping tall items. Here $\deltaLG = 5$.}
+\label{fig:tall-lingroup}
+\end{figure}
 
 We can extend the definition of this transformation to bins satisfying
 \cref{prop:vrnd}\ref{item:vrnd:geom} by swapping vertical and horizontal directions.
