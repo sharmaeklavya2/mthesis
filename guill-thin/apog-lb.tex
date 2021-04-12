@@ -21,6 +21,15 @@ represent the sub-regions obtained by parallel guillotine cuts.
 The ordering of the children has a significance here:
 if the guillotine cuts were vertical, children are ordered by increasing $x$-coordinate,
 and if the cuts were horizontal, children are ordered by increasing $y$-coordinate.
+See \cref{fig:guill-tree} for an example.
+
+\begin{figure}[htb]
+\centering
+\input{img/guill-tree.tikz}
+\caption{A guillotinable packing of items into a bin and the corresponding
+guillotine tree.}
+\label{fig:guill-tree}
+\end{figure}
 
 We will now see how to rearrange the items in the bin so that the packing remains
 guillotine-separable but becomes more structured.
