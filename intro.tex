@@ -621,10 +621,15 @@ iff either its width is at most $\delta$ or its height is at most $\delta$.
 An APTAS doesn't exist for 2D GBP (assuming P$\neq$NP)~\cite{bansal2006bin}.
 However, we show that if the rectangular items are $\delta$-thin,
 for a very small constant $\delta$, then something like an APTAS exists.
-Formally, we give an algorithm for 2D GBP that takes a parameter $\eps$,
-and show that for every constant $\eps > 0$, there exists a constant $\delta > 0$
-such that the algorithm has an AAR of $1+\eps$
+
+Formally, we give an algorithm for 2D GBP, called $\thinCPack$,
+that accepts a parameter $\eps$, and we show that for every constant $\eps \in (0, 1)$,
+there exists a constant $\delta \in (0, \eps)$ such that the algorithm has an AAR of $1+\eps$
 when all items in the input are $\delta$-thin rectangles.
+
+This indicates that to improve upon algorithms for 2D GBP,
+we should focus on big rectangles, i.e., rectangles whose
+width and height are both more than a constant $\delta$.
 
 \section{Organization of the Thesis}
 
