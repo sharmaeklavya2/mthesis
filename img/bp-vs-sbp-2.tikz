@@ -1,0 +1,31 @@
+\begin{tikzpicture}[
+witem/.style={draw,fill={black!20}},
+hitem/.style={draw,fill={black!10}},
+bin/.style={draw,thick},
+myarrow/.style={->,>={Stealth},thick},
+cutline/.style={draw={black!50!red},dashed,semithick},
+]
+\begin{scope}
+\node at (0.5, 2.0) {$W:$};
+\node at (0.5, 0.6) {$H:$};
+\path[hitem] (1.0, 0.0) rectangle +(1.2, 1.2);
+\path[hitem] (2.4, 0.0) rectangle +(1.2, 1.2);
+\path[witem] (1.0, 1.4) rectangle +(1.2, 1.2);
+\path[witem] (2.4, 1.4) rectangle +(1.2, 1.2);
+\path[cutline] (2.3, 2.0) -- (3.7, 2.0);
+\node[xscale=-1,transform shape] at (3.9, 1.98) {\large\ding{34}};
+\path[cutline] (3.0, -0.1) -- (3.0, 1.3);
+\node[rotate=90,transform shape] at (3.02, -0.3) {\large\ding{34}};
+\end{scope}
+\draw[myarrow] (2.1, -0.3) -- (2.1, -1.6);
+\begin{scope}[yshift={-4cm}]
+\path[witem] (0.0, 0.0) rectangle +(1.2, 1.2);
+\path[hitem] (2.2, 0.0) rectangle +(1.2, 1.2);
+\path[witem] (0.0, 1.2) rectangle +(1.2, 0.6);
+\path[witem] (2.2, 1.2) rectangle +(1.2, 0.6);
+\path[hitem] (1.2, 0.0) rectangle +(0.6, 1.2);
+\path[hitem] (3.4, 0.0) rectangle +(0.6, 1.2);
+\path[bin] (0.0, 0.0) rectangle +(2, 2);
+\path[bin] (2.2, 0.0) rectangle +(2, 2);
+\end{scope}
+\end{tikzpicture}

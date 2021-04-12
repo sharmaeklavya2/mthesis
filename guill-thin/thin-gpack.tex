@@ -12,6 +12,28 @@ $W$ is called the set of wide items and $H$ is called the set of tall items.
 We are allowed to \emph{slice} items in $W$ using horizontal cuts
 and slice items in $H$ using vertical cuts, and our task is to pack
 $W \cup H$ into the minimum number of bins without rotating the items.
+See \cref{fig:bp-vs-sbp} for an example that illustrates the difference
+between 2D GBP and 2D SBP.
+
+\begin{figure}[htb]
+\begin{subfigure}{0.45\textwidth}
+\centering
+\input{img/bp-vs-sbp-1.tikz}
+\caption{Packing items into 4 bins without slicing.}
+\end{subfigure}
+\hfil
+\begin{subfigure}{0.45\textwidth}
+\centering
+\input{img/bp-vs-sbp-2.tikz}
+\caption{Packing items into 2 bins by horizontally slicing an item in $W$
+and vertically slicing an item in $H$.}
+\end{subfigure}
+\caption[2D GBP vs.~2D SBP]%
+{Example to illustrate the difference between 2D geometric bin packing
+and 2D sliceable bin packing. There are 2 wide items ($W$) and 2 tall items ($H$).
+The items are squares of side length 0.6 and the bins are squares of side length 1.}
+\label{fig:bp-vs-sbp}
+\end{figure}
 
 We first describe a fast and simple $4/3$-asymptotic-approximation algorithm
 for 2D SBP, called $\greedyPack$, that outputs a 2-stage packing.
