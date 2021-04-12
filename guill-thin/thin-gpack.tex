@@ -348,13 +348,21 @@ For $j \in [1/\eps^2]$, let $w_j$ be the width of the
 widest item intersecting the $j\Th$ section from the bottom, i.e.,
 \[ w_j \defeq \max(\{w(i): i \in \WLarge \textrm{ and } (y(i), y(i) + h(i))
     \cap ((j-1)\eps^2 h_L, j\eps^2 h_L) \neq \emptyset\}). \]
-Round up the width of each item $i$ to the smallest $w_j$ that is at least $w(i)$.
+Round up the width of each item $i$ to the smallest $w_j$ that is at least $w(i)$
+(see \cref{fig:tall-lingroup-2}).
 Let $\WLarge_j$ be the items whose width got rounded to $w_j$
 and let $\WhatLarge_j$ be the resulting rounded items.
 (There may be ties, i.e., there may exist $j_1 < j_2$ such that $w_{j_1} = w_{j_2}$.
 In that case, define $\WLarge_{j_2} \defeq \WhatLarge_{j_2} = \emptyset$.
 This ensures that all $\WLarge_j$ are disjoint.)
 Let $\WhatLarge \defeq \bigcup_j \WhatLarge_j$.
+
+\begin{figure}[htb]
+\centering
+\input{img/tall-lingroup-2.tikz}
+\caption{Linear grouping of $\WLarge$ for $\eps = 1/2$.}
+\label{fig:tall-lingroup-2}
+\end{figure}
 
 Allow horizontally slicing each item in $\WhatLarge$.
 Let $\WhatSmall$ be the same as $\WSmall$, except that we are allowed
