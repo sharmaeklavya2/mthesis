@@ -27,21 +27,21 @@
 \DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
 
 % Numbered environments
-\newtheorem{remarks}{Remarks}[chapter] %\label{rmk:}
-\newtheorem{example}{Example}[chapter] %\label{exp:}
+%\newtheorem{remarks}{Remarks}[chapter] %\label{rmk:}
+%\newtheorem{example}{Example}[chapter] %\label{exp:}
 \newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{lemma}{Lemma}[chapter]
-\newtheorem{corollary}{Corollary}[chapter]
-\newtheorem{discussion}{Discussion}[chapter] %\label{dis:}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+%\newtheorem{discussion}{Discussion}[chapter] %\label{dis:}
 \newtheorem{definition}{Definition}[chapter]
-\newtheorem{property}{Property}[chapter]
-\newtheorem{transformation}{Transformation}[chapter]
-\newtheorem{proposition}{Proposition}[chapter]
-\newtheorem{claim}{Claim}[chapter]
-\newtheorem{mechanism}{Mechanism}[chapter]
-\newtheorem{question}{Question}[chapter]
-\newtheorem{observation}{Observation}[chapter]
-\newtheorem{fact}{Fact}[chapter]
+\newtheorem{property}[definition]{Property}
+\newtheorem{transformation}[definition]{Transformation}
+%\newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{claim}[theorem]{Claim}
+%\newtheorem{mechanism}{Mechanism}[chapter]
+%\newtheorem{question}{Question}[chapter]
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{fact}[theorem]{Fact}
 
 \crefname{observation}{Observation}{Observations}
 \crefname{claim}{Claim}{Claims}
