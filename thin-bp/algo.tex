@@ -1,2 +1,337 @@
 \section{Packing Rounded Items}
 \label{sec:thin-bp:algo}
+
+Let $I$ be a set of $\delta$-thin items. In this section,
+we give an algorithm for computing a near-optimal packing of $I$, called $\thinCPack$.
+Roughly, $\thinCPack$ first computes $(\Itild, \Imed) \defeq \round(I)$.
+It then computes the optimal fractional compartmental packing of $\Itild$
+by first guessing a packing of empty compartments into bins
+and then fractionally packing the wide and tall items into the compartments.
+It then converts the fractional packing of $\Itild$ to a non-fractional packing of $I$
+with only a tiny increase in the number of bins.
+See \cref{fig:thincpack} for a visual overview of $\thinCPack$.
+
+\begin{figure}[htb]
+\hbadness=10000
+\begin{subfigure}[t]{0.3\textwidth}
+\centering
+\tikzset{compartment/.style={draw,thick,fill={black!10}},
+container/.style={},item/.style={}}
+\input{img/thincpack.tikz}
+\caption{Guess the packing of empty compartments in each bin (\cref{sec:enum-configs}).}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.3\textwidth}
+\centering
+\tikzset{compartment/.style={draw,thick},
+container/.style={draw,fill={black!25}},
+item/.style={}}
+\input{img/thincpack.tikz}
+\caption{Fractionally pack wide and tall items into compartments.
+This partitions each compartment into \emph{containers} (\cref{sec:feas-lp}).}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.3\textwidth}
+\centering
+\tikzset{compartment/.style={draw,ultra thick},
+container/.style={draw,thick},
+item/.style={draw,very thin,fill={black!25}}}
+\input{img/thincpack.tikz}
+\caption{Pack the items non-fractionally (\cref{sec:greedy-cont}).}
+\end{subfigure}
+\caption{Major steps of $\thinCPack$ after $\round$ing $I$.}
+\label{fig:thincpack}
+\end{figure}
+
+\subsection{Enumerating Packing of Compartments}
+\label{sec:enum-configs}
+
+We will compute the optimal fractional compartmental packing of $\Itild$ in two steps.
+First, for each bin, we will guess the compartments in the bin.
+Each such packing of compartments into bins is called a \emph{configuration}.
+Then we will fractionally pack the items into the compartments.
+
+There can be at most $\nW \defeq 3(1/\epsLarge-1)|\Tcal| + 1$ wide compartments in a bin.
+Each wide compartment can have $(1/\epsCont)^2$ $y$-coordinates
+of the top and bottom edges and at most $|\Tcal|^2/2$ $x$-coordinates
+of the left and right edges, where $\epsCont \defeq \eps\epsLarge/6|\Tcal|$.
+The rest of the space is for tall compartments.
+Therefore, the number of configurations is at most
+\[ \nC \defeq \left((1/\epsCont)^2|\Tcal|^2/2\right)^{\nW}
+    \le \left(\frac{3|\Tcal|^2}{\eps\epsLarge}\right)^{6|\Tcal|/\epsLarge}
+    \le \left(1+\frac{1}{\eps\epsLarge}\right)^{
+        \left(1+\frac{1}{\eps\epsLarge}\right)^{2/\epsLarge + 1}} \]
+Since each configuration can have at most $n$ bins, the number of combinations
+of configurations is at most $(n+1)^{\nC}$.
+
+Therefore, we can iterate over all possible bin packings of empty compartments in $O(n^{\nC})$ time.
+Let $\iterPackings(\Itild)$ be an algorithm for this, i.e.,
+$\iterPackings(\Itild)$ outputs the set of all possible bin packings of empty compartments into
+at least $\smallceil{a(\Itild)}$ and at most $n$ bins,
+where $n$ is the number of items in $\Itild$.
+
+\subsection{Packing Items Into Compartments}
+\label{sec:feas-lp}
+
+For each bin packing of empty compartments, we will try to
+fractionally pack the items into the bins.
+Formally, let $P$ be a packing of empty compartments into bins.
+We will create a feasibility linear program, called $\FP(\Itild, P)$,
+that is feasible iff wide and tall items in $\Itild$ can be packed
+into the compartments in $P$.
+If $\FP(\Itild, P)$ is feasible, then small items can also be
+fractionally packed since $P$ contains at least $a(\Itild)$ bins.
+
+Let $w_1', w_2', \ldots, w_p'$ be the distinct widths of wide compartments in $P$.
+Let $U_j$ be the set of wide compartments in $P$ having width $w_j'$.
+Let $h(U_j)$ be the sum of heights of the compartments in $U_j$.
+By \cref{defn:thin-bp:compartmental}, we know that $p \le |\Tcal|^2/2$.
+Let $w_1, w_2, \ldots, w_r$ be the distinct widths of items in $\Wtild$
+(recall that $\Wtild$ is the set of wide items in $\Itild$).
+Let $\Wtild_j$ be the items in $\Wtild$ having width $w_j$.
+Let $h(\Wtild_j)$ be the sum of heights of all items in $\Wtild_j$.
+By \cref{thm:thin-bp:lingroup-distinct}, we get $r \le 1/\eps\epsLarge$.
+
+Let $C \defeq [C_0, C_1, \ldots, C_r]$ be a vector, where
+$C_0 \in [p]$ and $C_j \in \mathbb{Z}_{\ge 0}$ for $j \in [r]$.
+$C$ is called a \emph{wide configuration} iff
+$w(C) \defeq \sum_{j=1}^r C_jw_j \le w_{C_0}'$.
+Intuitively, a wide configuration $C$ represents a set of wide items that can be placed
+side-by-side into a compartment of width $w_{C_0}'$.
+Let $\Ccal$ be the set of all wide configurations.
+Then $|\Ccal| \le p/\epsLarge^r$, which is a constant.
+
+To pack $\Wtild$ into wide compartments,
+we must determine the height of each configuration.
+Let $x \in \mathbb{R}_{\ge 0}^{|\Ccal|}$ be a vector where
+$x_C$ denotes the height of configuration $C$.
+Then $\Wtild$ can be packed into wide compartments according to $x$ iff
+$x$ is a feasible solution the following feasibility linear program,
+named $\FP_W(\Itild, P)$:
+\[ \begin{array}{*4{>{\displaystyle}l}}
+\sum_{C \in \Ccal} C_jx_C &\ge h(\Wtild_j)
+    & \forall j \in [r]
+    & \qquad\textrm{($\Wtild_j$ should be covered)}
+\\[1.75em] \sum_{C \in \Ccal \textrm{ and } C_0 = j} x_C &\le h(U_j)
+    & \forall j \in [p]
+    & \qquad\textrm{($\Ccal_j$ should fit in $U_j$)}
+\\[1.75em] x_C &\ge 0 & \forall C \in \Ccal
+\end{array} \]
+
+Let $x^*$ be an extreme point solution to $\FP_W(\Itild, P)$
+(if $\FP_W(\Itild, P)$ is feasible).
+By Rank Lemma, at most $p+r$ entries of $x^*$ are non-zero.
+Since the number of variables and constraints is constant,
+$x^*$ can be computed in constant time.
+
+Let $\Htild$ be the set of tall items in $\Itild$.
+By \cref{thm:thin-bp:lingroup-distinct}, we get that items in $\Htild$
+have at most $1/\eps\epsLarge$ distinct heights.
+Let there be $q$ distinct heights of tall compartments in $P$.
+By \cref{defn:thin-bp:compartmental}, we know that $q \le 1/\epsCont = 6|\Tcal|/\eps\epsLarge$.
+We can similarly define \emph{tall configurations} and we can similarly define
+a feasibility linear program for tall items, named $\FP_H(\Itild, P)$.
+$\Htild$ can be packed into tall compartments in $P$ iff $\FP_H(\Itild, P)$ is feasible.
+Let $y^*$ be an extreme point solution to $\FP_H(\Itild, P)$.
+Then $y^*$ can be computed in constant time and
+$y^*$ has at most $q + 1/\eps\epsLarge$ positive entries.
+
+Therefore, $\Itild$ can be packed into $P$ iff the feasibility linear program
+$\FP(\Itild, P) \defeq \FP_W(\Itild, P) \wedge \FP_H(\Itild, P)$ is feasible.
+
+The solution $(x^*, y^*)$ shows us how to split each compartment into \emph{shelves},
+where each shelf corresponds to a configuration $C$
+and the shelf can be split into $C_j$ \emph{containers} of width $w_j$
+and one container of width $w_{C_0}' - w(C)$.
+Let there be $m$ bins in $P$. After splitting the configurations across compartments,
+we get at most $p + q + 2/\eps\epsLarge + m(\nW + \nH)$ shelves.
+
+\subsection{Converting a Fractional Packing to a Non-Fractional Packing}
+\label{sec:greedy-cont}
+
+Let there be $m$ bins in a packing $P$ of empty compartments into bins.
+Suppose it is possible to pack $\Itild$ into $P$.
+Let $x^*$ and $y^*$ be extreme-point solutions to
+$\FP_W(\Itild, P)$ and $\FP_H(\Itild, P)$, respectively.
+This gives us a fractional compartmental packing of $\Itild$ into $m$ bins.
+We will now show how to convert this to a non-fractional compartmental packing
+by removing some items of small total area.
+Formally, we give an algorithm called $\greedyPack(\Itild, P, x^*, y^*)$.
+It returns a pair $(Q, D)$, where $Q$ is a (non-fractional) compartmental
+bin packing of items $\Itild - D$, where the compartments in the bin are as per $P$.
+$D$ is called the set of discarded items, and we will prove that $a(D)$ is small.
+
+For a configuration $C$ in a wide compartment, there is a container
+of width $w_{C_0}' - w(C)$ available for packing small items.
+Hence, there are $p + q + 2/\eps\epsLarge + m(\nW + \nH)$ containers available
+inside compartments for packing small items.
+By \cref{thm:empty-to-rects}, we can partition the space outside compartments into
+at most $m(3(\nW + \nH) + 1)$ containers.
+Therefore, the total number of containers available for packing small items is at most
+\[ m_S \defeq (p + q + 2/\eps\epsLarge) + m(4(\nW + \nH) + 1)
+\le \left(\frac{|\Tcal|^2}{2} + \frac{6|\Tcal|}{\eps\epsLarge}
+    + \frac{2}{\eps\epsLarge}\right) + \frac{16|\Tcal|}{\epsLarge} m \]
+
+Greedily assign small items to small containers, i.e., keep assigning small items
+to a container till the area of items assigned to it is at least
+the area of the container, and then resume from the next container.
+Each small item will get assigned to some container.
+For each container $C$, pack the largest possible prefix of the assigned items using
+the Next-Fit Decreasing Height (NFDH) algorithm.
+By \cref{thm:nfdh-small}, the area of unpacked items would be
+less than $\epsSmall + \delta + \epsSmall\delta$. Summing over all containers,
+we get that the unpacked area is less than
+$(\epsSmall + \delta + \epsSmall\delta)m_S \le 3\epsSmall m_S$.
+
+For each $j$, greedily assign wide items from $\Wtild_j$ to containers of width $w_j$,
+i.e., keep assigning items till the height of items exceeds the height of the container.
+Each wide item will get assigned to some container.
+Then discard the last item from each container.
+For each shelf in a wide compartment having configuration $C$,
+the total area of items we discard is at most $\delta w(C)$.
+Similarly, we can discard tall items of area at most $\delta h(C)$
+from each shelf in a tall compartment having configuration $C$.
+
+Hence, across all configurations, we discard wide and tall items of area at most
+\[ \delta((p + q + 2/\eps\epsLarge) + m(\nW + \nH))
+\le \delta\left(\frac{|\Tcal|^2}{2} + \frac{6|\Tcal|}{\eps\epsLarge}
+    + \frac{2}{\eps\epsLarge}\right) + \frac{4\delta|\Tcal|}{\epsLarge}m. \]
+
+Therefore, for $(Q, D) \defeq \greedyPack(\Itild, P, x^*, y^*)$, we get
+\begin{equation}
+\label{eqn:greedy-discard-area}
+a(D) < \frac{52|\Tcal|\epsSmall}{\epsLarge} m
+    + 4\epsSmall\left(\frac{|\Tcal|^2}{2} + \frac{6|\Tcal|}{\eps\epsLarge}
+        + \frac{2}{\eps\epsLarge}\right)
+\end{equation}
+where $m$ is the number of bins used by $P$.
+
+\subsection{The Algorithm}
+\label{sec:thinCPack}
+
+We now summarize the algorithm for bin packing $\delta$-thin items $I$
+(see \cref{algo:thinCPack} for a more precise description).
+First, use $\round$ on $I$, i.e., let $(\Itild, \Imed) \defeq \round(I)$.
+Then enumerate all packings $P$ of compartments into bins as per \cref{sec:enum-configs}.
+For each packing $P$, check if $\Itild$ can be fractionally packed into $P$
+by solving the feasibility linear program (see \cref{sec:feas-lp}).
+If yes, then use a solution to the feasibility linear program to
+compute a (non-fractional) compartmental packing of $\Itild - D$
+using $\greedyPack$ (see \cref{sec:greedy-cont}),
+where $D$ is the set of items discarded by $\greedyPack$.
+Then pack $\Imed \cup D$ into bins using the Next-Fit Decreasing Height (NFDH) algorithm.
+Output the best bin packing of $I$ across all choices of $P$.
+
+\begin{algorithm}[htb]
+\caption{$\thinCPack_{\eps}(I)$: Packs a set $I$ of $\delta$-thin rectangular items
+into bins without rotating the items.}
+\label{algo:thinCPack}
+\begin{algorithmic}[1]
+\State $(\Itild, \Imed) = \round_{\eps}(I)$.
+\State Initialize $\Qbest$ to \Null.
+\For{$P \in \iterPackings(\Itild)$}
+    \Comment{$\iterPackings$ is defined in \cref{sec:enum-configs}.}
+    \State $x^* = \opt(\FP_W(\Itild, P))$.
+    \Comment{$\FP_W$ and $\FP_H$ are defined in \cref{sec:feas-lp}.}
+    \LineComment{If $\FP_W(\Itild, P)$ is feasible,
+        $x^*$ is an extreme-point solution to $\FP_W(\Itild, P)$.}
+    \LineComment{If $\FP_W(\Itild, P)$ is infeasible, $x^*$ is \Null.}
+    \State $y^* = \opt(\FP_H(\Itild, P))$.
+    \If{$x^* \neq \Null$ and $y^* \neq \Null$}
+        \Comment{if $\Itild$ can be packed into $P$}
+        \State $(Q, D) = \greedyPack(\Itild, P, x^*, y^*)$.
+        \Comment{$\greedyPack$ is defined in \cref{sec:greedy-cont}.}
+        \State $Q_D = \operatorname{NFDH}(D \cup \Imed)$.
+        \If{$Q \cup Q_D$ uses less bins than $\Qbest$}
+            \State $\Qbest = Q \cup Q_D$.
+        \EndIf
+    \EndIf
+\EndFor
+\State \Return $\Qbest$
+\end{algorithmic}
+\end{algorithm}
+
+Recall the function $f$ from \cref{eqn:thin-bp:remmed-func} in \cref{sec:thin-bp:remmed}.
+Since $\epsSmall \defeq f(\epsLarge)$, we get
+\begin{equation}
+\label{eqn:epsSmall}
+\epsSmall = f(\epsLarge)
+= \frac{\eps\epsLarge}{104(1+1/\eps\epsLarge)^{2/\epsLarge-2}}
+\le \frac{\eps\epsLarge}{104|\Tcal|}.
+\end{equation}
+The last inequality follows from the fact that
+$|\Tcal| \le (1+1/\eps\epsLarge)^{2/\epsLarge-2}$.
+
+\rthmNfdhWide*
+\begin{proof}(See \cref{sec:thin-gpack:summary}.)\end{proof}
+
+\begin{lemma}
+\label{thm:nfdh-tall}
+Let $I$ be a set of rectangular items where each item has width at most $\delta$.
+Then the number of bins required by NFDH to pack $I$ is less than $2a(I)/(1-\delta) + 3$.
+\end{lemma}
+\begin{proof}
+The bin packing version of NFDH first packs $I$ into shelves
+and then packs the shelves into bins using Next-Fit.
+Let the number of shelves be $p$.
+Let $h_j$ be the height of the $j\Th$ shelf.
+Let $S_j$ be the items in the $j\Th$ shelf.
+For $j \in [p-1]$, in the $j\Th$ shelf, the total width of items is
+more than $(1-\delta)$ and each item has height more than $h_{j+1}$.
+Therefore, $a(S_j) > h_{j+1}(1-\delta)$.
+
+Let $H$ be the sum of heights of all the shelves. Then
+\begin{align*}
+& a(I) > \sum_{i=1}^{p-1} a(S_j) > \sum_{i=1}^{p-1} h_{j+1}(1-\delta) > (1-\delta)(H - h_1)
+\\ &\implies H < \frac{a(I)}{1-\delta} + 1
+\end{align*}
+
+By \cref{thm:next-fit}, the number of bins is less than $2H + 1 < 2a(I)/(1-\delta) + 3$.
+\end{proof}
+
+\begin{theorem}
+The number of bins used by $\thinCPack_{\eps}(\Itild)$ is less than
+\[ (1+20\eps)\opt(I)
+    + \frac{1}{13}\left(1 + \frac{1}{\eps\epsLarge}\right)^{2/\epsLarge - 2} + 23 \]
+\end{theorem}
+\begin{proof}
+In an optimal fractional compartmental bin packing of $\Itild$,
+let $P^*$ be the corresponding packing of empty compartments into bins.
+Hence, $P^*$ contains $m \defeq \fcopt(\Itild)$ bins.
+Since $\iterPackings(\Itild)$ iterates over all packings of compartments into bins,
+$P^* \in \iterPackings(\Itild)$.
+Since wide and tall items in $\Itild$ can be packed into the compartments of $P^*$,
+we get that $x^*$ and $y^*$ are not \Null.
+By \cref{thm:nfdh-wide,thm:nfdh-tall}, the number of bins used by NFDH to pack
+$\Imed \cup D$ is less than $2a(\Imed \cup D)/(1-\delta) + 3 + 1/(1-\delta)$.
+Therefore, the number of bins used by $\thinCPack(I)$ is less than
+\begin{align*}
+& m + \frac{2a(\Imed \cup D)}{1-\delta} + 3 + \frac{1}{1-\delta}
+\\ &< m + \frac{2\eps}{1-\delta}a(I)
+    + \frac{2\epsSmall}{1-\delta}\left(\frac{52|\Tcal|}{\epsLarge} m
+        + 4\left(\frac{|\Tcal|^2}{2} + \frac{6|\Tcal|+2}{\eps\epsLarge}\right)\right)
+    + 3 + \frac{1}{1-\delta}
+    \tag{by \cref{thm:thin-bp:remmed-area,eqn:greedy-discard-area}}
+\\ &= \left(1 + \frac{104\epsSmall|\Tcal|}{\epsLarge(1-\delta)}\right)m
+    + \frac{2\eps}{1-\delta}a(I)
+    + 3 + \frac{1}{1-\delta} + \frac{8\epsSmall}{1-\delta}\left(
+        \frac{|\Tcal|^2}{2} + \frac{6|\Tcal|+2}{\eps\epsLarge}\right)
+\\ &= \left(1 + \frac{\eps}{1-\delta}\right)m + \frac{2\eps}{1-\delta}a(I)
+    + 3 + \frac{1}{13(1-\delta)}\left(\frac{\eps\epsLarge|\Tcal|}{2}
+        + 19 + \frac{2}{|\Tcal|}\right)
+    \tag{by \cref{eqn:epsSmall}}
+\end{align*}
+By \cref{thm:struct,thm:thin-bp:lingroup-opt-compare}, we get
+\[ m = \fcopt(\Itild) < (1+4\eps)\fopt(\Itild) + 2
+< (1+4\eps)(1+\eps)\opt(I) + 4 + 8\eps \]
+Therefore, the number of bins used by $\thinCPack(I)$ is less than
+\begin{align*}
+& \left((1+4\eps)(1+\eps)\left(1 + \frac{\eps}{1-\delta}\right)
+    + \frac{2\eps}{1-\delta}\right)\opt(I)
+\\ &\qquad + (4 + 8\eps)\left(1 + \frac{\eps}{1-\delta}\right) + 3
+    + \frac{1}{13(1-\delta)}\left(\frac{\eps\epsLarge|\Tcal|}{2} + 19 + \frac{2}{|\Tcal|}\right)
+\\ &\le (1+20\eps)\opt(I)
+    + \frac{1}{13}\left(1 + \frac{1}{\eps\epsLarge}\right)^{2/\epsLarge - 2} + 23
+    \tag{since $\delta \le \epsLarge \le \eps \le 1/2$}
+\end{align*}
+\end{proof}

@@ -1,0 +1,137 @@
+\ifcsname pGameL\endcsname\else\newlength{\myu}\fi
+\setlength{\myu}{0.8cm}
+\tikzset{pic1/.pic={
+    \path[item]
+        (0.00\myu, 0\myu) rectangle +(0.09\myu, 0.6\myu)
+        (0.09\myu, 0\myu) rectangle +(0.10\myu, 0.6\myu)
+        (0.19\myu, 0\myu) rectangle +(0.08\myu, 0.6\myu)
+        (0.27\myu, 0\myu) rectangle +(0.08\myu, 0.6\myu);
+    \path[item]
+        (0\myu, 0.6\myu) rectangle +(0.10\myu, 0.4\myu)
+        (0.10\myu, 0.6\myu) rectangle +(0.07\myu, 0.4\myu)
+        (0.17\myu, 0.6\myu) rectangle +(0.07\myu, 0.4\myu)
+        (0.24\myu, 0.6\myu) rectangle +(0.08\myu, 0.4\myu)
+        (0.32\myu, 0.6\myu) rectangle +(0.07\myu, 0.4\myu);
+    \path[item]
+        (0.40\myu, 0\myu) rectangle +(0.11\myu, 0.5\myu)
+        (0.50\myu, 0\myu) rectangle +(0.09\myu, 0.5\myu)
+        (0.59\myu, 0\myu) rectangle +(0.09\myu, 0.5\myu);
+    \path[item]
+        (0.40\myu, 0.5\myu) rectangle +(0.08\myu, 0.5\myu)
+        (0.48\myu, 0.5\myu) rectangle +(0.09\myu, 0.5\myu)
+        (0.57\myu, 0.5\myu) rectangle +(0.08\myu, 0.5\myu);
+    \path[item]
+        (0.70\myu, 0\myu) rectangle +(0.1\myu, 0.4\myu)
+        (0.80\myu, 0\myu) rectangle +(0.1\myu, 0.4\myu)
+        (0.90\myu, 0\myu) rectangle +(0.1\myu, 0.4\myu);
+    \path[item]
+        (0.70\myu, 0.4\myu) rectangle +(0.07\myu, 0.3\myu)
+        (0.77\myu, 0.4\myu) rectangle +(0.07\myu, 0.3\myu)
+        (0.84\myu, 0.4\myu) rectangle +(0.07\myu, 0.3\myu)
+        (0.91\myu, 0.4\myu) rectangle +(0.07\myu, 0.3\myu);
+    \path[item]
+        (0.70\myu, 0.7\myu) rectangle +(0.08\myu, 0.3\myu)
+        (0.78\myu, 0.7\myu) rectangle +(0.08\myu, 0.3\myu)
+        (0.86\myu, 0.7\myu) rectangle +(0.09\myu, 0.3\myu);
+    \path[container]
+        (0\myu, 0\myu) rectangle +(0.4\myu, 0.6\myu)
+        (0\myu, 0.6\myu) rectangle +(0.4\myu, 0.4\myu)
+        (0.4\myu, 0\myu) rectangle +(0.3\myu, 0.5\myu)
+        (0.4\myu, 0.5\myu) rectangle +(0.3\myu, 0.5\myu)
+        (0.7\myu, 0\myu) rectangle +(0.3\myu, 0.4\myu)
+        (0.7\myu, 0.4\myu) rectangle +(0.3\myu, 0.3\myu)
+        (0.7\myu, 0.7\myu) rectangle +(0.3\myu, 0.3\myu);
+    \path[compartment] (0\myu, 0\myu) rectangle (1\myu, 1\myu);
+}}
+\tikzset{pic2/.pic={
+    \path[item]
+        (0.0\myu, 0\myu) rectangle +(0.1\myu, 1\myu)
+        (0.1\myu, 0\myu) rectangle +(0.1\myu, 1\myu)
+        (0.2\myu, 0\myu) rectangle +(0.1\myu, 1\myu)
+        (0.3\myu, 0\myu) rectangle +(0.1\myu, 1\myu)
+        (0.4\myu, 0\myu) rectangle +(0.1\myu, 1\myu);
+    \path[item]
+        (0.50\myu, 0\myu) rectangle +(0.08\myu, 0.5\myu)
+        (0.58\myu, 0\myu) rectangle +(0.08\myu, 0.5\myu)
+        (0.66\myu, 0\myu) rectangle +(0.08\myu, 0.5\myu)
+        (0.74\myu, 0\myu) rectangle +(0.08\myu, 0.5\myu)
+        (0.82\myu, 0\myu) rectangle +(0.08\myu, 0.5\myu)
+        (0.90\myu, 0\myu) rectangle +(0.08\myu, 0.5\myu);
+    \path[item]
+        (0.50\myu, 0.5\myu) rectangle +(0.09\myu, 0.5\myu)
+        (0.59\myu, 0.5\myu) rectangle +(0.09\myu, 0.5\myu)
+        (0.68\myu, 0.5\myu) rectangle +(0.09\myu, 0.5\myu)
+        (0.77\myu, 0.5\myu) rectangle +(0.09\myu, 0.5\myu)
+        (0.86\myu, 0.5\myu) rectangle +(0.09\myu, 0.5\myu);
+    \path[container]
+        (0\myu, 0\myu) rectangle +(0.5\myu, 1\myu)
+        (0.5\myu, 0\myu) rectangle +(0.5\myu, 0.5\myu)
+        (0.5\myu, 0.5\myu) rectangle +(0.5\myu, 0.5\myu);
+    \path[compartment] (0\myu, 0\myu) rectangle (1\myu, 1\myu);
+}}
+\tikzset{pic3/.pic={
+    \path[item]
+        (0.0\myu, 0\myu) rectangle +(0.1\myu, 0.4\myu)
+        (0.1\myu, 0\myu) rectangle +(0.1\myu, 0.4\myu)
+        (0.2\myu, 0\myu) rectangle +(0.1\myu, 0.4\myu)
+        (0.3\myu, 0\myu) rectangle +(0.1\myu, 0.4\myu);
+    \path[item]
+        (0.00\myu, 0.4\myu) rectangle +(0.09\myu, 0.3\myu)
+        (0.09\myu, 0.4\myu) rectangle +(0.09\myu, 0.3\myu)
+        (0.18\myu, 0.4\myu) rectangle +(0.09\myu, 0.3\myu)
+        (0.27\myu, 0.4\myu) rectangle +(0.09\myu, 0.3\myu);
+    \path[item]
+        (0.00\myu, 0.7\myu) rectangle +(0.08\myu, 0.3\myu)
+        (0.08\myu, 0.7\myu) rectangle +(0.08\myu, 0.3\myu)
+        (0.16\myu, 0.7\myu) rectangle +(0.08\myu, 0.3\myu)
+        (0.24\myu, 0.7\myu) rectangle +(0.08\myu, 0.3\myu)
+        (0.32\myu, 0.7\myu) rectangle +(0.08\myu, 0.3\myu);
+    \path[item]
+        (0.4\myu, 0\myu) rectangle +(0.1\myu, 0.5\myu)
+        (0.5\myu, 0\myu) rectangle +(0.1\myu, 0.5\myu)
+        (0.6\myu, 0\myu) rectangle +(0.1\myu, 0.5\myu)
+        (0.7\myu, 0\myu) rectangle +(0.1\myu, 0.5\myu)
+        (0.8\myu, 0\myu) rectangle +(0.1\myu, 0.5\myu)
+        (0.9\myu, 0\myu) rectangle +(0.1\myu, 0.5\myu);
+    \path[item]
+        (0.40\myu, 0.5\myu) rectangle +(0.07\myu, 0.5\myu)
+        (0.47\myu, 0.5\myu) rectangle +(0.07\myu, 0.5\myu)
+        (0.54\myu, 0.5\myu) rectangle +(0.09\myu, 0.5\myu)
+        (0.63\myu, 0.5\myu) rectangle +(0.09\myu, 0.5\myu)
+        (0.72\myu, 0.5\myu) rectangle +(0.08\myu, 0.5\myu)
+        (0.80\myu, 0.5\myu) rectangle +(0.08\myu, 0.5\myu)
+        (0.88\myu, 0.5\myu) rectangle +(0.08\myu, 0.5\myu);
+    \path[container]
+        (0\myu, 0\myu) rectangle +(0.4\myu, 0.4\myu)
+        (0\myu, 0.4\myu) rectangle +(0.4\myu, 0.3\myu)
+        (0\myu, 0.7\myu) rectangle +(0.4\myu, 0.3\myu)
+        (0.4\myu, 0\myu) rectangle +(0.6\myu, 0.5\myu)
+        (0.4\myu, 0.5\myu) rectangle +(0.6\myu, 0.5\myu);
+    \path[compartment] (0\myu, 0\myu) rectangle (1\myu, 1\myu);
+}}
+\tikzset{pic4/.pic={
+    \path[item] foreach \h/\y in {0.15/0.00,0.14/0.15,0.13/0.29,0.12/0.42,0.11/0.54,
+            0.10/0.65,0.09/0.75,0.08/0.84,0.07/0.92}{
+         foreach \hdiff/\w/\x in {0.000/0.15/0.00,0.001/0.14/0.15,0.002/0.13/0.29,0.003/0.12/0.42,
+                0.004/0.11/0.54,0.005/0.10/0.65,0.006/0.09/0.75,0.007/0.08/0.84,0.008/0.07/0.92}{
+            (\x\myu, \y\myu) rectangle +(\w\myu, \h\myu-\hdiff\myu)
+    }};
+}}
+\begin{tikzpicture}
+\pic at (2\myu, 0\myu) {pic4};
+
+\pic[xscale=-3,rotate=90] at (2\myu, 2\myu) {pic1};
+\pic[xscale=-3,rotate=90] at (1\myu, 4\myu) {pic2};
+
+\pic[xscale=-2,rotate=90] at (1\myu, 1\myu) {pic3};
+\pic[xscale=-2,rotate=90] at (2\myu, 3\myu) {pic1};
+\pic[xscale=-2,rotate=90] at (0\myu, 0\myu) {pic2};
+
+\pic[yscale=2] at (1\myu, 2\myu) {pic1};
+\pic[yscale=2] at (3\myu, 0\myu) {pic2};
+\pic[yscale=2] at (4\myu, 0\myu) {pic3};
+\pic[yscale=2] at (4\myu, 3\myu) {pic1};
+\pic[yscale=4] at (0\myu, 1\myu) {pic2};
+
+\draw[ultra thick] (0\myu, 0\myu) rectangle (5\myu, 5\myu);
+\end{tikzpicture}

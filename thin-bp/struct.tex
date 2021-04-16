@@ -1,2 +1,307 @@
 \section{Structural Theorem}
 \label{sec:thin-bp:struct}
+
+In this section, we will define compartmental packing
+and we will prove the structural theorem, which says that
+the number of bins in the optimal fractional compartmental packing of $\Itild$
+is roughly equal to $\fopt(\Itild)$.
+
+For any rectangle $i$ packed in a bin, let $x_1(i)$ and $x_2(i)$ denote the $x$-coordinates
+of its left and right edges, respectively, and let $y_1(i)$ and $y_2(i)$
+denote the $y$-coordinates of its bottom and top edges, respectively.
+Let $R$ be the set of distinct widths of items in $\Wtild$.
+Given the way we rounded items, $|R| \le 1/\eps\epsLarge$.
+
+Recall that $\epsLarge \le \eps \le 1/2$.
+
+\subsection{Discretizing Horizontal Positions}
+
+We will show that given a fractional packing of items in a bin,
+we can remove a small fraction of tall and small items
+and shift the remaining items leftwards so that the left and right edges
+of each wide item belong to a constant-sized set $\Tcal$.
+
+Let $T_0 \defeq \{0\}$ and $t_0 \defeq 1$. For any $j > 0$, define
+\begin{itemize}
+\item $t_j \defeq (1+1/\eps\epsLarge)^{2j}$.
+\item $\delta_j \defeq \eps\epsLarge/t_{j-1}$.
+\item $S_j \defeq T_{j-1} \cup \{k\delta_j: k \in \mathbb{Z}
+    \textrm{ and } 0 \le k < 1/\delta_j\}$.
+\item $T_j \defeq \{x + y: x \in S_j \textrm{ and } y \in R \cup \{0\}\}$.
+\end{itemize}
+
+\begin{observation}
+\label{obs:shift}
+For all $j > 0$, we have $T_{j-1} \subseteq S_j \subseteq T_j$
+and $\delta_j^{-1} \in \mathbb{Z}$.
+\end{observation}
+
+\begin{lemma}
+For all $j \ge 0$, $|T_j| \le t_j$.
+\end{lemma}
+\begin{proof}
+We will prove this by induction. The base case holds because $|T_0| = t_0 = 1$.
+
+Now assume $|T_{j-1}| \le t_{j-1}$. Then
+\begin{align*}
+|T_j| &\le (|R|+1)|S_j|
+    \le \left(\frac{1}{\eps\epsLarge}+1\right)\left(|T_{j-1}| + \frac{1}{\delta_j}\right)
+    \le \left(\frac{1}{\eps\epsLarge}+1\right)^2 t_{j-1}
+    = t_j
+\end{align*}
+Hence, by mathematical induction, $|T_j| \le t_j$ for all $j \ge 0$.
+\end{proof}
+
+Define $\Tcal \defeq T_{1/\epsLarge-1}$.
+Therefore, $|\Tcal| \le t_{1/\epsLarge-1} = (1+1/\eps\epsLarge)^{2/\epsLarge - 2}$.
+
+\begin{lemma}
+\label{thm:disc-hor-pos}
+Given a fractional packing of items $\Jtild \subseteq \Itild$ into a bin,
+we can remove tall and small items of total area less than $\eps$
+and shift some of the remaining items to the left such that for every wide item $i$,
+we get $x_1(i), x_2(i) \in \Tcal$.
+\end{lemma}
+\begin{proof}
+We will describe an algorithm for such a transformation.
+
+For wide items $u$ and $v$, we say that $u \prec v$ iff
+the right edge of $u$ is to the left of the left edge of $v$.
+Formally $u \prec v \iff x_2(u) \le x_1(v)$.
+We call $u$ a \emph{predecessor} of $v$.
+Note that the relation $\prec$ is transitive.
+A sequence $[i_1, i_2, \ldots, i_k]$ such that $i_1 \prec i_2 \prec \ldots \prec i_k$
+is called a \emph{chain} ending at $i_k$.
+For a wide item $i$, define $\level(i)$ as the number of items in the longest chain
+ending at $i$. Formally,
+\[ \level(i) \defeq \begin{cases}
+1 & \textrm{ if } i \textrm{ has no predecessors}
+\\ \displaystyle 1 + \max_{j \prec i} \level(j) & \textrm{ otherwise}
+\end{cases} \]
+Let $W_j$ be the items at level $j$, i.e., $W_j \defeq \{i: \level(i) = j\}$.
+
+\begin{figure}[htb]
+\centering
+\input{img/precedence-graph.tikz}
+\caption[Relation $\prec$ among items in a bin]%
+{Example illustrating the $\prec$ relationship between wide items in a bin.
+An edge is drawn from $u$ to $v$ iff $u \prec v$.
+Here $W_1 = \{a, e, b\}$, $W_2 = \{d, f\}$ and $W_3 = \{c\}$.}
+\label{fig:precedence-graph}
+\end{figure}
+
+Note that the level of an item can be at most $1/\epsLarge-1$,
+since each wide item has width more than $\epsLarge$.
+
+Our algorithm will proceed in stages, where in the $j\Th$ stage,
+we apply two transformations to the items in the bin.
+In the first transformation, called \emph{strip-removal},
+we will remove some tall and small items.
+In the second transformation, called \emph{compaction},
+we will first shift some tall and small items leftwards
+and then shift each item in $W_j$ leftwards.
+
+We will maintain the following invariant throughout the algorithm:\\
+\textbf{Invariant}: \textsl{after $k$ stages, for each $j \in [k]$,
+each item $i \in W_j$ has $x_1(i) \in S_j$ (and hence $x_2(i) \in T_j$).}
+Note that the invariant is trivially true for $k=0$.
+
+\begin{definition}[Strip-removal]
+In the $j\Th$ stage, for each $x \in T_{j-1}$,
+consider a strip of width $\delta_j$ and height 1 in the bin
+whose left edge has coordinate $x$.
+Discard the slices of tall and small items inside the strips.
+This transformation is called \emph{strip-removal}.
+\end{definition}
+
+\begin{lemma}
+Items discarded from a bin by strip-removal (across all stages)
+have total area less than $\eps$.
+\end{lemma}
+\begin{proof}
+In the $j\Th$ stage, we create $|T_{j-1}|$ strips,
+and each strip has total area at most $\delta_j$.
+Therefore, the area discarded in the $j\Th$ stage is at most
+$|T_{j-1}|\delta_j \le t_{j-1}\delta_j = \eps\epsLarge$.
+Since there can be at most $1/\epsLarge-1$ stages,
+we discard an area of less than $\eps$ across all stages.
+\end{proof}
+
+\begin{definition}[Compaction]
+In the $j\Th$ stage, move all tall and small items as much towards the left as possible
+(imagine a gravitational force acting leftwards on the tall and small items)
+while keeping the wide items fixed.
+Then move each wide item $i \in W_j$ leftwards till $x_1(i) \in S_j$.
+This transformation is called \emph{compaction}.
+\end{definition}
+
+\begin{lemma}
+Compaction always succeeds, i.e., in the $j\Th$ stage, while moving
+item $i \in W_j$ leftwards, no other item will block its movement.
+\end{lemma}
+\begin{proof}
+Let $i \in W_j$. Let $z$ be the $x$-coordinate of the left edge of the strip
+immediately to the left of item $i$, i.e.,
+$z \defeq \max(\{x \in T_{j-1}: x \le x_1(i)\})$.
+
+For any wide item $i'$, we have $x_2(i') \le x_1(i) \iff i' \prec i \iff \level(i') \le j-1$.
+By our invariant, we get
+\[ \level(i') \le j-1 \implies x_2(i') \in T_{j-1} \implies x_2(i') \le z. \]
+Therefore, for every wide item $i'$, $x_2(i') \not\in (z, x_1(i)]$.
+
+In the $j\Th$ strip-removal, we cleared the strip $[z, z+\delta_j] \times [0, 1]$.
+If $x_1(i) \in [z, z+\delta_j]$, then $i$ can freely move to $z$,
+and $z \in T_{j-1} \subseteq S_j$.
+Since no wide item has its right edge in $(z, x_1(i)]$, if $x_1(i) > z + \delta_j$,
+all the tall and small items in $[z+\delta_j, x_1(i)]$ will move leftwards by
+at least $\delta_j$ during compaction.
+Hence, there would be an empty space of width at least $\delta_j$
+to the left of item $i$ (see \cref{fig:compaction-zoom}).
+Therefore, we can move $i$ leftwards to make
+$x_1(i)$ a multiple of $\delta_j$, and then $x_1(i)$ would belong to $S_j$.
+\end{proof}
+
+\begin{figure}[!htb]
+\centering
+\input{img/compaction-zoom.tikz}
+\caption[Creation of empty space during compaction.]%
+{This figure shows a region in the bin in the vicinity of item $i \in W_j$.
+It illustrates how shifting tall and small items during compaction in the $j\Th$ stage
+creates a free space of width $\delta$ to the left of some wide items, including $i$.
+Wide items are shaded dark and the lightly shaded region
+potentially contains tall and small items.
+Note that some tall and small items in the region $C$
+may be unable to shift left because item $k$ is blocking them.
+All other tall and small items in this figure to the right of $z$
+can shift left by $\delta_j$.}
+\label{fig:compaction-zoom}
+\end{figure}
+
+Since compaction in the $j\Th$ stage would force $x_1(i)$ to belong to $S_j$
+for each $i \in W_j$, the invariant is maintained after each stage.
+Therefore, after $1/\epsLarge-1$ stages, we get that for each wide item $i$,
+$x_1(i) \in S_{1/\epsLarge-1} \subseteq \Tcal$ and $x_2(i) \in T_{1/\epsLarge-1} = \Tcal$.
+\end{proof}
+
+\subsection{Creating Compartments}
+
+\begin{definition}[Compartmental packing]
+\label{defn:thin-bp:compartmental}
+Consider a bin with some items packed into it. A \emph{compartment} $C$
+is defined as a rectangular region in the bin satisfying the following properties:
+\begin{itemize}
+\item $x_1(C), x_2(C) \in \Tcal$.
+\item $y_1(C), y_2(C)$ are multiples of $\epsCont \defeq \eps\epsLarge/6|\Tcal|$.
+\item $C$ does not contain both wide items and tall items.
+\item If $C$ contains tall items, then $x_1(C)$ and $x_2(C)$
+    are consecutive values in $\Tcal$.
+\end{itemize}
+If a compartment $C$ contains a wide item, it is called a \emph{wide compartment}.
+Otherwise it is called a \emph{tall compartment}.
+
+A packing of items $\Jtild$ into a bin is said to be \emph{compartmental}
+iff there is a set of non-overlapping \emph{compartments} in the bin
+such that each wide or tall item lies completely inside some compartment,
+and there are at most $\nW \defeq 3(1/\epsLarge-1)|\Tcal| + 1$ wide compartments in the bin
+and there are at most $\nH \defeq (1/\epsLarge-1)|\Tcal|$ tall compartments in the bin.
+
+A packing of items into bins is called compartmental iff
+each bin in the packing is compartmental.
+\end{definition}
+
+\begin{lemma}
+\label{thm:empty-to-rects}
+Let there be a set $I$ of rectangles packed inside a bin.
+Then there is a polynomial-time algorithm that can decompose the empty space in the bin
+into at most $3|I|+1$ rectangles by making horizontal cuts only.
+\end{lemma}
+\begin{proof}
+Extend the top and bottom edge of each rectangle leftwards and rightwards
+till they hit another rectangle or an edge of the bin.
+This decomposes the empty region into rectangles $R$.
+See \cref{fig:thin-bp:empty-space-to-rects}.
+
+For each rectangle $i \in I$, the top edge of $i$ is the bottom edge of a rectangle in $R$,
+the bottom edge of $i$ is the bottom edge of two rectangles in $R$.
+Apart from possibly the rectangle in $R$ whose bottom edge is at the bottom of the bin,
+the bottom edge of every rectangle in $R$ is either the bottom or top edge of a rectangle in $I$.
+Therefore, $|R| \le 3|I| + 1$.
+\end{proof}
+
+\begin{figure}[htb]
+\centering
+\input{img/empty-space-to-rects-h.tikz}
+\caption{Using horizontal cuts to partition the empty space
+around the 3 items into 9 rectangular regions.}
+\label{fig:thin-bp:empty-space-to-rects}
+\end{figure}
+
+\begin{lemma}
+\label{thm:thin-bp:compartmentalize}
+Let $\Jtild$ be a packing of items into a bin such that for each wide item $i$,
+$x_1(i), x_2(i) \in \Tcal$. Then by removing wide and small items of area less than $\eps$,
+we can get a compartmental packing of the remaining items.
+\end{lemma}
+\begin{proof}
+Draw vertical lines in the bin at the $x$-coordinates in $\Tcal - \{0\}$.
+This splits the bin into $|\Tcal|$ columns.
+Each column has 0 or more wide items crossing it.
+These wide items divide the column into cells.
+A cell is said to be tall iff it contains a tall item.
+There can be at most $1/\epsLarge-1$ tall cells in a column,
+so there can be at most $(1/\epsLarge - 1)|\Tcal|$ tall cells in the bin.
+
+By \cref{thm:empty-to-rects}, we can use horizontal cuts to partition the space outside
+tall cells into at most $3(1/\epsLarge-1)|\Tcal| + 1$ rectangular regions.
+(This can slice some wide items.)
+If a region contains a wide item, call it a box.
+
+For each box $i$, discard some items from the bottom of the box
+and increase $y_1(i)$ so that it becomes a multiple of $\epsCont$.
+Then discard some items from the top of the box
+and reduce $y_2(i)$ so that it becomes a multiple of $\epsCont$.
+The total area of items discarded is less than $2\epsCont$.
+If $i$ continues to contain a wide item, it becomes a wide compartment.
+Now all wide items belong to some wide compartment.
+
+Each column has 0 or more wide compartments crossing it.
+These wide compartments divide the column into rectangular regions.
+Each region that contains a tall item is a tall compartment.
+
+Therefore, by removing wide and small items of area less than
+$6|\Tcal|\epsCont/\epsLarge \le \eps$, we get a compartmental packing of items
+where there are at most $(1/\epsLarge-1)|\Tcal|$ tall compartments
+and at most $3(1/\epsLarge-1)|\Tcal| + 1$ wide compartments.
+\end{proof}
+
+\subsection{Existence of Near-Optimal Compartmental Packing}
+
+For a set $\Itild$ of rounded items, define $\fcopt(\Itild)$ as the number of bins in
+the optimal fractional compartmental packing of $\Itild$.
+
+\begin{theorem}
+\label{thm:struct}
+Let $\Itild$ be a set of $\delta$-thin rounded items. Then
+$\fcopt(\Itild) < (1+4\eps)\fopt(\Itild) + 2$.
+\end{theorem}
+\begin{proof}
+Consider a fractional packing of $\Itild$ into $m \defeq \fopt(\Itild)$ bins.
+By \cref{thm:disc-hor-pos,thm:thin-bp:compartmentalize}, in each bin,
+we can discard items of area at most $2\eps$ from the bin
+and get a compartmental packing of the remaining items.
+
+Let $X$ be the set of wide and small discarded items
+and let $Y$ be the set of tall discarded items.
+For each item $i \in X$, if $w(i) \le 1/2$, slice it using a horizontal cut in the middle
+and place the pieces horizontally next to each other to get a new item
+of width $2w(i)$ and height $h(i)/2$. Repeat until $w(i) > 1/2$.
+Now pack the items in bins by stacking them one-over-the-other
+so that for each item $i \in X$, $x_1(i) = 0$.
+This will require less than $2a(X) + 1$ bins,
+and the packing will be compartmental.
+
+Similarly, we can get a compartmental packing of $Y$ into $2a(Y) + 1$ bins.
+Since $a(X \cup Y) < 2\eps m$, we will require less than $4\eps m + 2$ bins.
+Therefore, the total number of compartmental bins used to pack $\Itild$
+is less than $(1 + 4\eps)m + 2$.
+\end{proof}

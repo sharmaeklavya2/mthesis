@@ -1,2 +1,141 @@
 \section{Classifying and Rounding Items}
 \label{sec:thin-bp:round}
+
+In this section, we will describe the algorithm $\round(I)$.
+$\round(I)$ returns a pair $(\Itild, \Imed)$, where $\Itild$
+is called the set of rounded items and
+$\Imed \subseteq I$ is called the set of medium items.
+We will show that $a(\Imed) \le \eps a(I)$ and
+$\Itild$ is obtained by rounding up the width of height of each item in $I - \Imed$.
+
+We assume that $\eps \le 1/2$ and that $\eps^{-1} \in \mathbb{Z}$.
+
+\subsection{Removing Medium Items}
+\label{sec:thin-bp:remmed}
+
+We will choose $\Imed \subseteq I$ such that for two constants $\epsSmall$ and $\epsLarge$,
+no item in $I - \Imed$ has its width or height in the interval $(\epsSmall, \epsLarge]$
+and $\epsSmall \ll \epsLarge < 1$
+(we will soon precisely define the meaning of $\epsSmall \ll \epsLarge$).
+For $\thinCPack$ to work, we require $\delta \le \epsSmall$.
+
+\begin{definition}
+\label{defn:thin-bp:remmed}
+Let $\mu_0 \in (0, 1]$ be a constant and let
+$f: (0, 1] \mapsto (0, 1]$ be a function such that $\forall x \in (0, 1], f(x) < x$.
+Let $T \defeq \ceil{2/\eps}$.
+For $t \in [T]$, define $\mu_t \defeq f(\mu_{t-1})$ and define
+\[ J_t \defeq \{i \in I: w(i) \in (\mu_t, \mu_{t-1}]
+    \textrm{ or } h(i) \in (\mu_t, \mu_{t-1}]\}. \]
+Define $\remMed(I, \eps, f, \mu_0)$ as the tuple $(J_r, \mu_r, \mu_{r-1})$,
+where $r \defeq \argmin_{t=1}^T a(J_t)$.
+\end{definition}
+
+\begin{lemma}
+\label{thm:thin-bp:remmed-area}
+Let $(\Imed, \epsSmall, \epsLarge) \defeq \remMed(I, \eps, f, \mu_0)$.
+Then $a(\Imed) \le \eps a(I)$.
+\end{lemma}
+\begin{proof}
+Each item belongs to at most 2 sets $J_t$. Therefore,
+\[ a(\Imed) = \min_{t=1}^T a(J_t)
+\le \frac{1}{T} \sum_{t=1}^T a(J_t)
+\le \frac{2}{\ceil{2/\eps}} a(I)
+\le \eps a(I) \qedhere \]
+\end{proof}
+
+No item in $I - \Imed$ has width or height in the interval $(\epsSmall, \epsLarge]$.
+
+Let $\mu_0 = \eps$. So, $\epsLarge \le \eps$ and $\epsSmall \defeq f(\epsLarge)$.
+We choose $f$ to be
+\begin{equation}
+\label{eqn:thin-bp:remmed-func}
+f(x) \defeq \frac{\eps x}{104(1+1/(\eps x))^{2/x-2}}.
+\end{equation}
+We will explain this choice later in \cref{sec:thinCPack}.
+Intuitively, such an $f$ ensures that $\epsSmall = f(\epsLarge) \ll \epsLarge$.
+Note that $f$ is independent of $I$, so $\epsLarge$ and $\epsSmall$ are constants.
+Also note that $x^{-1} \in \mathbb{Z} \implies f(x)^{-1} \in \mathbb{Z}$,
+so $\epsLarge^{-1}, \epsSmall^{-1} \in \mathbb{Z}$.
+
+\subsection{Classifying Items}
+
+Classify the items in $I - \Imed$ into three disjoint classes:
+\begin{itemize}
+\item Wide items: $W \defeq \{i \in I: w(i) > \epsLarge \textrm{ and } h(i) \le \epsSmall \}$.
+\item Tall items: $H \defeq \{i \in I: w(i) \le \epsSmall \textrm{ and } h(i) > \epsLarge \}$.
+\item Small items: $S \defeq \{i \in I: w(i) \le \epsSmall \textrm{ and } h(i) \le \epsSmall \}$.
+\end{itemize}
+
+\subsection{Linear Grouping}
+
+We will now use \emph{linear grouping}~\cite{bp-aptas,kenyon1996strip}
+to round up the widths of items in $W$ and the heights of items in $H$.
+Arrange the items of $W$ in decreasing order of width and stack them
+one-over-the-other (i.e., the widest item in $W$ is at the bottom).
+Let $h_L$ be the height of the stack.
+Let $y(i)$ be the $y$-coordinate of the bottom edge of item $i$.
+Split the stack into sections of height $\eps^2h_L$ each.
+For $j \in [1/\eps\epsLarge]$, let $w_j$ be the width of the
+widest item intersecting the $j\Th$ section from the bottom, i.e.,
+\[ w_j \defeq \max(\{w(i): i \in W \textrm{ and } (y(i), y(i) + h(i))
+    \cap ((j-1)\eps\epsLarge h_L, j\eps\epsLarge h_L) \neq \emptyset\}). \]
+Round up the width of each item $i$ to the smallest $w_j$ that is at least $w(i)$.
+Let $W_j$ be the items whose width got rounded to $w_j$
+and let $\Wtild_j$ be the resulting rounded items.
+(There may be ties, i.e., there may exist $j_1 < j_2$ such that $w_{j_1} = w_{j_2}$.
+In that case, define $W_{j_2} \defeq \Wtild_{j_2} = \emptyset$.
+This ensures that all $W_j$ are disjoint.)
+Let $\Wtild \defeq \bigcup_j \Wtild_j$.
+
+Define $\Htild$ analogously. Let $\Itild \defeq \Wtild \cup \Htild \cup S$.
+
+\begin{claim}
+\label{thm:thin-bp:lingroup-distinct}
+Items in $\Wtild$ have at most $1/\eps\epsLarge$ distinct widths.
+Items in $\Htild$ have at most $1/\eps\epsLarge$ distinct heights.
+\end{claim}
+
+\begin{definition}[Fractional packing]
+Suppose we are allowed to slice wide items in $\Itild$ using horizontal cuts,
+slice tall items in $\Itild$ using vertical cuts and slice
+small items in $\Itild$ using both horizontal and vertical cuts.
+For any $\Xtild \subseteq \Itild$, a bin packing of the slices of $\Xtild$
+is called a \emph{fractional packing} of $\Xtild$.
+The optimal fractional packing of $\Xtild$ is denoted by $\fopt(\Xtild)$.
+\end{definition}
+
+\begin{lemma}
+\label{thm:thin-bp:lingroup-opt-compare}
+$\fopt(\Itild) < (1+\eps)\opt(I) + 2$.
+\end{lemma}
+\begin{proof}
+Consider the optimal packing of $I$.
+To convert this to a packing of $\Itild - (\Wtild_1 \cup \Htild_1)$,
+unpack $W_1$ and $H_1$, and for each $j \in [1/\eps\epsLarge-1]$,
+pack $\Wtild_{j+1}$ in the place of $W_j$
+and pack $\Htild_{j+1}$ in the place of $H_j$,
+possibly after slicing the items.
+Therefore,
+\begin{equation}
+\label{eqn:thin-bp:lingroup-1}
+\fopt(\Itild - (\Wtild_1 \cup \Htild_1)) \le \opt(I).
+\end{equation}
+
+We can pack $\Htild_1$ in a bin by stacking the items side-by-side on the base of bins.
+We can pack $\Wtild_1$ in a bin by stacking the items one-over-the-other.
+Let $w_L$ be the total width of items in $\Htild$. The number of bins used is
+$\smallceil{\eps\epsLarge h_L} + \smallceil{\eps\epsLarge w_L}$. Also,
+\[ \opt(I) \ge \opt(W \cup H)
+\ge a(W) + a(H) \ge \epsLarge(h_L + w_L) \]
+Therefore,
+\begin{equation}
+\label{eqn:thin-bp:lingroup-2}
+\fopt(\Wtild_1 \cup \Htild_1)
+\le \smallceil{\eps\epsLarge h_L} + \smallceil{\eps\epsLarge w_L} < \eps\opt(I) + 2.
+\end{equation}
+On combining \eqref{eqn:thin-bp:lingroup-1} and \eqref{eqn:thin-bp:lingroup-2}, we get
+\[ \fopt(\Itild) \le \fopt(\Itild - (\Wtild_1 \cup \Htild_1))
+    + \fopt(\Wtild_1 \cup \Htild_1)
+< (1+\eps)\opt(I) + 2 \qedhere \]
+\end{proof}

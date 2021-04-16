@@ -589,6 +589,7 @@ and the packing of items into the shelves is a 2-stage packing,
 the bin packing of non-discarded items is a 4-stage packing.
 
 \subsection{Summary}
+\label{sec:thin-gpack:summary}
 
 A summary of $\thinGPack$ is given in \cref{algo:thinGPack}.
 
@@ -608,12 +609,12 @@ Let $W^d$ be the unpacked items from $W$ and $H^d$ be the unpacked items from $H
 \end{algorithmic}
 \end{algorithm}
 
-\begin{lemma}
-\label{thm:nfdh-small-multi}
+\begin{restatable}{lemma}{rthmNfdhWide}
+\label{thm:nfdh-wide}
 Let $I$ be a set of rectangular items where each item has height at most $\delta$.
 Then the number of bins required by NFDH to pack $I$ is less than
 $(2a(I)+1)/(1-\delta)$.
-\end{lemma}
+\end{restatable}
 \begin{proof}
 The bin packing version of NFDH first packs $I$ into shelves
 and then packs the shelves into bins using Next-Fit.
@@ -643,7 +644,7 @@ Let $W^d$ and $H^d$ be the unpacked items from $W$ and $H$, respectively.
 By \cref{thm:discard-area-ub,thm:hw-opt},
 \[ a(W^d) < \eps\opt(\Ihat) + \delta_H(1 + \eps)(m + 1/\eps^2) \]
 \[ a(H^d) < \eps\opt(\Ihat) + \delta_W(1 + \eps)(m + 1/\eps^2) \]
-By \cref{thm:nfdh-small-multi}, the number of bins used by $\thinGPack_{\eps}(I)$ is less than
+By \cref{thm:nfdh-wide}, the number of bins used by $\thinGPack_{\eps}(I)$ is less than
 \begin{align*}
 & m + \frac{2a(W^d)+1}{1-\delta_H} + \frac{2a(H^d)+1}{1-\delta_W}
 \\ &\le (1 + 4\Delta(1+\eps))m + 4\eps(1+\Delta)\opt(\Ihat)

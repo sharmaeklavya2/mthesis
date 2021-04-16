@@ -1,0 +1,54 @@
+\ifcsname myu\endcsname\else\newlength{\myu}\fi
+\setlength{\myu}{0.8cm}
+\tikzset{mypic/.pic={
+\path[item] (3\myu, 1\myu) rectangle (7\myu, 1.5\myu);
+\path[item-boundary] (7\myu, 1\myu) -- (3\myu, 1\myu) -- (3\myu, 1.5\myu) -- (7\myu, 1.5\myu);
+\path[item] (4.8\myu, 2\myu) rectangle (7\myu, 2.5\myu);
+\path[item-boundary] (7\myu, 2\myu) -- (4.8\myu, 2\myu) -- (4.8\myu, 2.5\myu) -- (7\myu, 2.5\myu);
+\path[item] (4\myu, 3\myu) rectangle (7\myu, 3.5\myu) node[pos=0.5] {$i$};
+\path[item-boundary] (7\myu, 3\myu) -- (4\myu, 3\myu) -- (4\myu, 3.5\myu) -- (7\myu, 3.5\myu);
+\path[item] (-1\myu, 2\myu) rectangle (0\myu, 3\myu);
+\path[item-boundary] (-1\myu, 2\myu) -- (0\myu, 2\myu) -- (0\myu, 3\myu) -- (-1\myu, 3\myu);
+\path[item] (-1\myu, 4.5\myu) rectangle (6\myu, 5\myu) node[pos=0.5] {$k$};
+\path[item-boundary] (-1\myu, 4.5\myu) -- (6\myu, 4.5\myu) -- (6\myu, 5\myu) -- (-1\myu, 5\myu);
+
+\draw[thick]
+    (-1\myu, 0\myu) -- (7\myu, 0\myu)
+    (-1\myu, 6\myu) -- (7\myu, 6\myu);
+\node[anchor=east] at (-1\myu, 3\myu) {$\cdots$};
+\node[anchor=west] at (7\myu, 3\myu) {$\cdots$};
+\draw[dashed,semithick]
+    (0\myu, 0\myu) -- (0\myu, 6\myu)
+    (4\myu, 0\myu) -- (4\myu, 6\myu)
+    (6\myu, 3.5\myu) -- (6\myu, 6\myu);
+\node[anchor=south] at (0\myu, 6\myu) {$z$};
+\node[anchor=south] at (4\myu, 6\myu) {$x_1(i)$};
+\node at (6.5\myu, 4.75\myu) {$C$};
+}}
+\begin{tikzpicture}[
+item-boundary/.style={draw,semithick},
+item/.style={fill={black!25}},
+myarrow/.style={->,>={Stealth},thick},
+mybrace/.style = {decoration={amplitude=5pt,brace,mirror,raise=1pt},semithick,decorate},
+]
+\begin{scope}
+\path[fill={black!10}]
+    (-1\myu, 0\myu) rectangle (0\myu, 6\myu)
+    (1\myu, 0\myu) rectangle (7\myu, 6\myu);
+\draw[very thin] (0\myu, 0\myu) -- (0\myu, 6\myu) (1\myu, 0\myu) -- (1\myu, 6\myu);
+\draw[mybrace] (0\myu, 0\myu) -- node[below=5pt] {$\delta_j$} (1\myu, 0\myu);
+\pic at (0\myu, 0\myu) {mypic};
+\end{scope}
+\draw[myarrow] (3\myu, -0.5\myu) -- (3\myu, -2.5\myu)
+    node[pos=0.4,anchor=west,text width=4.5cm]
+    {shift tall and small items leftwards by $\delta_j$};
+\begin{scope}[yshift={-7.2cm}]
+\path[fill={black!10}] (-1\myu, 0\myu) rectangle (7\myu, 6\myu);
+\draw[very thin,fill=white]
+    (2\myu, 1\myu) rectangle (3\myu, 1.5\myu)
+    (3.8\myu, 2\myu) rectangle (4.8\myu, 2.5\myu)
+    (3\myu, 3\myu) rectangle (4\myu, 3.5\myu);
+\pic at (0\myu, 0\myu) {mypic};
+\draw[mybrace] (2\myu, 1\myu) -- node[below=5pt] {$\delta_j$} (3\myu, 1\myu);
+\end{scope}
+\end{tikzpicture}

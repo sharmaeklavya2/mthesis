@@ -1,0 +1,36 @@
+\ifcsname pGameL\endcsname\else\newlength{\pGameL}\fi
+\setlength{\pGameL}{0.3cm}
+\tikzset{bin/.style={draw,thick}}
+\tikzset{item/.style={draw,fill={black!15}}}
+\tikzset{myarrow/.style={draw,->,>={Stealth}}}
+\tikzset{mynode/.style={pos=0.5,inner sep=0,minimum size=0.5cm,shape=circle,thick,draw=black}}
+\tikzset{cutline/.style={draw,dashed}}
+%\tikzset{binGrid/.style={draw,step=1\pGameL,{black!20}}}
+\begin{tikzpicture}
+%\path[binGrid] (0\pGameL, 0\pGameL) grid (20\pGameL, 20\pGameL);
+
+\path[cutline] (2\pGameL, 0\pGameL) -- +(0, 20\pGameL);
+\path[cutline] (5\pGameL, 0\pGameL) -- +(0, 20\pGameL);
+\path[cutline] (7\pGameL, 0\pGameL) -- +(0, 20\pGameL);
+\path[cutline] (9\pGameL, 0\pGameL) -- +(0, 20\pGameL);
+\path[cutline] (14\pGameL, 0\pGameL) -- +(0, 20\pGameL);
+\path[cutline] (16\pGameL, 0\pGameL) -- +(0, 20\pGameL);
+
+\path[item] (0\pGameL, 15\pGameL) rectangle +(7\pGameL, 2\pGameL) node[mynode] (wa) {$a$};
+\path[item] (5\pGameL, 11\pGameL) rectangle +(9\pGameL, 2\pGameL) node[mynode] (wb) {$b$};
+\path[item] (16\pGameL, 10\pGameL) rectangle +(4\pGameL, 2\pGameL) node[mynode] (wc) {$c$};
+\path[item] (9\pGameL, 18\pGameL) rectangle +(5\pGameL, 2\pGameL) node[mynode] (wd) {$d$};
+\path[item] (2\pGameL, 6\pGameL) rectangle +(7\pGameL, 2\pGameL) node[mynode] (we) {$e$};
+\path[item] (9\pGameL, 2\pGameL) rectangle +(11\pGameL, 2\pGameL) node[mynode] (wf) {$f$};
+
+\path[bin] (0\pGameL, 0\pGameL) rectangle (20\pGameL, 20\pGameL);
+
+\path[myarrow] (wa) -- (wc);
+\path[myarrow] (wa) -- (wd);
+\path[myarrow] (wa) -- (wf);
+\path[myarrow] (wb) -- (wc);
+\path[myarrow] (wd) -- (wc);
+\path[myarrow] (we) -- (wc);
+\path[myarrow] (we) -- (wd);
+\path[myarrow] (we) -- (wf);
+\end{tikzpicture}

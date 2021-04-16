@@ -1,2 +1,39 @@
 \section{Handling Item Rotations}
 \label{sec:thin-bp:rot}
+
+In this section, we will briefly explain changes to $\thinCPack$ and its analysis
+so that they work for the case where items can be rotated by $90^{\circ}$.
+
+For the rotational version of the problem, we can assume \wLoG{} that
+the height of each $\delta$-thin rectangle is at most $\delta$,
+because otherwise we can rotate the item.
+We assume \wLoG{} that the width of the bin is 1
+and the height of the bin is at least 1,
+because we can rotate the bin and scale its width and height equally.
+We also assume that the height of the bin is a constant.
+
+To handle the rotational case, we do not require any change in \cref{sec:thin-bp:round}.
+
+The structural theorem in \cref{sec:thin-bp:struct} doesn't require any
+conceptual modifications. The only change is that the number of tall compartments
+in a tall cell can be more than $1/\epsLarge-1$.
+Specifically, if the height of the bin is $H$, the number of tall compartments
+in a tall cell is now upper-bounded by $H/\epsLarge$.
+(Hence, for the number of compartments to be a constant,
+we require the bin's height to be a constant).
+This will increase the running time of $\iterPackings$,
+but there will be no change to \cref{thm:struct}.
+
+The feasibility linear program of \cref{sec:feas-lp} will have to change
+to take item rotations into account. Instead of using two programs---%
+$\FP_W$ and $\FP_H$---which fractionally pack wide and tall items separately,
+we will use just one program which will also decide which items to rotate.
+To do this, we allow an item to belong to both wide and tall configurations.
+The number of constraints in the feasibility linear program will
+be a constant that depends on $\eps$ and $\epsLarge$.
+
+The $\greedyPack$ algorithm of \cref{sec:greedy-cont} will remain the same,
+but the total area of discarded items will be slightly different because
+the number of compartments in a bin can now be larger.
+Finally, the AAR of $\thinCPack$ for the rotational version will be $1 + \Theta(1)\eps$
+by the same kind of analysis as in \cref{sec:thinCPack}.
