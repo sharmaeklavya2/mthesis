@@ -2555,6 +2555,15 @@ Then there is a polynomial-time algorithm which can decompose the empty space in
 Extend the top and bottom edges of each rectangle leftwards and rightwards
 till they hit another rectangle or the bin boundary.
 This partitions the empty space into rectangles $R$.
+See \cref{fig:empty-space-to-rects} for an example.
+
+\begin{figure}[htb]
+\centering
+\input{img/empty-space-to-rects-h.tikz}
+\caption{Using horizontal cuts to partition the empty space
+around the 3 rectangles into 9 rectangular regions.}
+\label{fig:empty-space-to-rects}
+\end{figure}
 
 For each rectangle $i \in I$, the top edge of $i$ is the bottom edge of a rectangle in $R$,
 the bottom edge of $i$ is the bottom edge of two rectangles in $R$.

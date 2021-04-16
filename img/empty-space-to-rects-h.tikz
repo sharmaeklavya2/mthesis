@@ -1,0 +1,27 @@
+\ifcsname myu\endcsname\else\newlength{\myu}\fi
+\setlength{\myu}{0.8cm}
+\begin{tikzpicture}[
+item/.style={draw,fill={black!15}},
+cutline/.style={draw,dashed},
+]
+\path[item] (1\myu, 1\myu) rectangle (3\myu, 2\myu);
+\path[item] (5\myu, 2\myu) rectangle (6\myu, 4\myu);
+\path[item] (2\myu, 3\myu) rectangle (4\myu, 5\myu);
+\draw[thick] (0\myu, 0\myu) rectangle (7\myu, 6\myu);
+
+\draw[cutline] (0\myu, 1\myu) -- (7\myu, 1\myu);
+\draw[cutline] (0\myu, 2\myu) -- (7\myu, 2\myu);
+\draw[cutline] (0\myu, 3\myu) -- (5\myu, 3\myu);
+\draw[cutline] (4\myu, 4\myu) -- (7\myu, 4\myu);
+\draw[cutline] (0\myu, 5\myu) -- (7\myu, 5\myu);
+
+\path (0\myu, 0\myu) -- node {1} (7\myu, 1\myu);
+\path (0\myu, 1\myu) -- node {2} (1\myu, 2\myu);
+\path (3\myu, 1\myu) -- node {3} (7\myu, 2\myu);
+\path (0\myu, 2\myu) -- node {4} (5\myu, 3\myu);
+\path (6\myu, 2\myu) -- node {5} (7\myu, 4\myu);
+\path (4\myu, 3\myu) -- node {6} (5\myu, 4\myu);
+\path (0\myu, 3\myu) -- node {7} (2\myu, 5\myu);
+\path (4\myu, 4\myu) -- node {8} (7\myu, 5\myu);
+\path (0\myu, 5\myu) -- node {9} (7\myu, 6\myu);
+\end{tikzpicture}
