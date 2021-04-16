@@ -98,6 +98,15 @@ $\opt(I) + O(\log\opt(I))$ bins~\cite{HobergR17}
 On the hardness side, to the best of our knowledge,
 an $\opt(I) + 1$ algorithm hasn't yet been proven to not exist.
 
+\section{Classical Knapsack}
+
+There is a simple FPTAS for classical knapsack that runs in
+$O(n^3/\eps)$ time~\cite{daa:rounding-dp}.
+Lawler improved the running time to $O(n\log(1/\eps) + 1/\eps^4)$~\cite{lawler1979fast}.
+The running time was improved to $O(n\log(1/\eps) + (1/\eps)^{12/5})$
+by Chan~\cite{chan2018approximation}
+and to $O(n\log(1/\eps) + (1/\eps)^{9/4})$ by Jin~\cite{jin2019improved}.
+
 \section{Geometric Bin Packing}
 
 The Next-Fit Decreasing Height (NFDH) algorithm by
