@@ -2549,8 +2549,7 @@ if each bin in the packing is compartmental.
 Let there be a rectangular bin $B \defeq [0, 1]^2$.
 Let there be a set $I$ of rectangles packed inside the bin.
 Then there is a polynomial-time algorithm which can decompose the empty space in the bin
-($B - I$) into at most $3|I|+1$ rectangles by either making horizontal cuts only
-or making vertical cuts only.
+($B - I$) into at most $3|I|+1$ rectangles by making horizontal cuts only.
 \end{lemma}
 \begin{proof}
 Extend the top and bottom edges of each rectangle leftwards and rightwards
@@ -2562,9 +2561,6 @@ the bottom edge of $i$ is the bottom edge of two rectangles in $R$.
 Apart from possibly the rectangle in $R$ whose bottom edge is at the bottom of the bin,
 the bottom edge of every rectangle in $R$ is either the bottom or top edge of a rectangle in $I$.
 Therefore, $|R| \le 3|I| + 1$.
-
-If instead of the top and bottom edges, we extended left and right edges,
-we would get the same result, except that the cuts would be vertical.
 \end{proof}
 
 \begin{lemma}
