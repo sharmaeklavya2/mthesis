@@ -1,0 +1,38 @@
+\thinBPIntro
+
+\subsection*{Overview of the Algorithm}
+
+$\thinCPack$ takes a set $I$ of items as input and has the following outline:
+\begin{enumerate}
+\item Invoke the subroutine $\round(I)$ (described in \cref{sec:thin-bp:round}).
+    $\round(I)$ removes some items $\Imed \subseteq I$ of low total area and
+    rounds up the width or height of each remaining item
+    so that the resulting items $\Itild$ have special properties
+    that help us pack them easily.
+\item Compute the optimal \emph{fractional compartmental} bin-packing of $\Itild$
+    (we will define \emph{compartmental} and \emph{fractional} later).
+\item Use this packing of $\Itild$ to obtain a packing of $I$
+    that uses slightly more number of bins.
+\end{enumerate}
+
+Let $\opt(I)$ be the minimum number of bins needed to pack $I$.
+To bound the AAR of $\thinCPack$, we will prove a structural theorem
+in \cref{sec:thin-bp:struct}, i.e., we will prove that
+the optimal fractional compartmental packing of $\Itild$ uses close to $\opt(I)$ bins.
+
+We will focus on the case where the items cannot be rotated,
+so we will assume \wLoG{} that the bin is a square of side length 1.
+In \cref{sec:thin-bp:rot}, we show how to extend $\thinCPack$ to the case
+where the items can be rotated by $90^{\circ}$.
+
+\subsection*{Organization of the Chapter}
+
+\begin{itemize}
+\item In \cref{sec:thin-bp:round}, we describe the subroutine $\round$
+    and define \emph{fractional} packing.
+\item In \cref{sec:thin-bp:struct}, we define \emph{compartmental} packing
+    and prove the structural theorem.
+\item In \cref{sec:thin-bp:algo}, we describe the $\thinCPack$ algorithm.
+\item In \cref{sec:thin-bp:rot}, we show how to extend $\thinCPack$ to
+    handle item rotations.
+\end{itemize}
