@@ -101,7 +101,7 @@
                  citecolor = {red!60!black},
                  anchorcolor = {green!60!black},
                  hyperindex = true,
-                 hypertexnames = false,
+                 hypertexnames = true,
                  hyperfigures
                  ]{hyperref}
     \usepackage[pdftex]{graphicx}
