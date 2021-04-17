@@ -577,7 +577,7 @@ and his $\hdhk$ algorithm achieves an AAR of $T_k^{d-1}$ for $d$D GBP.
 In \cref{sec:hard-example}, we extend that result to show that no shelf-based algorithm
 for $d$D GBP can get an AAR better than $T_{\infty}^{d-1}$.
 
-\subsection{Guillotine-Separable Packing of Thin Rectangles}
+\subsection{Guillotine-Separable Packing of \Thin{} Rectangles}
 \label{sec:intro:guill-thin}
 
 Unlike 2D GBP, for which obtaining an APTAS is NP-hard,
@@ -601,15 +601,15 @@ Then $\opt(I) = m$ and $\opt_g(I) = \ceil{4m/3}$.}.
 Caprara's $\hdhk$ algorithm~\cite{caprara2008} outputs a 2-stage packing,
 so $\APoG \le T_{\infty} \approx 1.69103$.
 
-We consider the special case where the rectangles are $\delta$-thin,
+We consider the special case where the rectangles are $\delta$-\thin,
 i.e., each rectangle has height at most $\delta$ or width at most $\delta$,
 where $\delta$ is a small constant.
-We prove an upper-bound on $\APoG$ for thin rectangles by
+We prove an upper-bound on $\APoG$ for \thin{} rectangles by
 giving an algorithm for 2D GBP, called $\thinGPack$,
 that outputs a 4-stage packing and has an AAR of
 \[ \frac{4}{3}\left(1+\frac{4\delta}{1-\delta}\right)(1+\eps). \]
 We also prove a lower-bound of $4/3$ on $\APoG$ by giving
-a set of $\delta$-thin rectangles that cannot be efficiently
+a set of $\delta$-\thin{} rectangles that cannot be efficiently
 packed by a guillotine-separable packing.
 Therefore, when $\delta$ is close to zero, we get that APoG is roughly $4/3$.
 
@@ -617,19 +617,20 @@ This indicates that to tighten the bound on APoG for the general case,
 we should focus on big rectangles, i.e., rectangles that have width and height
 more than a constant $\delta$.
 
-\subsection{Almost-Optimal Bin Packing of Thin Rectangles}
+\subsection{Almost-Optimal Bin Packing of \Thin{} Rectangles}
 
 \newcommand{\thinBPIntro}{
-For a constant $\delta > 0$, a rectangle is said to be $\delta$-thin
+For a constant $\delta > 0$, a rectangle is said to be $\delta$-\thin{}
 iff either its width is at most $\delta$ or its height is at most $\delta$.
-We give an approximation algorithm for bin packing $\delta$-thin rectangles
+We give an approximation algorithm for bin packing $\delta$-\thin{} rectangles
 where the algorithm's AAR approaches 1 as $\delta$ approaches 0.
-Formally, we give an algorithm for 2D GBP, called $\thinCPack$,
+Formally, we give an algorithm for 2D GBP, called $\thinCPack$
+(abbreviates \emph{\thin{} compartmental packing}),
 that accepts a parameter $\eps$, and we show that for every constant $\eps \in (0, 1)$,
 there exists a constant $\delta \in (0, \eps)$ such that the algorithm has an AAR of $1+\eps$
-when all items in the input are $\delta$-thin rectangles.
+when all items in the input are $\delta$-\thin{} rectangles.
 
-Our result shows that the approximability of the $\delta$-thin case is very different from
+Our result shows that the approximability of the $\delta$-\thin{} case is very different from
 the general 2BP problem, since it is NP-hard to obtain
 an asymptotic approximation ratio better than
 $1 + 1/2196$ for general 2BP~\cite{chlebik2009hardness}.
@@ -657,10 +658,10 @@ width and height are both more than a constant $\delta$.%
     We mostly focus on multiple-choice bin packing but also describe algorithms for
     multiple-choice strip packing and multiple-choice knapsack.
 \item In \cref{chap:guill-thin}, we show how to bound the asymptotic price of guillotinability
-    (APoG) for thin rectangular items. We show a simple lower bound of $4/3$ and prove an
+    (APoG) for \thin{} rectangular items. We show a simple lower bound of $4/3$ and prove an
     upper bound of roughly $4/3$ by giving a 4-stage
     $\frac{4}{3}(1+4\delta)(1+\eps)$-asymptotic-approximation algorithm for 2D GBP
-    for $\delta$-thin rectangles.
+    for $\delta$-\thin{} rectangles.
 \item In \cref{chap:thin-bp}, we give an algorithm for almost-optimally packing
-    $\delta$-thin rectangles into bins.
+    $\delta$-\thin{} rectangles into bins.
 \end{itemize}

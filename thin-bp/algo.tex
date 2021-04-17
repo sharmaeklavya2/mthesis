@@ -1,7 +1,7 @@
 \section{Packing Rounded Items}
 \label{sec:thin-bp:algo}
 
-Let $I$ be a set of $\delta$-thin items. In this section,
+Let $I$ be a set of $\delta$-\thin{} items. In this section,
 we give an algorithm for computing a near-optimal packing of $I$, called $\thinCPack$.
 Roughly, $\thinCPack$ first computes $(\Itild, \Imed) \defeq \round(I)$.
 It then computes the optimal fractional compartmental packing of $\Itild$
@@ -209,7 +209,7 @@ where $m$ is the number of bins used by $P$.
 \subsection{The Algorithm}
 \label{sec:thinCPack}
 
-We now summarize the algorithm for bin packing $\delta$-thin items $I$
+We now summarize the algorithm for bin packing $\delta$-\thin{} items $I$
 (see \cref{algo:thinCPack} for a more precise description).
 First, use $\round$ on $I$, i.e., let $(\Itild, \Imed) \defeq \round(I)$.
 Then enumerate all packings $P$ of compartments into bins as per \cref{sec:enum-configs}.
@@ -223,7 +223,7 @@ Then pack $\Imed \cup D$ into bins using the Next-Fit Decreasing Height (NFDH) a
 Output the best bin packing of $I$ across all choices of $P$.
 
 \begin{algorithm}[htb]
-\caption{$\thinCPack_{\eps}(I)$: Packs a set $I$ of $\delta$-thin rectangular items
+\caption{$\thinCPack_{\eps}(I)$: Packs a set $I$ of $\delta$-\thin{} rectangular items
 into bins without rotating the items.}
 \label{algo:thinCPack}
 \begin{algorithmic}[1]

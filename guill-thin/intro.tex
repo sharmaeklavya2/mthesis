@@ -5,7 +5,7 @@ See \cref{sec:intro:guill-bp} to recall the definition of guillotinable packing
 and $k$-stage packing.
 
 We focus on the special case where the items are
-$(\delta_W, \delta_H)$-thin rectangles, i.e., each item has
+$(\delta_W, \delta_H)$-\thin{} rectangles, i.e., each item has
 width at most $\delta_W$ or height at most $\delta_H$,
 where $\delta_W$ and $\delta_H$ are constants.
 We give lower and upper bounds of roughly $4/3$ when
@@ -14,7 +14,7 @@ $\delta_W$ and $\delta_H$ are very small constants.
 \section{Overview of the Chapter}
 
 In \cref{sec:apog-lb}, we show a lower bound of $4/3$ on APoG
-for thin rectangles. Formally, we prove the following theorem.
+for \thin{} rectangles. Formally, we prove the following theorem.
 
 \begin{restatable}[Hard instance]{definition}{rdefHardItems}
 Let $m$ and $k$ be positive integers and $\eps \in (0, 1)$.
@@ -34,10 +34,10 @@ This holds true even if items in $I$ are allowed to be rotated.
 
 In \cref{sec:thin-gpack}, we give an algorithm for non-rotational 2D GBP,
 called $\thinGPack_{\eps}$, that takes a parameter $\eps \in (0, 1)$ as input.
-For a set $I$ of $(\delta_W, \delta_H)$-thin rectangles, we show that when
+For a set $I$ of $(\delta_W, \delta_H)$-\thin{} rectangles, we show that when
 $\delta_W$, $\delta_H$ and $\eps$ are close to 0, $\thinGPack_{\eps}(I)$ outputs a
 guillotinable packing of $I$ into roughly $4\opt(I)/3 + O(1)$ bins.
-This proves an upper bound of roughly $4/3$ on APoG for thin rectangles.
+This proves an upper bound of roughly $4/3$ on APoG for \thin{} rectangles.
 Formally, we prove the following theorems about $\thinGPack$.
 
 \begin{restatable}{theorem}{rthmThinGPackProps}
@@ -63,5 +63,5 @@ $\alpha(1+\eps)\opt(I) + 2\beta$ bins, where
 
 In \cref{sec:guill-rot}, we show that the APoG for the rotational case
 is at most the APoG for the non-rotational case.
-So, when are items are thin, we get an upper bound of $4/3$ on APoG
+So, when are items are \thin{}, we get an upper bound of $4/3$ on APoG
 in the rotational case too.
