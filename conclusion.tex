@@ -1,0 +1,57 @@
+\chapter{Conclusion and Future Directions}
+\label{chap:conclusion}
+
+In this thesis, we studied approximation algorithms for different kinds of
+geometric packing problems.
+
+In \cref{chap:gvbp,chap:gv-rbbp}, we give approximation algorithms for the
+generalized multidimensional bin packing problem, a problem that has
+wide practical applications but had not yet received attention from the
+theoretical computer science community.
+We hope that our work will drive interest into this problem.
+Possible future directions of research for this problem include
+obtaining algorithms with better asymptotic approximation ratios,
+and identifying important special cases that can be solved efficiently.
+
+In \cref{sec:rna}, we extended the Round-and-Approx framework~\cite{rna,bansal2014binpacking}
+to a larger class of bin packing algorithms.
+We expect that our progress will help in better understanding the power of
+Round-and-Approx and enable the design of better approximation algorithms
+for other packing problems.
+It would also be interesting to see applications of Round-and-Approx to other
+set-cover type problems, like round-SAP and round-UFP~\cite{ElbassioniGGKNP12}.
+
+In \cref{chap:hdhk}, we give approximation algorithms for the rotational version
+of geometric bin packing. Our algorithm for 3D GBP
+obtains the best-known asymptotic approximation ratio.
+Most previous works make assumptions about bin sizes which are unlikely
+to hold in practice. Our algorithms, however, don't rely on such assumptions.
+An important problem is to obtain better asymptotic approximation
+ratios for $d$D GBP, especially 3D GBP.
+There is currently an exponential gap between the lower and upper bounds
+on the AAR achievable for $d$D GBP (constant lower bound, upper bound of $1.691^{d-1}$).
+It would be interesting to reduce this huge gap.
+
+We have seen that for 2D GBP, the algorithm of Bansal, Lodi and Sviridenko~\cite{bansal2005tale}
+has an AAR equal to the asymptotic price of guillotinability (APoG).
+It is known that $4/3 \le \APoG \le T_{\infty} \approx 1.69103$.
+If we could obtain a better upper bound on APoG, that could
+give us the best-known algorithm for 2D GBP.
+Hence, obtaining tight bounds on APoG is an important problem.
+In \cref{chap:guill-thin}, we show that for the special case of $\delta$-\thin{}
+rectangles, when $\delta$ is close to 0, both the lower and upper bounds
+on APoG are close to $4/3$.
+We hope that our work will shed more light on the general case of the problem.
+A good next step would be to obtain tight bounds on APoG
+when all rectangles are non-$\delta$-\thin{},
+and after that focus on the general case of the problem.
+
+In \cref{chap:thin-bp}, we gave an approximation algorithm for 2D GBP
+when the rectangles are $\delta$-\thin{}.
+Our work indicates that to improve the AAR for 2D GBP,
+a good next step would be to focus on the special case of non-$\delta$-\thin{} rectangles.
+
+Finally, it would be interesting to see if our work can be extended to
+other problems similar to bin packing, like bin covering~\cite{assmann1984dual} and scheduling.
+Another direction is to explore different problem paradigms, like online algorithms,
+or different analysis paradigms, like average-case analysis.
