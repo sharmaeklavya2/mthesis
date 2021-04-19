@@ -6,12 +6,12 @@
 Before we look at the problem of computing a (guillotinable) packing of \thin{} rectangles,
 let us first look at a closely-related variant of this problem,
 called the \emph{2D sliceable bin packing problem}, denoted as 2D SBP.
-In this problem, we are given two sets of rectangular items, $W$ and $H$, where
-items in $W$ have width more than $1/2$, and items in $H$ have height more than $1/2$.
-$W$ is called the set of wide items and $H$ is called the set of tall items.
-We are allowed to \emph{slice} items in $W$ using horizontal cuts
-and slice items in $H$ using vertical cuts, and our task is to pack
-$W \cup H$ into the minimum number of bins without rotating the items.
+In this problem, we are given two sets of rectangular items, $\Wtild$ and $\Htild$, where
+items in $\Wtild$ have width more than $1/2$, and items in $\Htild$ have height more than $1/2$.
+$\Wtild$ is called the set of wide items and $\Htild$ is called the set of tall items.
+We are allowed to \emph{slice} items in $\Wtild$ using horizontal cuts
+and slice items in $\Htild$ using vertical cuts, and our task is to pack
+$\Wtild \cup \Htild$ into the minimum number of bins without rotating the items.
 See \cref{fig:bp-vs-sbp} for an example that illustrates the difference
 between 2D GBP and 2D SBP.
 
@@ -25,12 +25,12 @@ between 2D GBP and 2D SBP.
 \begin{subfigure}{0.45\textwidth}
 \centering
 \input{img/bp-vs-sbp-2.tikz}
-\caption{Packing items into 2 bins by horizontally slicing an item in $W$
-and vertically slicing an item in $H$.}
+\caption{Packing items into 2 bins by horizontally slicing an item in $\Wtild$
+and vertically slicing an item in $\Htild$.}
 \end{subfigure}
 \caption[2D GBP vs.~2D SBP]%
 {Example to illustrate the difference between 2D geometric bin packing
-and 2D sliceable bin packing. There are 2 wide items ($W$) and 2 tall items ($H$).
+and 2D sliceable bin packing. There are 2 wide items ($\Wtild$) and 2 tall items ($\Htild$).
 The items are squares of side length 0.6 and the bins are squares of side length 1.}
 \label{fig:bp-vs-sbp}
 \end{figure}
@@ -40,26 +40,26 @@ for 2D SBP, called $\greedyPack$, that outputs a 2-stage packing.
 Later, we will show how to use $\greedyPack$ to design $\thinGPack$.
 
 We assume that the bin is a square of side length 1. Since we can slice items,
-we allow items in $W$ to have height more than 1
-and items in $H$ to have width more than 1.
+we allow items in $\Wtild$ to have height more than 1
+and items in $\Htild$ to have width more than 1.
 
-For a set $X \subseteq W$ of items, define
+For a set $X \subseteq \Wtild$ of items, define
 \[ \hsum(X) \defeq \sum_{i \in X} h(i) \quad\textrm{and}\quad
 \wmax(X) \defeq \begin{cases}\max_{i \in X} w(i) & \textrm{ if } X \neq \emptyset
 \\ 0 & \textrm{ if } X = \emptyset\end{cases}. \]
 
-For a set $X \subseteq H$ of items, define
+For a set $X \subseteq \Htild$ of items, define
 \[ \wsum(X) \defeq \sum_{i \in X} w(i) \quad\textrm{and}\quad
 \hmax(X) \defeq \begin{cases}\max_{i \in X} h(i) & \textrm{ if } X \neq \emptyset
 \\ 0 & \textrm{ if } X = \emptyset\end{cases}. \]
 
-In the algorithm $\greedyPack(W, H)$, we first sort the items $W$ in decreasing order
-of width and sort the items $H$ in decreasing order of height.
-If $\hsum(W) \ge \wsum(H)$, then we pack the largest possible prefix of $W$
+In the algorithm $\greedyPack(\Wtild, \Htild)$, we first sort the items $\Wtild$ in decreasing order
+of width and sort the items $\Htild$ in decreasing order of height.
+If $\hsum(\Wtild) \ge \wsum(\Htild)$, then we pack the largest possible prefix of $\Wtild$
 into a bin such that the items touch the right edge of the bin.
-Then we pack a prefix of $H$ into the remaining space in the side of the bin.
+Then we pack a prefix of $\Htild$ into the remaining space in the side of the bin.
 We call this a type-1 bin. See \cref{fig:greedy-pack} for an example.
-If $\hsum(W) < \wsum(H)$, we proceed analogously in a coordinate-swapped way,
+If $\hsum(\Wtild) < \wsum(\Htild)$, we proceed analogously in a coordinate-swapped way,
 i.e., we first pack tall items in the bin and then pack wide items in the remaining space.
 Call this bin a type-2 bin.
 We pack the rest of the items into bins in the same way.
@@ -91,37 +91,37 @@ See \cref{algo:greedyPack} for a more precise description of $\greedyPack$.
 
 \begin{definition}
 \label{defn:hw-prefix}
-Let $W$ be a sequence of wide items.
-Define $\hprefix(W, \gamma)$ as the prefix of $W$ of total height $\gamma$
-if $\hsum(W) > \gamma$ (slice items if necessary).
-If $\hsum(W) \le \gamma$, define $\hprefix(W, \gamma)$ to be $W$.
-Let $H$ be a sequence of tall items.
-Define $\wprefix(H, \gamma)$ as the prefix of $H$ of total width $\gamma$
-if $\wsum(H) > \gamma$ (slice items if necessary).
-If $\wsum(H) \le \gamma$, define $\wprefix(H, \gamma)$ to be $H$.
+Let $\Wtild$ be a sequence of wide items.
+Define $\hprefix(\Wtild, \gamma)$ as the prefix of $\Wtild$ of total height $\gamma$
+if $\hsum(\Wtild) > \gamma$ (slice items if necessary).
+If $\hsum(\Wtild) \le \gamma$, define $\hprefix(\Wtild, \gamma)$ to be $\Wtild$.
+Let $\Htild$ be a sequence of tall items.
+Define $\wprefix(\Htild, \gamma)$ as the prefix of $\Htild$ of total width $\gamma$
+if $\wsum(\Htild) > \gamma$ (slice items if necessary).
+If $\wsum(\Htild) \le \gamma$, define $\wprefix(\Htild, \gamma)$ to be $\Htild$.
 \end{definition}
 
 \begin{algorithm}[!ht]
-\caption{$\greedyPack(W, H)$: Packs items $W \cup H$ into bins.
-The items $W$ have width more than $1/2$ and can be sliced using horizontal cuts.
-The items $H$ have width more than $1/2$ and can be sliced using vertical cuts.}
+\caption{$\greedyPack(\Wtild, \Htild)$: Packs items $\Wtild \cup \Htild$ into bins.
+The items $\Wtild$ have width more than $1/2$ and can be sliced using horizontal cuts.
+The items $\Htild$ have width more than $1/2$ and can be sliced using vertical cuts.}
 \label{algo:greedyPack}
 \begin{algorithmic}[1]
-\State Sort the items in $W$ in decreasing order of width.
-\State Sort the items in $H$ in decreasing order of height.
-\While{$W \neq \emptyset$ or $H \neq \emptyset$}
+\State Sort the items in $\Wtild$ in decreasing order of width.
+\State Sort the items in $\Htild$ in decreasing order of height.
+\While{$\Wtild \neq \emptyset$ or $\Htild \neq \emptyset$}
     \State Create an empty bin.
-    \If{$\hsum(W) \ge \wsum(H)$}
-        \State Let $X \defeq \hprefix(W, 1)$. \Comment{see \cref{defn:hw-prefix}}
+    \If{$\hsum(\Wtild) \ge \wsum(\Htild)$}
+        \State Let $X \defeq \hprefix(\Wtild, 1)$. \Comment{see \cref{defn:hw-prefix}}
         \State Pack $X$ in a region of width $\wmax(X)$ on the right side of the bin.
-        \State Remove $X$ from $W$.
-        \State Let $Y \defeq \wprefix(H, 1-\wmax(X))$. \Comment{see \cref{defn:hw-prefix}}
+        \State Remove $X$ from $\Wtild$.
+        \State Let $Y \defeq \wprefix(\Htild, 1-\wmax(X))$. \Comment{see \cref{defn:hw-prefix}}
         \State Pack $Y$ in a region of width $1 - \wmax(X)$ on the left side of the bin.
-        \State Remove $Y$ from $H$.
+        \State Remove $Y$ from $\Htild$.
         \State Label the bin as a type-1 bin.
     \Else
-        \parState{Proceed analogous to the previous case, i.e., $X$ is a prefix of $H$ of width
-            at most 1 and $Y$ is a prefix of $W$ of total height at most $1 - \hmax(X)$.}
+        \parState{Proceed analogous to the previous case, i.e., $X$ is a prefix of $\Htild$ of width
+            at most 1 and $Y$ is a prefix of $\Wtild$ of total height at most $1 - \hmax(X)$.}
         \parState{Label the bin as a type-2 bin.}
     \EndIf
 \EndWhile
@@ -130,26 +130,26 @@ The items $H$ have width more than $1/2$ and can be sliced using vertical cuts.}
 
 \begin{claim}
 \label{thm:greedy-pack}
-$\greedyPack(W, H)$ always outputs a 2-stage packing of $W \cup H$.
-It runs in time $O(m + |W|\log|W| + |H|\log|H|)$,
+$\greedyPack(\Wtild, \Htild)$ always outputs a 2-stage packing of $\Wtild \cup \Htild$.
+It runs in time $O(m + |\Wtild|\log|\Wtild| + |\Htild|\log|\Htild|)$,
 where $m$ is the number of bins used.
-Furthermore, it slices items in $W$ by making at most $m-1$ horizontal cuts
-and slices items in $H$ by making at most $m-1$ vertical cuts.
+Furthermore, it slices items in $\Wtild$ by making at most $m-1$ horizontal cuts
+and slices items in $\Htild$ by making at most $m-1$ vertical cuts.
 \end{claim}
 
-If all bins are of type 1, then the number of bins used is $\smallceil{\hsum(W)}$.
-If all bins are of type 2, then the number of bins used is $\smallceil{\wsum(H)}$.
-Since items in $W$ have width more than $1/2$, no two items can be placed side-by-side.
-If $H = \{\}$, then the optimal solution is to stack the items $W$ one-over-the-other.
-Therefore, $\smallceil{\hsum(W)} \le \opt(W \cup H)$.
-Similarly, $\smallceil{\wsum(H)} \le \opt(W \cup H)$.
-Hence, if all bins are of the same type, the number of bins used is at most $\opt(W \cup H)$.
+If all bins are of type 1, then the number of bins used is $\smallceil{\hsum(\Wtild)}$.
+If all bins are of type 2, then the number of bins used is $\smallceil{\wsum(\Htild)}$.
+Since items in $\Wtild$ have width more than $1/2$, no two items can be placed side-by-side.
+If $\Htild = \{\}$, then the optimal solution is to stack the items $\Wtild$ one-over-the-other.
+Therefore, $\smallceil{\hsum(\Wtild)} \le \opt(\Wtild \cup \Htild)$.
+Similarly, $\smallceil{\wsum(\Htild)} \le \opt(\Wtild \cup \Htild)$.
+Hence, if all bins are of the same type, the number of bins used is at most $\opt(\Wtild \cup \Htild)$.
 
 We will now focus on the more interesting case, i.e.,
 some bins are of type 1 and some are of type 2.
 
 \begin{definition}[Full bin]
-In a type-1 bin, let $X$ be the items from $W$ and $Y$ be the items from $H$.
+In a type-1 bin, let $X$ be the items from $\Wtild$ and $Y$ be the items from $\Htild$.
 The bin is said to be \emph{full} iff $\hsum(X) = 1$ and $\wsum(Y) = 1 - \wmax(X)$.
 Define fullness for a type-2 bin analogously.
 \end{definition}
@@ -157,8 +157,8 @@ Define fullness for a type-2 bin analogously.
 We first show that full bins pack items of a large total area,
 and then we show that if some bins are of type 1 and some bins are of type 2,
 then there can be at most 2 non-full bins.
-This will help us get an upper-bound on the number of bins used by $\greedyPack(W, H)$
-in terms of $a(W \cup H)$.
+This will help us get an upper-bound on the number of bins used by $\greedyPack(\Wtild, \Htild)$
+in terms of $a(\Wtild \cup \Htild)$.
 
 \begin{lemma}
 \label{thm:area-bound}
@@ -167,8 +167,8 @@ Let $J_1$ be the items inside those bins.
 Then $m_1 \le 4a(J_1)/3 + 1/3$.
 \end{lemma}
 \begin{proof}
-In the $j\Th$ full bin of type 1, let $X_j$ be the items from $W$
-and $Y_j$ be the items from $H$. Let
+In the $j\Th$ full bin of type 1, let $X_j$ be the items from $\Wtild$
+and $Y_j$ be the items from $\Htild$. Let
 \[ \ell_j \defeq \begin{cases}\wmax(X_j) & \textrm{ if } j \le m_1
 \\ 1/2 & \textrm{ if } j = m_1 + 1 \end{cases}. \]
 Since all items have their larger dimension more than $1/2$,
@@ -191,26 +191,26 @@ Therefore, $m_1 \le 4a(J_1)/3 + 1/3$.
 
 An analogue of \cref{thm:area-bound} can be proven for type-2 bins.
 
-Let $m$ be the number of bins used by $\greedyPack(W, H)$.
-After $j$ bins have been packed, let $A_j$ be the height of the remaining items in $W$
-and $B_j$ be the width of the remaining items in $H$.
+Let $m$ be the number of bins used by $\greedyPack(\Wtild, \Htild)$.
+After $j$ bins have been packed, let $A_j$ be the height of the remaining items in $\Wtild$
+and $B_j$ be the width of the remaining items in $\Htild$.
 Let $t_j$ be the type of the $j\Th$ bin (1 for type-1 bin and 2 for type-2 bin).
 So $t_j = 1 \iff A_{j-1} \ge B_{j-1}$.
 
 We first show that $|A_{j-1} - B_{j-1}| \le 1 \implies |A_j - B_j| \le 1$.
-This means that once the difference between $h(W)$ and $w(H)$ becomes at most 1,
+This means that once the difference between $h(\Wtild)$ and $w(\Htild)$ becomes at most 1,
 it continues to stay at most 1.
 Next, we show that $t_j \neq t_{j+1} \implies |A_{j-1} - B_{j-1}| \le 1$.
 This means that if there are some bins of type 1 and some bins of type 2,
-then the difference between $h(W)$ and $w(H)$ will eventually become at most 1.
+then the difference between $h(\Wtild)$ and $w(\Htild)$ will eventually become at most 1.
 In the first non-full bin, we will use up all the wide items or the tall items.
 Then the remaining items will have total height or total width at most 1,
 so we can have at most 1 more non-full bin.
 This would imply that there can be at most 2 non-full bins
 when we have both type-1 and type-2 bins.
 
-In the $j\Th$ bin, let $a_j$ be the height of items from $W$
-and $b_j$ be the width of items from $H$.
+In the $j\Th$ bin, let $a_j$ be the height of items from $\Wtild$
+and $b_j$ be the width of items from $\Htild$.
 Hence, for all $j \in [m]$,
 $A_{j-1} = A_j + a_j$ and $B_{j-1} = B_j + b_j$.
 
@@ -223,7 +223,7 @@ $|A_{j-1} - B_{j-1}| \le 1 \implies |A_j - B_j| \le 1$.
 \\ This means that $t_j = 1$.
 
 Assume (for the sake of proof by contradiction) that $a_j < b_j$.
-Then $a_j < 1$, so we used up all of $W$ in the $j\Th$ bin.
+Then $a_j < 1$, so we used up all of $\Wtild$ in the $j\Th$ bin.
 Therefore, $A_j = 0$ and $A_{j-1} = a_j$. Therefore,
 \[ A_{j-1} = a_j < b_j \le b_j + B_j = B_{j-1} \implies \bot \]
 Therefore, $a_j \ge b_j$. Since $A_{j-1} - B_{j-1} \in [0, 1]$
@@ -264,12 +264,12 @@ If $m = p$, then $A_p = B_p = 0$, so $|A_p - B_p| \le 1$ trivially holds.
 If $m = p+1$, then $A_p \le 1$ and $B_p \le 1$, so $|A_p - B_p| \le 1$ trivially holds.
 So now assume $m \ge p+2$.
 
-Suppose that in the $(p+1)\Th$ bin, we used up all items from $W$ but not $H$.
+Suppose that in the $(p+1)\Th$ bin, we used up all items from $\Wtild$ but not $\Htild$.
 Then $\forall i \ge p+2$, $t_i = 2$.
 Since all bins don't have the same type, $\exists k \le p+1$ such that
 $t_k = 1$ and $t_{k+1} = 2$.
 By \cref{thm:tdiff-implies-adiff,thm:diff-capture}, we get $|A_p - B_p| \le 1$.
-Similarly, if we used up all items from $H$ in the $(p+1)\Th$ bin, then $|A_p - B_p| \le 1$.
+Similarly, if we used up all items from $\Htild$ in the $(p+1)\Th$ bin, then $|A_p - B_p| \le 1$.
 \end{proof}
 
 \begin{lemma}
@@ -290,20 +290,20 @@ so there can be at most 2 non-full bins.
 \begin{theorem}
 \label{thm:greedy-pack-bins}
 The number of bins used by $\greedyPack$ is at most
-\[ \max\left(\smallceil{\hsum(W)}, \smallceil{\wsum(H)},
-    \frac{4}{3}a(W \cup H) + \frac{8}{3}\right) \]
+\[ \max\left(\smallceil{\hsum(\Wtild)}, \smallceil{\wsum(\Htild)},
+    \frac{4}{3}a(\Wtild \cup \Htild) + \frac{8}{3}\right) \]
 \end{theorem}
 \begin{proof}
-Let there be $m$ bins in the output of $\greedyPack(W, H)$.
-If all bins have the same type, then $m \le \max(\smallceil{\hsum(W)}, \smallceil{\wsum(H)})$.
+Let there be $m$ bins in the output of $\greedyPack(\Wtild, \Htild)$.
+If all bins have the same type, then $m \le \max(\smallceil{\hsum(\Wtild)}, \smallceil{\wsum(\Htild)})$.
 
 Let there be $m_1$ full bins of type 1 and let $J_1$ be the items inside those bins.
 Let there be $m_2$ full bins of type 2 and let $J_2$ be the items inside those bins.
 Then by \cref{thm:area-bound}, we get $m_1 \le 4a(J_1)/3 + 1/3$ and $m_2 \le 4a(J_2)/3 + 1/3$.
-Hence, $m_1 + m_2 \le 4a(W \cup H)/3 + 2/3$.
+Hence, $m_1 + m_2 \le 4a(\Wtild \cup \Htild)/3 + 2/3$.
 If all bins don't have the same type, then by \cref{thm:non-full-ub},
-there can be at most 2 non-full bins, so $\greedyPack(W, H)$
-uses at most $4a(W \cup H)/3 + 8/3$ bins.
+there can be at most 2 non-full bins, so $\greedyPack(\Wtild, \Htild)$
+uses at most $4a(\Wtild \cup \Htild)/3 + 8/3$ bins.
 \end{proof}
 
 \subsection{Overview of \texorpdfstring{$\thinGPack$}{thin4Pack}}
@@ -466,6 +466,7 @@ Follows by applying rank lemma (\cref{thm:rank-lemma-corr}) to the linear progra
 \end{proof}
 
 \begin{lemma}
+\label{thm:width-gt-half}
 $x_S^* > 0 \implies w(S) > 1/2$.
 \end{lemma}
 \begin{proof}
@@ -477,6 +478,7 @@ But that would contradict the fact that $x^*$ is optimal.
 Now treat each shelf $S$ as an item of width $w(S)$ and height $h(S)$.
 Allow each such item to be sliced using horizontal cuts.
 This gives us a new set $\Wtild$ of items such that $\What$ can be packed inside $\Wtild$.
+By \cref{thm:width-gt-half}, each item in $\Wtild$ has width more than $1/2$.
 
 By applying an analogous approach to $\Hhat$, we get a new set $\Htild$ of items.
 Let $\Itild \defeq \Wtild \cup \Htild$.
