@@ -1,4 +1,4 @@
-\ifcsname pGameL\endcsname\else\newlength{\myu}\fi
+\ifcsname myu\endcsname\else\newlength{\myu}\fi
 \setlength{\myu}{0.8cm}
 \tikzset{pic1/.pic={
     \path[item]
