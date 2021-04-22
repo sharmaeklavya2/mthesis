@@ -1,0 +1,44 @@
+\ifcsname pGameL\endcsname\else\newlength{\pGameL}\fi
+\setlength{\pGameL}{0.2cm}
+\input{img/compartmentalize/colors.tex}
+\tikzset{bin/.style={draw,thick}}
+\tikzset{binGrid/.style={draw,step=1\pGameL,{black!20}}}
+\tikzset{witem/.style={draw={black!40},fill=shadedLightGreen}}
+\tikzset{hitem/.style={draw={black!30},fill=myLightBlue}}
+\tikzset{tcell/.style={draw}}
+\tikzset{box/.style={fill={black!10}}}
+\tikzset{box2/.style={draw,thick}}
+\begin{tikzpicture}
+%\path[binGrid] (0\pGameL, 0\pGameL) grid (30\pGameL, 30\pGameL);
+
+\path[box] (0\pGameL, 17\pGameL) rectangle +(10\pGameL, 2\pGameL);
+\path[box] (0\pGameL, 12\pGameL) rectangle +(15\pGameL, 5\pGameL);
+\path[box] (5\pGameL, 10\pGameL) rectangle +(10\pGameL, 2\pGameL);
+\path[box] (20\pGameL, 25\pGameL) rectangle +(10\pGameL, 5\pGameL);
+\path[box] (15\pGameL, 4\pGameL) rectangle +(10\pGameL, 3\pGameL);
+\path[box] (10\pGameL, 2\pGameL) rectangle +(15\pGameL, 2\pGameL);
+\path[box] (10\pGameL, 0\pGameL) rectangle +(20\pGameL, 2\pGameL);
+
+\input{img/compartmentalize/witems.tikz}
+\input{img/compartmentalize/hitems.tikz}
+
+\path[tcell] (0\pGameL, 19\pGameL) rectangle +(5\pGameL, 11\pGameL);
+\path[tcell] (5\pGameL, 19\pGameL) rectangle +(5\pGameL, 11\pGameL);
+\path[tcell] (10\pGameL, 17\pGameL) rectangle +(5\pGameL, 13\pGameL);
+\path[tcell] (0\pGameL, 0\pGameL) rectangle +(5\pGameL, 12\pGameL);
+\path[tcell] (5\pGameL, 0\pGameL) rectangle +(5\pGameL, 10\pGameL);
+\path[tcell] (10\pGameL, 4\pGameL) rectangle +(5\pGameL, 6\pGameL);
+\path[tcell] (15\pGameL, 7\pGameL) rectangle +(5\pGameL, 23\pGameL);
+\path[tcell] (20\pGameL, 7\pGameL) rectangle +(5\pGameL, 18\pGameL);
+\path[tcell] (25\pGameL, 2\pGameL) rectangle +(5\pGameL, 23\pGameL);
+
+\path[box2] (0\pGameL, 17\pGameL) rectangle +(10\pGameL, 2\pGameL) node[pos=0.5] {1};
+\path[box2] (0\pGameL, 12\pGameL) rectangle +(15\pGameL, 5\pGameL) node[pos=0.5] {2};
+\path[box2] (5\pGameL, 10\pGameL) rectangle +(10\pGameL, 2\pGameL) node[pos=0.5] {3};
+\path[box2] (20\pGameL, 25\pGameL) rectangle +(10\pGameL, 5\pGameL) node[pos=0.5] {4};
+\path[box2] (15\pGameL, 4\pGameL) rectangle +(10\pGameL, 3\pGameL) node[pos=0.5] {5};
+\path[box2] (10\pGameL, 2\pGameL) rectangle +(15\pGameL, 2\pGameL) node[pos=0.5] {6};
+\path[box2] (10\pGameL, 0\pGameL) rectangle +(20\pGameL, 2\pGameL) node[pos=0.5] {7};
+
+\path[bin] (0\pGameL, 0\pGameL) rectangle (30\pGameL, 30\pGameL);
+\end{tikzpicture}

@@ -244,17 +244,62 @@ we can get a compartmental packing of the remaining items.
 \end{lemma}
 \begin{proof}
 Draw vertical lines in the bin at the $x$-coordinates in $\Tcal - \{0\}$.
-This splits the bin into $|\Tcal|$ columns.
+This splits the bin into $|\Tcal|$ columns (see \cref{fig:compartmentalize:begin}).
 Each column has 0 or more wide items crossing it.
 These wide items divide the column into cells.
-A cell is said to be tall iff it contains a tall item.
+A cell is called tall iff it contains a tall item (see \cref{fig:compartmentalize:tall-cells}).
 There can be at most $1/\epsLarge-1$ tall cells in a column,
 so there can be at most $(1/\epsLarge - 1)|\Tcal|$ tall cells in the bin.
 
+\begin{figure}[!htb]
+\begin{subfigure}{0.45\textwidth}
+\centering
+\input{img/compartmentalize/begin.tikz}
+\caption{A packing of items in a bin. Wide items are green and tall items are blue.
+Draw vertical lines at $x$-coordinates from $\Tcal - \{0\}$.
+They divide the bin into columns. In this figure, we have 6 columns.}
+\label{fig:compartmentalize:begin}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.45\textwidth}
+\centering
+\input{img/compartmentalize/tall-cells.tikz}
+\caption{Wide items divide each column into \emph{cells}.
+Each cell containing a tall item is called a \emph{tall cell}.
+There are 9 tall cells in this figure, which are shaded gray.}
+\label{fig:compartmentalize:tall-cells}
+\end{subfigure}
+\caption{Creating tall cells in a bin}
+\label{fig:compartmentalize-1}
+\end{figure}
+
 By \cref{thm:empty-to-rects}, we can use horizontal cuts to partition the space outside
 tall cells into at most $3(1/\epsLarge-1)|\Tcal| + 1$ rectangular regions.
-(This can slice some wide items.)
+(This can slice some wide items. See \cref{fig:compartmentalize:boxes}.)
 If a region contains a wide item, call it a box.
+
+\begin{figure}[!htb]
+\begin{subfigure}[t]{0.45\textwidth}
+\centering
+\input{img/compartmentalize/boxes.tikz}
+\caption{Partition the space outside tall cells into rectangular regions by
+extending the horizontal edges of tall cells (see \cref{thm:empty-to-rects}).
+Each rectangular region containing a wide item is called a \emph{box}.
+There are 7 boxes in this figure, which are shaded gray.}
+\label{fig:compartmentalize:boxes}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.45\textwidth}
+\centering
+\input{img/compartmentalize/boxes2.tikz}
+\caption{For each box, discard some items and shift horizontal edges
+to make their $y$-coordinates multiples of $\epsCont$.
+Boxes that continue to contain a wide item are now wide compartments.}
+\label{fig:compartmentalize:boxes2}
+\end{subfigure}
+\caption{Obtaining wide compartments}
+\label{fig:compartmentalize-2}
+\end{figure}
 
 For each box $i$, discard some items from the bottom of the box
 and increase $y_1(i)$ so that it becomes a multiple of $\epsCont$.
@@ -262,11 +307,23 @@ Then discard some items from the top of the box
 and reduce $y_2(i)$ so that it becomes a multiple of $\epsCont$.
 The total area of items discarded is less than $2\epsCont$.
 If $i$ continues to contain a wide item, it becomes a wide compartment.
-Now all wide items belong to some wide compartment.
+Now all wide items belong to some wide compartment
+(see \cref{fig:compartmentalize:boxes2}).
 
 Each column has 0 or more wide compartments crossing it.
 These wide compartments divide the column into rectangular regions.
-Each region that contains a tall item is a tall compartment.
+Each region that contains a tall item is a tall compartment
+(see \cref{fig:compartmentalize-3}).
+
+\begin{figure}[!htb]
+\centering
+\input{img/compartmentalize/final.tikz}
+\caption[Obtaining tall compartments]%
+{Wide compartments divide each column into rectangular regions.
+Each such region containing a tall item is a tall compartment.
+There are 9 tall compartments in this figure.}
+\label{fig:compartmentalize-3}
+\end{figure}
 
 Therefore, by removing wide and small items of area less than
 $6|\Tcal|\epsCont/\epsLarge \le \eps$, we get a compartmental packing of items

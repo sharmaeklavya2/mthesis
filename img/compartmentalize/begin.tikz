@@ -1,0 +1,20 @@
+\ifcsname pGameL\endcsname\else\newlength{\pGameL}\fi
+\setlength{\pGameL}{0.2cm}
+\input{img/compartmentalize/colors.tex}
+\tikzset{bin/.style={draw,thick}}
+\tikzset{binGrid/.style={draw,step=1\pGameL,{black!20}}}
+\tikzset{witem/.style={draw,fill=myGreen}}
+\tikzset{hitem/.style={draw,fill=myBlue}}
+\tikzset{cutline/.style={draw,dashed,thick}}
+\begin{tikzpicture}
+%\path[binGrid] (0\pGameL, 0\pGameL) grid (30\pGameL, 30\pGameL);
+\input{img/compartmentalize/hitems.tikz}
+\input{img/compartmentalize/witems.tikz}
+\path[bin] (0\pGameL, 0\pGameL) rectangle (30\pGameL, 30\pGameL);
+\path[cutline] foreach \x in {5,10,15,20,25}{
+    (\x\pGameL, -1\pGameL) -- (\x\pGameL, 32\pGameL)
+};
+\foreach \index/\x in {1/2.5,2/7.5,3/12.5,4/17.5,5/22.5,6/27.5}{
+    \node[anchor=south] at (\x\pGameL, 30\pGameL) {\index};
+}
+\end{tikzpicture}

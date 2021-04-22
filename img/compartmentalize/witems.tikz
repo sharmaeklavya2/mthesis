@@ -1,0 +1,11 @@
+\path[witem] (0\pGameL, 12\pGameL) rectangle +(10\pGameL, 2\pGameL);
+\path[witem] (0\pGameL, 17\pGameL) rectangle +(10\pGameL, 2\pGameL);
+\path[witem] (5\pGameL, 16\pGameL) rectangle +(10\pGameL, 1\pGameL);
+\path[witem] (0\pGameL, 15\pGameL) rectangle +(10\pGameL, 1\pGameL);
+\path[witem] (0\pGameL, 14\pGameL) rectangle +(15\pGameL, 1\pGameL);
+\path[witem] (15\pGameL, 5\pGameL) rectangle +(10\pGameL, 2\pGameL);
+\path[witem] (5\pGameL, 10\pGameL) rectangle +(10\pGameL, 2\pGameL);
+\path[witem] (15\pGameL, 0\pGameL) rectangle +(10\pGameL, 1\pGameL);
+\path[witem] (15\pGameL, 1\pGameL) rectangle +(15\pGameL, 1\pGameL);
+\path[witem] (10\pGameL, 2\pGameL) rectangle +(10\pGameL, 2\pGameL);
+\path[witem] (20\pGameL, 25\pGameL) rectangle +(10\pGameL, 2\pGameL);
