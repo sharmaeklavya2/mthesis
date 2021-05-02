@@ -274,8 +274,8 @@ There are 9 tall cells in this figure, which are shaded gray.}
 \end{figure}
 
 By \cref{thm:empty-to-rects}, we can use horizontal cuts to partition the space outside
-tall cells into at most $3(1/\epsLarge-1)|\Tcal| + 1$ rectangular regions.
-(This can slice some wide items. See \cref{fig:compartmentalize:boxes}.)
+tall cells into at most $3(1/\epsLarge-1)|\Tcal| + 1$ rectangular regions
+(this can slice some wide items). See \cref{fig:compartmentalize:boxes}.
 If a region contains a wide item, call it a box.
 
 \begin{figure}[!htb]
@@ -301,9 +301,9 @@ Boxes that continue to contain a wide item are now wide compartments.}
 \label{fig:compartmentalize-2}
 \end{figure}
 
-For each box $i$, discard some items from the bottom of the box
+For each box $i$, slice and discard some items from the bottom of the box
 and increase $y_1(i)$ so that it becomes a multiple of $\epsCont$.
-Then discard some items from the top of the box
+Then slice and discard some items from the top of the box
 and reduce $y_2(i)$ so that it becomes a multiple of $\epsCont$.
 The total area of items discarded is less than $2\epsCont$.
 If $i$ continues to contain a wide item, it becomes a wide compartment.
