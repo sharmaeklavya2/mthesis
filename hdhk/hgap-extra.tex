@@ -144,7 +144,8 @@ $t \le \ceildeltsq$.
 Since each shelf in $J$ has height more than $\delta$, $\size(J) > |J|\delta$.
 \[ t \defeq \ceil{\frac{|J|}{\floor{\delta\size(J)}+1}}
 \le \ceil{\frac{\size(J)/\delta}{\delta\size(J)}}
-= \ceil{\frac{1}{\delta^2}} \qedhere \]
+= \ceil{\frac{1}{\delta^2}}.
+\qedhere \]
 \end{proof}
 
 \begin{lemma}
@@ -157,7 +158,8 @@ It is trivial to see that $J\lo \preceq J \preceq J\hi$.
 For $j \in [t-1]$, all (1D) items in both $J_j\lo$ and $J_{j+1}\hi$ have height $h_{j+1}$,
 and $|J_{j+1}| \le q = |J_j|$. Therefore, $J_{j+1}\hi \preceq J_j\lo$ and hence
 \[ J\hi = J_1\hi \cup \bigcup_{j=1}^{t-1} J_{j+1}\hi
-\preceq J_1\hi \cup \bigcup_{j=1}^{t-1} J_j\lo = J_1\hi \cup J\lo \qedhere \]
+\preceq J_1\hi \cup \bigcup_{j=1}^{t-1} J_j\lo = J_1\hi \cup J\lo.
+\qedhere \]
 \end{proof}
 
 \begin{lemma}
@@ -171,7 +173,8 @@ Let $a(S_j)$ be the total area of the items in $S_j$.
 Since the shelves are tight, items in $S_j$ have height at least $h(S_{j+1})$.
 So, $a(S_j) \ge h(S_{j+1})$ and
 \[ \size(J) = \sum_{j=1}^{|J|} h(S_j) \le 1 + \sum_{j=1}^{|J|-1} h(S_{j+1})
-\le 1 + \sum_{j=1}^{|J|-1} a(S_j) < 1 + a(\Ihat_L) \qedhere \]
+\le 1 + \sum_{j=1}^{|J|-1} a(S_j) < 1 + a(\Ihat_L).
+\qedhere \]
 \end{proof}
 
 \begin{lemma}
@@ -190,10 +193,11 @@ Hence, $\sopt_{\delta}(\Ihat) \le \opt(J\hi \cup \Ihat_S)$.
 
 By \thmdepcref{thm:hgap:pred-chain,obs:pred-pack}{} we get
 \[ \opt(J\hi \cup \Ihat_S) \le \opt(J\lo \cup J_1\hi \cup \Ihat_S)
-\le \opt(J\lo \cup \Ihat_S) + \opt(J_1\hi) \]
+\le \opt(J\lo \cup \Ihat_S) + \opt(J_1\hi). \]
 By \thmdepcref{thm:hgap:can-shelv-size}{},
 \[ \opt(J_1\hi) \le |J_1\hi| \le q \le 1 + \delta\size(J)
-< 1 + \delta(1 + a(\Ihat_L)) \qedhere \]
+< 1 + \delta(1 + a(\Ihat_L)).
+\qedhere \]
 \end{proof}
 
 \subsubsection{LP for Packing \texorpdfstring{$J\lo \cup \Ihat_S$}{J\^{}lo + I\^{}\_S}}
@@ -275,14 +279,14 @@ where $C^Ty \defeq \sum_{j=1}^{t-1} C_jy_j$.
 Since $(y, z)$ is feasible for $\DLP(\Ihat)$, $f(C, y, z) \le 1$.
 As per \cref{trn:hgap:half-mono},
 \[ \yhat_j \defeq \begin{cases} \max(y_s, y_{s+1} + (h_{s+1} - h_{s+2})z) & j = s
-\\ y_j & j \neq s \end{cases} \]
+\\ y_j & j \neq s \end{cases}. \]
 If $y_s \ge y_{s+1} + (h_{s+1} - h_{s+2})z$, then $\yhat = y$,
 so $(\yhat, z)$ would be feasible for $\DLP(\Ihat)$.
 So now assume that $y_s < y_{s+1} + (h_{s+1} - h_{s+2})z$.
 
 Let $C$ be a \config{}. Define $C_t \defeq 0$. Let
 \[ \Chat_j \defeq \begin{cases} 0 & j = s \\ C_s + C_{s+1} & j = s+1
-\\ C_j & \textrm{otherwise} \end{cases} \]
+\\ C_j & \textrm{otherwise} \end{cases}. \]
 Then, $C^T\yhat - \Chat^Ty
 = C_s\yhat_s + C_{s+1}\yhat_{s+1} - \Chat_sy_s - \Chat_{s+1}y_{s+1}
 = C_s(h_{s+1} - h_{s+2}) z$.
@@ -296,7 +300,7 @@ Since $h_{\Chat} \le h_C \le 1$, $\Chat$ is a \config{}.
 f(C, \yhat, z) &= C^T\yhat + (1-h_C)z
 \\ &= (\Chat^Ty + C_s(h_{s+1} - h_{s+2})z)
     + (1 - h_{\Chat} - C_s(h_{s+1} - h_{s+2}))z
-\\ &= f(\Chat, y, z) \le 1
+\\ &= f(\Chat, y, z) \le 1.
 \end{align*}
 Therefore, $(\yhat, z)$ is feasible for $\DLP(\Ihat)$.
 \end{proof}
@@ -306,7 +310,7 @@ Let $(y, z)$ be a feasible solution to $\DLP(\Ihat)$. Let
 \[ \yhat_j \defeq \begin{cases}
 \max(y_{t-1}, zh_t) & j = t-1
 \\ \max(y_j, \yhat_{j+1} + (h_{j+1} - h_{j+2})z) & j < t-1
-\end{cases} \]
+\end{cases}. \]
 Then $(\yhat, z)$ is called the monotonization of $(y, z)$.
 \end{definition}
 \begin{lemma}
@@ -328,7 +332,7 @@ Then define the function $\eta: [0, 1] \mapsto [0, 1]$ as
 \yhat_1 & \textrm{if } x \in [h_2, 1]
 \\ \yhat_j & \textrm{if } x \in [h_{j+1}, h_j), \textrm{ for } 2 \le j \le t-1
 \\ xz^* & \textrm{if } x < h_t
-\end{cases} \]
+\end{cases}. \]
 
 \begin{lemma}
 \label{thm:hgap:eta-dff}
@@ -347,7 +351,7 @@ Let $h_C \defeq \sum_{j=1}^{t-1} C_jh_{j+1}$.
 1 \ge \Sum(X) &= \Sum(X_0) + \sum_{j=1}^{t-1} \Sum(X_j)
 \\ &\ge \Sum(X_0) + \sum_{j=1}^{t-1} C_jh_{j+1}
 \tag{for $j \ge 1$, each element in $X_j$ is at least $h_{j+1}$}
-\\ &= \Sum(X_0) + h_C
+\\ &= \Sum(X_0) + h_C.
 \end{align*}
 Since $h_C \le 1 - \Sum(X_0) \le 1$, $C$ is a \config{}. Therefore,
 \begin{align*}
@@ -357,7 +361,7 @@ Since $h_C \le 1 - \Sum(X_0) \le 1$, $C$ is a \config{}. Therefore,
 \tag{by definition of $\eta$}
 \\ &\le (1-h_C)z^* + C^T\yhat
 \tag{$h_C \le 1 - \Sum(X_0)$}
-\\ &\le 1
+\\ &\le 1.
 \tag{$C$ is a \config{} and $(\yhat, z^*)$ is feasible for $\DLP(\Ihat)$
     by \thmdepcref{thm:hgap:mono-feas}{}}
 \end{align*}
@@ -388,7 +392,7 @@ p(I) &= \sum_{j=1}^t \sum_{S \in J_j} \sum_{i \in S} \eta(h(i))w(i)
 \tag{by definition of $\eta$}
 \\ &= \sum_{j=1}^{t-1} y^*_j q + a(\Ihat_S)z^*
 \tag{since $w(J_j) = q$ for $j \in [t-1]$}
-\\ &= \opt(\DLP(\Ihat))
+\\ &= \opt(\DLP(\Ihat)).
 \tag{$(y^*, z^*)$ is optimal for $\DLP(\Ihat)$}
 \end{align*}
 By strong duality of linear programs, $\opt(\LP(\Ihat)) = \opt(\DLP(\Ihat)) \le p(I)$.
@@ -403,7 +407,7 @@ we get that $p(I) \le T_k^{d-1}\optdbp(I)$ by \thmdepcref{thm:dff-pack}{}.
 \begin{align*}
 & a(\Ihat_L) \le a(\Ihat)
 = \sum_{i \in I} \left(\ell_d(i)\prod_{j=1}^{d-1} f_k(\ell_j(i))\right)
-\le T_k^{d-1}\optdbp(I)
+\le T_k^{d-1}\optdbp(I).
 \tag{by \thmdepcref{thm:dff-pack}{thm:hgap:struct}}
 \end{align*}
 \begin{align*}
@@ -411,7 +415,7 @@ we get that $p(I) \le T_k^{d-1}\optdbp(I)$ by \thmdepcref{thm:dff-pack}{}.
 \tag{by \thmdepcref{thm:hgap:sopt-le-optlo}{thm:hgap:struct}}
 \\ &\le \opt(\LP(\Ihat)) + \ceil{\frac{1}{\delta^2}} + \delta T_k^{d-1}\optdbp(I) + (1+\delta)
 \tag{by \thmdepcref{thm:hgap:opt-to-lp,thm:hgap:n-pivots}{thm:hgap:struct}}
-\\ &\le T_k^{d-1}(1+\delta)\optdbp(I) + \ceil{\frac{1}{\delta^2}} + 1 + \delta
+\\ &\le T_k^{d-1}(1+\delta)\optdbp(I) + \ceil{\frac{1}{\delta^2}} + 1 + \delta.
 \tag{by \thmdepcref{thm:hgap:p-vs-opt}{thm:hgap:struct}}
 \end{align*}
 \end{proof}
@@ -605,7 +609,7 @@ of the shelf to be the $\btype$ of the items in it.
 Let the number of newly-created shelves of height $h_j$ be $n_j'$. Then
 \[ n_j' = \sum_{q=1}^Q \smallceil{w(\Ihat_{j,q})}
 < \sum_{q=1}^Q w(\Ihat_{j,q}) + Q
-\le n_j + Q \implies n_j' \le n_j + Q - 1 \]
+\le n_j + Q \implies n_j' \le n_j + Q - 1. \]
 $n_j$ of these shelves can be packed into existing bins in place of the old shelves.
 The remaining $n_j' - n_j \le Q-1$ shelves can be packed on the base of new bins.
 
@@ -689,7 +693,7 @@ It is easy to see that the time taken by $\inflate$ is $O(|I|\log|I|)$.
 
 If $P$ has $m$ bins, then the number of bins in $\inflate(P)$ is at most
 \[ m + t(Q-1) + \ceil{\frac{\delta(Q+m)}{1-\delta}}
-< \frac{m}{1-\delta} + t(Q-1) + 1 + \frac{\delta Q}{1-\delta} \]
+< \frac{m}{1-\delta} + t(Q-1) + 1 + \frac{\delta Q}{1-\delta}. \]
 This proves \cref{thm:hgap:inflate}.
 
 \subsection{Improving Running Time}
@@ -722,4 +726,4 @@ We can reuse the dynamic programming table.
 
 The running time is, therefore,
 \[ O\left(N^{\ceildeltsq}\left(n^{\ceildeltsq} n\log n + Nn^{2\ceildeltsq}\right)\right)
-= O(N^{1+\ceildeltsq}n^{2\ceildeltsq}) \]
+= O(N^{1+\ceildeltsq}n^{2\ceildeltsq}). \]

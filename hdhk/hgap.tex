@@ -282,7 +282,7 @@ we can prove the correctness and running time of $\hgapk$.
 The number of bins used by $\hgapk(\Ical, \eps)$ to pack $\Ical$ is less than
 \[ T_k^{d-1}(1+\eps)\optdmcbp(\Ical)
     + \ceil{\left(\frac{2}{\eps}+1\right)^2}\left(Q + \frac{\eps}{2}\right)
-    + 3 + (Q+3)\frac{\eps}{2} \]
+    + 3 + (Q+3)\frac{\eps}{2}. \]
 Here $Q$ is the number of distinct base types in $\flatten(\Ical)$.
 \end{theorem}
 \begin{proof}
@@ -299,10 +299,10 @@ and $|P_{\best}| \le |\Pbar^*| \le \sopt_{\delta}(\Khat^*) + 1$.
 
 By \thmdepcref{thm:hgap:inflate}{}, we get that
 \[ |\inflate(P_{\best})| < \frac{\sopt_{\delta}(\Khat^*)}{1-\delta}
-    + \ceil{\frac{1}{\delta^2}}(Q-1) + 1 + \frac{\delta Q + 1}{1-\delta} \]
+    + \ceil{\frac{1}{\delta^2}}(Q-1) + 1 + \frac{\delta Q + 1}{1-\delta}. \]
 By \thmdepcref{thm:hgap:struct}{} (structural theorem)
 and using $\optdbp(K^*) = \optdmcbp(\Ical)$, we get
-\[ \sopt_{\delta}(\Khat^*) < T_k^{d-1}(1+\delta)\optdmcbp(\Ical) + \ceildeltsq + 1 + \delta \]
+\[ \sopt_{\delta}(\Khat^*) < T_k^{d-1}(1+\delta)\optdmcbp(\Ical) + \ceildeltsq + 1 + \delta. \]
 Therefore, $|\inflate(P_{\best})|$ is less than
 \begin{align*}
 &T_k^{d-1}\frac{1+\delta}{1-\delta}\optdmcbp(\Ical)
@@ -310,7 +310,7 @@ Therefore, $|\inflate(P_{\best})|$ is less than
     + 3 + \frac{\delta(3+Q)}{1-\delta}
 \\ &= T_k^{d-1}(1+\eps)\optdmcbp(\Ical)
     + \ceil{\left(\frac{2}{\eps}+1\right)^2}\left(Q + \frac{\eps}{2}\right)
-    + 3 + (Q+3)\frac{\eps}{2}
+    + 3 + (Q+3)\frac{\eps}{2}.
 \qedhere \end{align*}
 \end{proof}
 \begin{theorem}

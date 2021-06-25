@@ -43,14 +43,14 @@ with the maximum augmented height.
 
 For an item $i$, define
 \[ \level(i) \defeq \begin{cases} 0 & \textrm{if } i \textrm{ has no predecessors}
-\\ {\displaystyle 1 + \max_{i' \prec i} \level(i')} & \textrm{otherwise} \end{cases} \]
+\\ {\displaystyle 1 + \max_{i' \prec i} \level(i')} & \textrm{otherwise} \end{cases}. \]
 Since $\prec$ is anti-symmetric, $\level$ is well-defined.
 Define $\pi$ and $u$ as
 \begin{align*}
 u(i) &\defeq g(\ell_d(i)) + \begin{cases} 0 & \textrm{if } \level(i) = 0
     \\ u(\pi(i)) & \textrm{otherwise}\end{cases}
 & \pi(i) &\defeq \begin{cases} \Null & \textrm{if } \level(i) = 0
-\\ {\displaystyle \argmax_{i' \prec i} u(i')} & \textrm{otherwise} \end{cases}
+\\ {\displaystyle \argmax_{i' \prec i} u(i')} & \textrm{otherwise} \end{cases}.
 \end{align*}
 In the definition of $\pi$, ties can be broken arbitrarily for $\argmax$.
 $i' \prec i$ implies $\level(i') < \level(i)$, so $\level(\pi(i)) < \level(i)$.
@@ -74,7 +74,7 @@ If $\proj(i_1)$ and $\proj(i_2)$ don't overlap, then $i_1$ and $i_2$ don't overl
 and we are done, so assume $\proj(i_1)$ and $\proj(i_2)$ overlap.
 Assume \wLoG{} that $i_1 \prec i_2$. Then $\level(i_2) \ge 1$ and
 \[ v_d'(i_2) = u(i_2) - g(\ell_d(i_2)) = \max_{i' \prec i_2} u(i')
-\ge u(i_1) = v_d'(i_1) + g(\ell_d(i_1)) \]
+\ge u(i_1) = v_d'(i_1) + g(\ell_d(i_1)). \]
 Therefore, $i_1$ and $i_2$ don't overlap in the new packing.
 
 After \cref{trn:ld-and-vd}, item $i$ lies completely inside the bin
@@ -89,7 +89,7 @@ we get $v_d(i_{j-1}) \ge v_d(i_j) + \ell_d(i_j)$. Therefore,
 &\le \ell_d(i) + \sum_{j=1}^{m-1} (v_d(i_{j-1}) - v_d(i_j))
 \tag{since $v_d(i_{j-1}) \ge v_d(i_j) + \ell_d(i_j)$}
 \\ &= \ell_d(i) + v_d(i) - v_d(i_{m-1})
-\le 1
+\le 1.
 \tag{$\because$ in the original packing, $i$ lies in the bin}
 \end{align*}
 Since $g$ is a \dff{} and $\sum_{j=0}^{m-1} \ell_d(i_j) \le 1$,

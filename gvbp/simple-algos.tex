@@ -18,7 +18,7 @@ Let $I$ be a set of rectangles. Let $w_{\max} \defeq \max_{i \in I} w(i)$
 and $h_{\max} \defeq \max_{i \in I} h(i)$. Consider a bin of width $W$ and height $H$,
 where $w_{\max} \le W$ and $h_{\max} \le H$.
 Then there is a $O(n\log^2 n/\log\log n)$-time algorithm to pack $I$ into the bin if
-\[ 2a(I) \le WH - \max(2w_{\max} - W, 0) \cdot \max(2h_{\max} - H, 0) \]
+\[ 2a(I) \le WH - \max(2w_{\max} - W, 0) \cdot \max(2h_{\max} - H, 0). \]
 \end{lemma}
 
 \begin{lemma}
@@ -150,7 +150,7 @@ $\opt_{\mathrm{KS}}(\Itild) \ge \opt_{\mathrm{KS}}(I)$.
 Since $\Acal$ is $\alpha$-approximate, we get $p(J) \ge \opt(\Itild)/\alpha$. Hence,
 \[ p(J_1) \ge \frac{p(J)}{b}
 \ge \frac{\opt(\Itild)}{b\alpha}
-\ge \frac{\opt(I)}{b\alpha} \]
+\ge \frac{\opt(I)}{b\alpha}. \]
 Therefore, we get a $b\alpha$-approximation algorithm for \geomvec{$d_g$}{$d_v$} KS.
 Using the PTAS for $(d_v+1)$D VKS by Frieze and Clarke~\cite{frieze1984approximation},
 we get $\alpha = 1+\eps$.

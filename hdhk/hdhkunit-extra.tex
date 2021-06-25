@@ -118,7 +118,7 @@ Then for all $i \in I, \vol(i) \le 1/t_1 = \vol(f_k(i))$. Therefore,
 & \vol(f_k(I)) < 1 + \vol(f_k(\last(I)))
 \\ &\implies \frac{|I|}{t_1} < 1 + \frac{1}{t_1}
 \\ &\implies |I| < t_1 + 1 \implies |I| \le t_1
-\\ &\implies \vol(I) \le \frac{|I|}{t_1} \le 1
+\\ &\implies \vol(I) \le \frac{|I|}{t_1} \le 1.
 \end{align*}
 Since $\vol(I) \le 1$, $I$ fits in a bin.
 
@@ -128,7 +128,7 @@ Then for all $i \in I, \vol(f_k(i)) = \frac{k}{k-2}\vol(i)$. Therefore,
 \vol(I) &= \frac{k-2}{k}\vol(f_k(I))
 \\ &< \frac{k-2}{k}\left( 1 + \vol(f_k(\last(I)))\right)
 \\ &= \frac{k-2}{k} + \vol(\last(I))
-\\ &\le \frac{k-2}{k} + \frac{1}{k} < 1
+\\ &\le \frac{k-2}{k} + \frac{1}{k} < 1.
 \end{align*}
 Since $\vol(I) \le 1$, $I$ fits in a bin.
 Therefore, $\mathcal{P}(1)$ holds.
@@ -153,13 +153,13 @@ Then we need to prove that the shelves fit in the bin, i.e. $H \le 1$.
 
 \textbf{Case 1}: Suppose $t_d \neq k$.\\
 Then $\forall i \in I, \ell_d(i) \le 1/t_d = f_k(\ell_d(i))$. Therefore,
-\[ 1 > \vol(f_k(I-s)) = \frac{w(I-s)}{t_d} \implies w(I-s) < t_d \]
+\[ 1 > \vol(f_k(I-s)) = \frac{w(I-s)}{t_d} \implies w(I-s) < t_d. \]
 Since ordering of items is not disturbed, $s \in S_p$. Therefore,
 \begin{align*}
 & t_d > w(I-s) = \sum_{j=1}^{p-1} w(S_j) + w(S_p - s) \ge p-1
 \tag{by (\ref{eqn:hdhunit:shelf-wide})}
 \\ &\implies p < t_d + 1 \implies p \le t_d
-\\ &\implies H = \sum_{j=1}^p \ell_d(S_j) \le \frac{p}{t_d} \le 1
+\\ &\implies H = \sum_{j=1}^p \ell_d(S_j) \le \frac{p}{t_d} \le 1.
 \tag{$\forall i \in I, \ell_d(i) \le 1/t_d$}
 \end{align*}
 Since $H \le 1$, the shelves fit in a $d$D bin.
@@ -173,7 +173,7 @@ Then $\forall i \in I, f_k(\ell_d(i)) = \frac{k}{k-2}\ell_d(i)$. Therefore,
 \nonumber
 \\ \label{eqn:hdhunit:wfk-last}
 &< \frac{k-2}{k} (1 + \vol(f_k(s)))
-= \frac{k-2}{k} + \vol(\wfk(s))
+= \frac{k-2}{k} + \vol(\wfk(s)).
 \end{align}
 Since items in $I$ were sorted in decreasing order of $\ell_d$
 (line \ref{alg-line:hdhunit:sort}),
@@ -193,7 +193,7 @@ H &= \sum_{j=1}^{p} \ell_d(S_j)
 \\ &< \frac{1}{k} + \vol(\wfk(I))
 \\ &< \frac{1}{k} + \frac{k-2}{k} + w(s)\ell_d(s)
 \tag{by (\ref{eqn:hdhunit:wfk-last})}
-\\ &\le \frac{k-1}{k} + \frac{1}{k} = 1
+\\ &\le \frac{k-1}{k} + \frac{1}{k} = 1.
 \tag{since $\ell_d(s) \le 1/k$ and $w(s) = \vol(f_k(s^{(d-1)})) \le 1$}
 \end{align*}
 Since $H \le 1$, the shelves fit in a $d$D bin.
@@ -214,7 +214,7 @@ Case 2 implies that $\forall i \in I, f_k(\ell_d(i)) = \mu\ell_d(i)$. Therefore,
 \nonumber
 \\ \label{eqn:hdhunit:wfk-last-2}
 &< \frac{1}{\mu} (1 + \vol(f_k(s)))
-= \frac{1}{\mu} + \vol(\wfk(s))
+= \frac{1}{\mu} + \vol(\wfk(s)).
 \end{align}
 
 \textbf{Case 2a}: $\forall j \in [d-1], t_j \neq k$.\\
@@ -230,14 +230,14 @@ there is one item of height $\ell_d(S_j)$ in $S_j$
 and all the other $T-1$ items in $S_j$ have height at least $\ell_d(S_{j+1})$.
 This gives us
 \[ \vol(\wfk(S_j)) = \sum_{i \in S_j} \frac{\ell_d(i)}{T}
-\ge \frac{1}{T}\ell_d(S_j) + \frac{T-1}{T}\ell_d(S_{j+1}) \]
+\ge \frac{1}{T}\ell_d(S_j) + \frac{T-1}{T}\ell_d(S_{j+1}). \]
 \begin{align*}
 \vol(\wfk(I)) &= \sum_{j=1}^{p-1} \vol(\wfk(S_j)) + \vol(\wfk(S_p))
 \\ &\ge \sum_{j=1}^{p-1} \left(\frac{1}{T}\ell_d(S_j) + \frac{T-1}{T}\ell_d(S_{j+1})\right)
     + \frac{1}{T}\ell_d(S_p)
 \\ &= \frac{1}{T}\sum_{j=1}^p \ell_d(S_j) + \frac{T-1}{T}\sum_{j=1}^{p-1}\ell_d(S_{j+1})
 \\ &= H - \frac{T-1}{T}h(S_1)
-\ge H - \frac{T-1}{T}\frac{1}{k}
+\ge H - \frac{T-1}{T}\frac{1}{k}.
 \end{align*}
 \begin{align*}
 H &\le \vol(\wfk(I)) + \frac{T-1}{T}\frac{1}{k}
@@ -245,7 +245,7 @@ H &\le \vol(\wfk(I)) + \frac{T-1}{T}\frac{1}{k}
 \tag{by (\ref{eqn:hdhunit:wfk-last-2})}
 \\ &\le \frac{1}{\mu} + \frac{1}{T}\frac{1}{k} + \frac{T-1}{T}\frac{1}{k}
 \tag{since $w(s) = 1/T$ and $\ell_d(s) \le 1/k$}
-\\ &= \frac{1}{\mu} + \frac{1}{k}
+\\ &= \frac{1}{\mu} + \frac{1}{k}.
 \end{align*}
 Since we want $H \le 1$, we get $\mu \le k/(k-1)$.
 
@@ -259,12 +259,12 @@ H &= \sum_{j=1}^p \ell_d(S_j)
 \\ &< \frac{1}{k} + \vol(\wfk(I))
 \\ &< \frac{1}{k} + \frac{1}{\mu} + w(s)\ell_d(s)
 \tag{by (\ref{eqn:hdhunit:wfk-last-2})}
-\\ &\le \frac{1}{k} + \frac{1}{\mu} + \frac{\mu}{k^2}
+\\ &\le \frac{1}{k} + \frac{1}{\mu} + \frac{\mu}{k^2}.
 \tag{since $\ell_d(s) \le 1/k$ and $w(s) \le f_k(\ell_q(s)) \le \mu/k$}
 \end{align*}
 For $H \le 1$ and $\mu \le k$, we get $k \ge 3$ and
 \[ \mu \ge \frac{k((k-1) - \sqrt{(k-3)(k+1)})}{2}
-    \le \frac{k(k-2)}{k^2-3k+1} \le \frac{k}{k-2} \]
+    \le \frac{k(k-2)}{k^2-3k+1} \le \frac{k}{k-2}. \]
 \end{optional}
 \end{proof}
 

@@ -21,7 +21,7 @@ Let $\Ccal_i$ be the \config{}s that contain the element $i$.
 \\ &\le \left(1 - \frac{1}{\norm{\widehat{x}}_1} \right)^T
 \tag{constraint in \config{} LP for item $i$}
 \\ &\le \exp\left( - \frac{T}{\norm{\widehat{x}_1}} \right)
-\le \frac{1}{\beta}
+\le \frac{1}{\beta}.
 \qedhere
 \end{align*}
 \end{proof}
@@ -107,7 +107,7 @@ Multiplying each constraint by $\Span(i)$ and adding these constraints together,
 \begin{align*}
 \Span(I) &\le \sum_{C \in \Ccal} \sum_{i \in I} \Span(i) A[i, C] x^*_C
 = \sum_{C \in \Ccal} \Span(C) x^*_C
-\\ &\le (d_v+1) \sum_{C \in \Ccal} x^*_C = (d_v+1)\cLP^*(I)
+\\ &\le (d_v+1) \sum_{C \in \Ccal} x^*_C = (d_v+1)\cLP^*(I).
 \end{align*}
 Therefore, $\cLP^*(I) \ge \Span(I)/(d_v+1)$.
 We also have
@@ -122,14 +122,14 @@ Let $\phi: \prod_{i=1}^n A_j \mapsto \mathbb{R}$ be a function such that
 $\abs{\phi(x) - \phi(y)} \le c_j$
 whenever vectors $x$ and $y$ differ only in the $j\Th$ coordinate.
 Then for any $t \ge 0$,
-\[ \Pr[ \phi(X) - \E(\phi(X)) \ge t ] \le \exp\left(-\frac{2t^2}{\sum_{j=1}^n c_j^2}\right) \]
+\[ \Pr[ \phi(X) - \E(\phi(X)) \ge t ] \le \exp\left(-\frac{2t^2}{\sum_{j=1}^n c_j^2}\right). \]
 \end{lemma}
 
 \begin{lemma}
 \label{thm:fclp-conc}
 Let $\Stild$ be as computed by $\rnaPack(I, \beta, \eps)$. Let $\epsLP \in (0, 1)$ be a constant.
 When $\Span(I)$ is large compared to $1/\epsLP^2$, we get that with high probability
-\[ \fscLP^*(\Stild) \le \frac{\fscLP^*(\Itild)}{\beta} + 2b\mu\epsLP\opt(I) + O(1) \]
+\[ \fscLP^*(\Stild) \le \frac{\fscLP^*(\Itild)}{\beta} + 2b\mu\epsLP\opt(I) + O(1). \]
 \end{lemma}
 \begin{proof}
 Let $y \in \Ccal^T$ be the \config{}s chosen during randomized rounding.
@@ -140,7 +140,7 @@ Let $\Ktild_1, \Ktild_2, \ldots, \Ktild_q$ be the classes of $\Itild$.
 Let $\pi$ be the bijection from $I-D$ to $\Itild$.
 For a set $X \subseteq I$, define $\Itild[X] \defeq \{\pi(i): i \in X-D\}$.
 For $j \in [q]$, define $\phi_j \in \Ccal^T \mapsto \mathbb{R}_{\ge 0}$ as
-\[ \phi_j(y) \defeq \Span\left(\Ktild_j \cap \Itild[\uncovered(y)]\right) \]
+\[ \phi_j(y) \defeq \Span\left(\Ktild_j \cap \Itild[\uncovered(y)]\right). \]
 For any set $X \subseteq I$, define $g_j(X) \defeq \Span(\Ktild_j \cap \Itild[X])$.
 Then $\phi_j(y) = g_j(\uncovered(y))$ and $g_j$ is a non-negative additive function.
 
@@ -158,7 +158,7 @@ $S_1 - S_2 \subseteq C_2 - C_1$ and $S_2 - S_1 \subseteq C_1 - C_2$.
 \\ &\le \max(g_j(S_1 - S_2), g_j(S_2 - S_1))
 \\ &\le \max(g_j(C_2), g_j(C_1))
 \\ &\le \max_{C \in \Ccal} \Span(\Ktild_j \cap \Itild[C])
-\le c_{\max}  \tag{by bounded expansion lemma}
+\le c_{\max}.  \tag{by bounded expansion lemma}
 \end{align*}
 \begin{align*}
 \E(\phi_j(y)) &= \E(g_j(S))
@@ -166,16 +166,16 @@ $S_1 - S_2 \subseteq C_2 - C_1$ and $S_2 - S_1 \subseteq C_1 - C_2$.
     \tag{linearity of expectation and additivity of $g_j$}
 \\ &\le \sum_{i \in \Itild} g_j(\{i\}) (1/\beta)
     \tag{by \cref{thm:pr-elem-in-residual}}
-\\ &= \frac{g_j(\Itild)}{\beta} = \frac{\Span(\Ktild_j)}{\beta}
+\\ &= \frac{g_j(\Itild)}{\beta} = \frac{\Span(\Ktild_j)}{\beta}.
 \end{align*}
 $\forall j \in [q]$, define $Q_j$ as the smallest prefix of $\Stild \cap \Ktild_j$
 such that either $Q_j = \Stild \cap \Ktild_j$ or $\Span(Q_j) \ge \epsLP\norm{\widehat{x}}_1/q$.
 Define $Q \defeq \bigcup_{j=1}^q Q_j$. Therefore,
-\[ \Span(Q) \le \epsLP \norm{\widehat{x}}_1 + q \le \epsLP \mu \opt(I) + O(1) \]
+\[ \Span(Q) \le \epsLP \norm{\widehat{x}}_1 + q \le \epsLP \mu \opt(I) + O(1). \]
 \begin{align*}
 \fscLP^*(\Stild) &\le \fscLP^*(\Stild - Q) + \fscLP^*(Q)
 \\ &\le \fscLP^*(\Stild - Q) + b(2\Span(Q) + 1)  \tag{by \cref{sec:span-pack}}
-\\ &\le \fscLP^*(\Stild - Q) + 2b\mu\epsLP\opt(I) + O(1)
+\\ &\le \fscLP^*(\Stild - Q) + 2b\mu\epsLP\opt(I) + O(1).
 \end{align*}
 Now we will try to prove that with high probability,
 $\fscLP^*(\Stild - Q) \le \fscLP^*(\Itild)/\beta$.
@@ -188,18 +188,18 @@ Otherwise,
 \\ &\le \Pr\left[ \phi_j(y) - \E(\phi_j(y)) \ge \frac{\epsLP}{q} \norm{\widehat{x}}_1 \right]
 \le \exp\left( -\frac{2}{Tc_{\max}^2} \left(\frac{\epsLP}{q}\norm{\widehat{x}}_1\right)^2\right)
 \tag{\cref{thm:ind-bdi}}
-\\ &\le \exp\left( -\frac{2\epsLP^2}{\ln(\beta)c_{\max}^2q^2} \norm{\widehat{x}}_1\right)
+\\ &\le \exp\left( -\frac{2\epsLP^2}{\ln(\beta)c_{\max}^2q^2} \norm{\widehat{x}}_1\right).
 \end{align*}
 Therefore, by union bound, we get
 \[ \Pr\left[ \bigvee_{j=1}^q \left(\Span(\Ktild_j \cap (\Stild - Q))
     \ge \frac{\Span(\Ktild_j)}{\beta}\right) \right]
-\le q\exp\left( -\frac{2\epsLP^2}{\ln(\beta)c_{\max}^2q^2} \norm{\widehat{x}}_1\right) \]
+\le q\exp\left( -\frac{2\epsLP^2}{\ln(\beta)c_{\max}^2q^2} \norm{\widehat{x}}_1\right). \]
 Since $\cLP^*(I) \le \norm{\widehat{x}}_1 \le \mu \cLP^*(I) + O(1)$,
 and $\cLP^*(I) \in \Theta(\Span(I)) + O(1)$ (by \cref{thm:clp-vs-span}),
 we get $\norm{\widehat{x}}_1 \in \Theta(\Span(I)) + O(1)$.
 When $\Span(I)$ is very large compared to $1/\epsLP^2$, we get
 that with high probability, $\forall j \in [q]$,
-\[ \Span(\Ktild_j \cap (\Stild - Q)) \le \frac{\Span(\Ktild_j)}{\beta} \]
+\[ \Span(\Ktild_j \cap (\Stild - Q)) \le \frac{\Span(\Ktild_j)}{\beta}. \]
 Let $x^*$ be the optimal solution to $\fscLP(\Itild)$.
 Then with high probability, $x^*/\beta$ is a feasible solution to $\fscLP(\Stild - Q)$.
 Therefore,
@@ -224,7 +224,7 @@ Otherwise, if $\Span(I) \in O(1/\epsLP^2)$, we get
 \fsopt(\Stild) &\le \rho\opt(I) + O(1)  \tag{by structural theorem}
 \\ &\le \rho|\simplePack(I)| + O(1)
 \\ &\le \Theta(\Span(I)) + O(1)  \tag{by \cref{sec:span-pack}}
-\\ &\le O(1/\epsLP^2)  \qedhere
+\\ &\le O(1/\epsLP^2).  \qedhere
 \end{align*}
 \end{proof}
 

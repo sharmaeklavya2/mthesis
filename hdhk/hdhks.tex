@@ -62,7 +62,7 @@ Let $H$ be the total height of the shelves in $P'$. Then
 H &= \sum_{q=1}^Q \sum_{t=1}^{p^{[q]}-1} \ell_d(S_{t+1}^{[q]})
 \le \sum_{q=1}^Q \sum_{t=1}^{p^{[q]}-1} \vol(\wfk(S_t^{[q]}))  \tag{by \eqref{eqn:wfk-lb-height}}
 \\ &< \sum_{q=1}^Q \sum_{t=1}^{p^{[q]}} \vol(\wfk(S_t^{[q]}))
-= \vol(\wfk(I))
+= \vol(\wfk(I)).
 \end{align*}
 Next-Fit guarantees that for a 1BP instance $J$,
 number of bins used is at most $\ceil{2\vol(J)}$ (see \cref{thm:next-fit}).
@@ -120,5 +120,6 @@ $\hdhknf$ packs $J$ into
 $b \le 3^{d-1} + \smallceil{2T_3^{d-1}\vol(\wHk[3](J))} \le 3^d$ bins.
 Given the way we choose $j_{\max}$,
 \[ p(J_{j_{\max}}) \ge \frac{p(J)}{b} = \frac{p(\Jhat)}{b}
-\ge \frac{\optdmcks[1](\Icalhat)}{b(1+\eps)} \ge \frac{\optdmcks(\Ical)}{3^d(1+\eps)}  \qedhere \]
+\ge \frac{\optdmcks[1](\Icalhat)}{b(1+\eps)} \ge \frac{\optdmcks(\Ical)}{3^d(1+\eps)}.
+\qedhere \]
 \end{proof}

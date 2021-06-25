@@ -139,7 +139,7 @@ Therefore, $\size(J_j) + \size(J_{j+1}) > 1$. This gives us
 & \size(I)
 = \frac{\size(J_1) + \size(J_m)}{2} + \sum_{j=1}^{m-1} \frac{\size(J_j) + \size(J_{j+1})}{2}
 > \sum_{j=1}^{m-1} \frac{1}{2} = \frac{m-1}{2}
-\\ &\implies m < 2\size(I) + 1 \iff m \le \ceil{2\size(I)}  \qedhere
+\\ &\implies m < 2\size(I) + 1 \iff m \le \ceil{2\size(I)}.  \qedhere
 \end{align*}
 \end{proof}
 
@@ -157,7 +157,7 @@ Therefore,
 \begin{align*}
 & \size(I) > \sum_{j=1}^{m-1} \size(J_j) \ge (m-1)(1-\eps)
 \\ &\implies m < 1 + \frac{\size(I)}{1-\eps}
-\quad\iff m \le \ceil{\frac{\size(I)}{1-\eps}}
+\quad\iff m \le \ceil{\frac{\size(I)}{1-\eps}}.
 \qedhere \end{align*}
 \end{proof}
 
@@ -180,7 +180,7 @@ Therefore, $a(S_j) + a(S_{j+1}) > h_{j+1}$. This gives us
 \begin{align*}
 & a(I) = \frac{a(S_1) + a(S_p)}{2} + \sum_{j=1}^{p-1} \frac{a(S_j) + a(S_{j+1})}{2}
 > \sum_{j=1}^{p-1} \frac{h_{j+1}}{2} = \frac{H-h_1}{2}
-\\ &\implies H < 2a(I) + h_1 = 2a(I) + \max_{i \in I} h(i)
+\\ &\implies H < 2a(I) + h_1 = 2a(I) + \max_{i \in I} h(i).
 \qedhere \end{align*}
 \end{proof}
 
@@ -208,7 +208,7 @@ Therefore, $a(S_j) > (W-\delta_W)h_{j+1}$ for $j \le p-1$. This gives us
 \ge (W-\delta_W)\sum_{j=1}^{p-1} h_{j+1}
 = (W-\delta_W)(\Htild - h_1)
 \\ &\implies H - \delta_H > \Htild - h_1
-\quad\implies \Htild < H - (\delta_H - h_1) \le H
+\quad\implies \Htild < H - (\delta_H - h_1) \le H.
 \qedhere \end{align*}
 \end{proof}
 
@@ -262,7 +262,7 @@ Define the configuration matrix $A \in \{0, 1\}^{n \times |\Ccal|}$
 as a matrix where $A[i, C]$ is 1 if configuration $C$ contains item $i$ and 0 otherwise.
 We can also write the configuration LP as
 \[ \min_{x \in \mathbb{R}^{|\mathcal{C}|}} \Sum(x)
-\quad\textrm{where}\quad Ax \ge \mathbf{1} \quad\textrm{and}\quad x \ge 0 \]
+\quad\textrm{where}\quad Ax \ge \mathbf{1} \quad\textrm{and}\quad x \ge 0. \]
 
 Linear programs are a useful tool in the area of approximation algorithms.
 Many optimization problems can be expressed as integer programs.

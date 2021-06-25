@@ -47,7 +47,7 @@ Now assume $|T_{j-1}| \le t_{j-1}$. Then
 |T_j| &\le (|R|+1)|S_j|
     \le \left(\frac{1}{\eps\epsLarge}+1\right)\left(|T_{j-1}| + \frac{1}{\delta_j}\right)
     \le \left(\frac{1}{\eps\epsLarge}+1\right)^2 t_{j-1}
-    = t_j
+    = t_j.
 \end{align*}
 Hence, by mathematical induction, $|T_j| \le t_j$ for all $j \ge 0$.
 \end{proof}
@@ -77,7 +77,7 @@ ending at $i$. Formally,
 \[ \level(i) \defeq \begin{cases}
 1 & \textrm{ if } i \textrm{ has no predecessors}
 \\ \displaystyle 1 + \max_{j \prec i} \level(j) & \textrm{ otherwise}
-\end{cases} \]
+\end{cases}. \]
 Let $W_j$ be the items at level $j$, i.e., $W_j \defeq \{i: \level(i) = j\}$.
 
 \begin{figure}[htb]

@@ -416,7 +416,7 @@ to compare the optimal LP objectives of $\Stild$ and $\Itild$.
 \label{thm:rna-pack}
 The number of bins used by $\rnaPack(I, \beta, \eps)$ is at most
 \[ \left( (\ln\beta)\mu + \frac{\gamma\alpha\rho}{\beta}
-    + 2b(d_v+1+\gamma\alpha\mu)\eps \right) \opt(I) + O(1/\eps^2) \]
+    + 2b(d_v+1+\gamma\alpha\mu)\eps \right) \opt(I) + O(1/\eps^2). \]
 \end{theorem}
 \begin{proof}
 Let $J_{\LP}$ be the set of bins packed in the {\em randomized rounding of
@@ -438,7 +438,7 @@ C1.1 (Small Discard) and the last follows from \cref{thm:span-lb-opt}.
 \\ &\le \gamma\alpha\fsopt(\Stild) + O(1)  \tag{property of $\complexPack$ (C3)}
 \\ &\le \gamma\alpha\left( {\fsopt(\Itild)}/{\beta} + 2b\mu\eps\opt(I) \right) + O(1/\eps^2)
     \tag{by \cref{thm:fopt-conc}}
-\\ &\le \gamma\alpha\left(\rho/\beta + 2b\mu\eps\right)\opt(I) + O(1/\eps^2)
+\\ &\le \gamma\alpha\left(\rho/\beta + 2b\mu\eps\right)\opt(I) + O(1/\eps^2).
 \end{align*}
 Here, the last inequality follows from the structural theorem (C2),
 which says that $\exists (\Itild, D) \in \round(I)$ such that
@@ -447,7 +447,7 @@ Hence, the total number of bins is at most
 \begin{align*}
 & |J_{\LP}| + |J_D| + |J|
 \le \left( (\ln\beta)\mu + \frac{\gamma\alpha\rho}{\beta}
-    + 2b(d_v+1+\gamma\alpha\mu)\eps \right)\opt(I) + O(1/\eps^2)
+    + 2b(d_v+1+\gamma\alpha\mu)\eps \right)\opt(I) + O(1/\eps^2).
 \qedhere \end{align*}
 \end{proof}
 

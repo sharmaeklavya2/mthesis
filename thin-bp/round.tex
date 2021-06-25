@@ -41,7 +41,7 @@ Each item belongs to at most 2 sets $J_t$. Therefore,
 \[ a(\Imed) = \min_{t=1}^T a(J_t)
 \le \frac{1}{T} \sum_{t=1}^T a(J_t)
 \le \frac{2}{\ceil{2/\eps}} a(I)
-\le \eps a(I) \qedhere \]
+\le \eps a(I). \qedhere \]
 \end{proof}
 
 No item in $I - \Imed$ has width or height in the interval $(\epsSmall, \epsLarge]$.
@@ -127,7 +127,7 @@ We can pack $\Wtild_1$ in a bin by stacking the items one-over-the-other.
 Let $w_L$ be the total width of items in $\Htild$. The number of bins used is
 $\smallceil{\eps\epsLarge h_L} + \smallceil{\eps\epsLarge w_L}$. Also,
 \[ \opt(I) \ge \opt(W \cup H)
-\ge a(W) + a(H) \ge \epsLarge(h_L + w_L) \]
+\ge a(W) + a(H) \ge \epsLarge(h_L + w_L). \]
 Therefore,
 \begin{equation}
 \label{eqn:thin-bp:lingroup-2}
@@ -137,5 +137,6 @@ Therefore,
 On combining \eqref{eqn:thin-bp:lingroup-1} and \eqref{eqn:thin-bp:lingroup-2}, we get
 \[ \fopt(\Itild) \le \fopt(\Itild - (\Wtild_1 \cup \Htild_1))
     + \fopt(\Wtild_1 \cup \Htild_1)
-< (1+\eps)\opt(I) + 2 \qedhere \]
+< (1+\eps)\opt(I) + 2.
+\qedhere \]
 \end{proof}

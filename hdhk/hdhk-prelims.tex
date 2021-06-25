@@ -37,13 +37,13 @@ Caprara~\cite{caprara2008} defined a function $f_k$.
 For an integer constant $k \ge 3$, $f_k: [0, 1] \mapsto [0, 1]$ is defined as
 \[ f_k(x) \defeq \begin{cases}
 \frac{1}{q} & x \in \left(\left.\frac{1}{q+1}, \frac{1}{q}\right]\right. \textrm{ for } q \in [k-1]
-\\ \frac{k}{k-2}x & x \le \frac{1}{k} \end{cases} \]
+\\ \frac{k}{k-2}x & x \le \frac{1}{k} \end{cases}. \]
 $f_k$ was originally defined and studied by Lee and Lee~\cite{leelee} for their
 online algorithm for 1BP, except that they used $k/(k-1)$ instead of $k/(k-2)$.
 Define $\type_k: [0, 1] \mapsto [k]$ as
 \[ \type_k(x) \defeq \begin{cases}
 q & x \in \left(\left.\frac{1}{q+1}, \frac{1}{q}\right]\right. \textrm{ for } q \in [k-1]
-\\ k & x \le \frac{1}{k} \end{cases} \]
+\\ k & x \le \frac{1}{k} \end{cases}. \]
 
 Define $T_k$ to be the smallest positive constant such that
 $H_k(x) \defeq f_k(x)/T_k$ is a \dff{}. We call $H_k$ the \emph{harmonic \dff}.
@@ -87,7 +87,7 @@ $H_k(J_j)$ fits in a bin. Therefore,
 \[ \vol(f_k(I))
 = \sum_{j=1}^m T_k^d \vol(H_k(J_j))
 \le \sum_{j=1}^m T_k^d
-= T_k^d \optdbp(I)
+= T_k^d \optdbp(I).
 \qedhere \]
 \end{proof}
 

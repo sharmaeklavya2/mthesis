@@ -229,7 +229,7 @@ Each item belongs to at most $d+2$ sets $J_t$. Therefore,
 \[ \Span(\Imed) = \min_{t=1}^T \Span(J_t)
 \le \frac{1}{T} \sum_{t=1}^T \Span(J_t)
 \le \frac{d+2}{T} \Span(I)
-\le \eps \Span(I) \qedhere \]
+\le \eps \Span(I). \qedhere \]
 \end{proof}
 By \cref{defn:remmed}, $I - \Imed$ is $(\epsSmall, \epsLarge)$-non-medium.
 By \cref{thm:med-span,thm:span-pack}, $\Span(\Imed)$ can be packed into
@@ -473,7 +473,7 @@ the bin satisfies \cref{prop:hrnd}\ref{item:hrnd:geom} and $S^{(R')}$ is empty.
 Observe that
 \[ \deltaDense = 2d\epsLarge^2 + \epsSmall
 \le 2d\epsLarge^2 + \frac{\eps\epsLarge^2}{2}
-\le \frac{\epsLarge}{2} (4d+1)\epsLarge \le \frac{\epsLarge}{2} \]
+\le \frac{\epsLarge}{2} (4d+1)\epsLarge \le \frac{\epsLarge}{2}. \]
 Since $\deltaDense \le \epsLarge/2$, pack $D_H$ into $S^{(R')}$.
 Now this bin also satisfies \cref{prop:hrnd}\ref{item:hrnd:dense}.
 In total, we used 2 bins and 2 boxes ($C^{(R)}$ and $D_W$).
@@ -801,7 +801,7 @@ The total number of bins used is at most
 \\ &\le 12 + \left(3 + \frac{1}{6} + \frac{\eps}{1-\eps}\right)m
     - \left(\frac{1}{6} - \frac{\eps}{1-\eps}\right)m_1
 \tag{$m_4 \le m - m_1$}
-\\ &\le 12 + \left(3 + \frac{1}{6} + \frac{\eps}{1-\eps} \right)m
+\\ &\le 12 + \left(3 + \frac{1}{6} + \frac{\eps}{1-\eps} \right)m.
 \tag{$\eps \le 1/8$}
 \end{align*}
 \end{proof}
@@ -960,9 +960,9 @@ The total area of big items is at least $p\epsLarge^2$,
 of wide items is at least $\epsLarge H$
 and of tall items is at least $\epsLarge W$.
 Since the total area of items in $J$ is at most 1,
-\[ \epsLarge^2p + \epsLarge H + \epsLarge W + A \le 1 \]
+\[ \epsLarge^2p + \epsLarge H + \epsLarge W + A \le 1. \]
 The total increase in $v_j(J)$ is at most
-\[ \frac{\eps}{8}(\epsLarge^2p + \epsLarge H + \epsLarge W + A) \le \frac{\eps}{8} \]
+\[ \frac{\eps}{8}(\epsLarge^2p + \epsLarge H + \epsLarge W + A) \le \frac{\eps}{8}. \]
 Therefore, the resulting bin is $(\mu - \eps/8)$-slacked.
 \end{proof}
 
@@ -1042,7 +1042,7 @@ For each $j \in [d]$ and each dense item $i$,
 reverting the transformation increases $v_j(i)$ by at most $(\eps/8d) v_{\max}(i)$.
 So by \cref{thm:vmax-lb-opt}, we get
 \[ v_j(J) \le v_j(J') + \frac{\eps}{8d} v_{\max}(J')
-\le v_j(J') + \frac{\eps}{8} \le 1 - \left(\mu - \frac{\eps}{8}\right) \]
+\le v_j(J') + \frac{\eps}{8} \le 1 - \left(\mu - \frac{\eps}{8}\right). \]
 Therefore, $J$ is $(\mu - \eps/8)$-slacked.
 
 \textbf{Case 2}: $|J'| = 1$:\\
@@ -1090,7 +1090,7 @@ So $J$ is $\mu$-slacked.
 \begin{lemma}
 \label{lem:round-up-heavy-n}
 The number of distinct heavy items after \cref{trn:round-up-heavy} is at most
-\[ n_{\hwc} \defeq \left(\frac{8}{\eps}\left(\frac{1}{\epsLarge}-1\right)\right)^d \]
+\[ n_{\hwc} \defeq \left(\frac{8}{\eps}\left(\frac{1}{\epsLarge}-1\right)\right)^d. \]
 \end{lemma}
 \begin{proof}
 This is because large vector dimensions are rounded to at most
@@ -1113,7 +1113,7 @@ to dense items in $J$. Then $J'$ is a $(\mu-\eps/8)$-slacked packing.
 \textbf{Case 1}: $\forall j \in [d], v_j(J') \le 1-\mu$:\\
 For each $j \in [d]$, $v_j(i)$ increases by a factor of at most $1+\eps/8$.
 So,
-\[ v_j(J') \le v_j(J)\left(1+\frac{\eps}{8}\right) \le v_j(J) + \frac{\eps}{8} \]
+\[ v_j(J') \le v_j(J)\left(1+\frac{\eps}{8}\right) \le v_j(J) + \frac{\eps}{8}. \]
 Therefore, $J'$ is $(\mu - \eps/8)$-slacked.
 
 \textbf{Case 2}: $|J| = 1$:\\
@@ -1132,7 +1132,7 @@ $J$ remains the same after the transformation.
 After \cref{trn:round-up-light},
 the number of distinct values of the weight vector of light items is at most
 \[ \ceil{\frac{\ln(8d/\eps)}{\ln(1+\eps/8)}}^{d-1}
-\le \ceil{\frac{8+\eps}{\eps}\ln\left(\frac{8d}{\eps}\right)}^{d-1} \defeq n_{\lwc} \]
+\le \ceil{\frac{8+\eps}{\eps}\ln\left(\frac{8d}{\eps}\right)}^{d-1} \defeq n_{\lwc}. \]
 \end{lemma}
 \begin{proof}
 This is because $v_j(i)/v_{\max}(i)$ is lower-bounded by $\eps/8d$
@@ -1275,7 +1275,7 @@ Since all items in $S$ have the same width and weights,
 $\Span'(i)$ is the same for each $i \in S$. Therefore,
 \[ \Span'(S \cap U) = \Span'(i)|S \cap U|
 \le \Span'(i)\floor{\deltaLG |S|}
-\le \deltaLG \Span'(S) \]
+\le \deltaLG \Span'(S). \]
 %
 In \cref{trn:lingroup}, we partitioned all tall non-dense items in $I$ by weight class.
 Let $S \subseteq I$ be one such partition.
@@ -1287,12 +1287,12 @@ we get $v_j(i) \le 1-\eps$ for all $i \in S$,
 so $\Span'(i)/w(i)$ is the same for each $i \in S$.
 Let that common ratio be $\alpha$. Then,
 \[ \Span'(S \cap U) = \alpha w(S \cap U)
-\le \alpha \deltaLG w(S) = \deltaLG \Span'(S) \]
+\le \alpha \deltaLG w(S) = \deltaLG \Span'(S). \]
 Summing over all partitions $S$, we get
 \begin{equation}
 \label{eqn:unpacked-vs-packed}
 \Span'(U) = \sum_S \Span'(U \cap S) \le \sum_S \deltaLG \Span'(S)
-    \le \deltaLG \Span'(K)
+    \le \deltaLG \Span'(K).
 \end{equation}
 
 For $i \in K$, we get
@@ -1302,7 +1302,7 @@ For $i \in K$, we get
 \max\left(w(i)h(i), v_{\max}(i)\right)}
 \le \frac{\frac{1}{1-\mu}\max\left(w(i), v_{\max}(i)\right)}{
 \max\left(w(i)\epsLarge, v_{\max}(i)\right)}
-\le \frac{1}{(1-\mu)\epsLarge}
+\le \frac{1}{(1-\mu)\epsLarge}.
 \end{align*}
 The last inequality follows because for big and tall items, $h(i) \ge \epsLarge$.
 
@@ -1312,7 +1312,7 @@ The number of bins used to pack $U$ is
 &\le 2\deltaLG \Span'(K) + 1
 \le \frac{2\deltaLG}{\epsLarge(1-\eps)} \Span(K) + 1
 \\ &\le \frac{2(d+1)\deltaLG}{\epsLarge(1-\eps)}m + 1
-= \frac{2\eps}{1-\eps}m + 1
+= \frac{2\eps}{1-\eps}m + 1.
 \end{align*}
 The first inequality follows from \eqref{eqn:unpacked-vs-packed} and the third
 inequality follows from \cref{thm:span-lb-opt}.
@@ -1637,7 +1637,7 @@ $\Pcalhat \defeq \{\Bhat^w_{p,q,r}: \forall q, \forall r\}
 $\Pcalhat$ is a fine partitioning of $B_p$ and
 after applying \cref{trn:round-geom},
 \[ \forall q, \forall r, \Bhat^w_{p,q,r} \preceq B^w_{p,q,r}
-\textrm{ and } \Bhat^h_{p,q,r} \preceq B^h_{p,q,r} \]
+\textrm{ and } \Bhat^h_{p,q,r} \preceq B^h_{p,q,r}. \]
 \end{restatable}
 
 $\partBig$ for the rotational case is similar to the non-rotational case:
@@ -1676,7 +1676,7 @@ For each $(i, j) \in E$, add an edge of capacity 1 from $u_i$ to $v_j$.
 Therefore, we get
 \[ E' = \{(s, u_i, 1): \forall i \in I\}
 \cup \{(u_i, v_j, 1): \forall (i, j) \in E\}
-\cup \{(v_j, t, b_j): \forall j \in J\} \]
+\cup \{(v_j, t, b_j): \forall j \in J\}. \]
 See \cref{fig:cpart-flow} for an example.
 
 \begin{figure}[htb]
@@ -1796,7 +1796,8 @@ and at most $1/\deltaLG$ sets of the form $B^h_{p,q,r}$
 Therefore, $|E| \le 2n/\deltaLG$.
 
 We can find a feasible assignment of the items $B_p$ to these sets (if one exists) using algorithm
-\[ \constrPartSolve\left(B_p, \left[ \frac{8(d+1)(1-\epsLarge)}{\eps\epsLarge^3} \right], b, E\right) \]
+\[ \constrPartSolve\left(B_p, \left[ \frac{8(d+1)(1-\epsLarge)}{\eps\epsLarge^3} \right],
+    b, E\right). \]
 The time taken to run $\constrPartSolve$ is $O(n^2/\eps\epsLarge)$.
 We summarize $\partBig$ in \cref{algo:part-big}.
 
@@ -1867,7 +1868,7 @@ Therefore, $|E_1 \cup E_2| \le |E_1| + |E_2| \le 2n/\deltaLG$.
 
 We can find a feasible assignment of the items $B_p$ to these sets (if one exists) using algorithm
 \[ \constrPartSolve\left(B_p, \left[ \frac{4(d+1)(1-\epsLarge)}{\eps\epsLarge^3} \right],
-    b, E_1 \cup E_2\right) \]
+    b, E_1 \cup E_2\right). \]
 The time taken to run $\constrPartSolve$ is $O(n^2/\eps\epsLarge)$.
 We summarize $\partBig$ in \cref{algo:part-big-rot}.
 
@@ -1908,7 +1909,7 @@ Then there is an output $(\{\}, \Pcalhat)$ of $\partBig(B_p)$ where
 $\Pcalhat \defeq \{\Bhat^w_{p,q,r}: \forall q, \forall r\}$
 such that $\Pcalhat$ is a fine partitioning of $B_p$ and
 after applying \cref{trn:round-geom},
-\[ \forall q, \forall r, \Bhat^w_{p,q,r} \preceq B^w_{p,q,r} \]
+\[ \forall q, \forall r, \Bhat^w_{p,q,r} \preceq B^w_{p,q,r}. \]
 \end{lemma}
 \begin{proof}
 In each iteration, $\constrPartSolve$ ensures that each item is assigned to exactly one set.
@@ -1982,7 +1983,7 @@ results about $\partWide$.
 \label{lem:part-wide-discard}
 For every output $(D, \Pcalhat)$ of $\partWide(W_p)$,
 \[ h(D) \le (3\epsSmall)\left( \frac{d+1}{\eps\epsLarge} + \frac{4}{\epsLarge^2}
-    - \frac{4}{\epsLarge} \right) \]
+    - \frac{4}{\epsLarge} \right). \]
 \end{restatable}
 
 \begin{restatable}{lemma}{rthmPartWide}
@@ -2117,7 +2118,7 @@ Then $h(d_k) + h(T_k) > h(s_k)$.
 Suppose $\greedyStack(I, S)$ fails because some rectangles were left in the end
 (i.e., at line \ref{alg-line:greedy-stack:fail-1} in \cref{algo:greedy-stack}). Then
 \[ h(T) + h(D) = \sum_{k=1}^{|S|} (h(T_k) + h(d_k))
-> \sum_{k=1}^{|S|} h(s_k) \ge h(I) \]
+> \sum_{k=1}^{|S|} h(s_k) \ge h(I), \]
 which is a contradiction.
 
 Suppose $\greedyStack(I, S)$ fails because some rectangle $i$ was wider than box $j$,
@@ -2131,7 +2132,7 @@ Let $X \defeq \{i' \in I: w(i') > w(i)\} \cup \{i\}$.
 In a fractional stacking of $I$ into $S$, the rectangles in $X$ are placed in the first $j-1$ bins.
 This is because $i' \in X \implies w(i') \ge w(i) > w(s_j)$.
 Therefore, $h(X) \le \sum_{k=1}^{j-1} h(s_k)$. On the other hand,
-\[ h(X-\{i\}) = h(T) + h(D) = \sum_{k=1}^{j-1} (h(T_k) + h(d_k)) > \sum_{k=1}^{j-1} h(s_k) \]
+\[ h(X-\{i\}) = h(T) + h(D) = \sum_{k=1}^{j-1} (h(T_k) + h(d_k)) > \sum_{k=1}^{j-1} h(s_k). \]
 This is a contradiction. Therefore, $\greedyStack(I, S)$ cannot fail.
 \end{proof}
 
@@ -2244,9 +2245,9 @@ where $\Pcalhat$ is a fine-partitioning of $W_p - D$.}
 \begin{proof}
 Let $D = D_1 \cup D_2$, where $D_1$ and $D_2$ are as defined in \cref{algo:part-wide}.
 \[ |S^w \cup S^h| \le k + (q_{\max} - q_{\min} + 1)
-= \frac{d+1}{\eps\epsLarge} + \frac{4}{\epsLarge^2} - \frac{4}{\epsLarge} \]
-\[ h(D_1) \le \epsSmall|D_1| \le \epsSmall|S^w \cup S^h|  \tag{by \cref{lem:greedy-stack-basic}} \]
-\[ h(D_2) \le (2\epsSmall)|S^w \cup S^h| \]
+= \frac{d+1}{\eps\epsLarge} + \frac{4}{\epsLarge^2} - \frac{4}{\epsLarge}. \]
+\[ h(D_1) \le \epsSmall|D_1| \le \epsSmall|S^w \cup S^h|.  \tag{by \cref{lem:greedy-stack-basic}} \]
+\[ h(D_2) \le (2\epsSmall)|S^w \cup S^h|. \]
 Therefore, $h(D_1 \cup D_2) \le (3\epsSmall)|S^w \cup S^h|$.
 \end{proof}
 
@@ -2269,10 +2270,10 @@ $h(W^h_{p,r}) \in [\epsSmall(i_0-1), \epsSmall i_0]$.
 
 All items in $W^w_{p,q}$ can fit in $s^w_q$ because
 \[ h(s^w_q) = i_q\epsSmall \ge h(W^w_{p,q}) \textrm{ and }
-w(s^w_q) = q\frac{\epsLarge^2}{4} \ge \max_{i \in W^w_{p,q}} w(i) \]
+w(s^w_q) = q\frac{\epsLarge^2}{4} \ge \max_{i \in W^w_{p,q}} w(i). \]
 All items in $W^h_{p,r}$ can fit in $s^h_r$ because
 \[ h(s^h_r) = i_0\epsSmall \ge h(W^h_{p,q}) \textrm{ and }
-w(s^h_r) = w_r = \max_{i \in W^h_{p,r}} w(i) \]
+w(s^h_r) = w_r = \max_{i \in W^h_{p,r}} w(i). \]
 Therefore, a slicing of $W_p$ can fit in the boxes $S^w \cup S^h$.
 So, for the correct guesses, \cref{lem:greedy-stack-nofail} implies that
 $\greedyStack(W_p, S^w \cup S^h)$ doesn't fail,
@@ -2372,7 +2373,7 @@ the knowledge of the associated fine partitioning is implicitly present in $\wid
 The total number of outputs of $\round(I)$ is $O(n^\gamma)$,
 where there are $n$ items in $I$ and
 \[ \gamma \defeq \nbwcHyp\frac{8(d+1)}{\eps\epsLarge^3}
-    + 2\nwwcHyp\left(\frac{4}{\epsLarge^2} + \frac{d+1}{\eps\epsLarge}\right) \]
+    + 2\nwwcHyp\left(\frac{4}{\epsLarge^2} + \frac{d+1}{\eps\epsLarge}\right). \]
 The time for each output is at most $O(n^2/\eps\epsLarge)$.
 \end{lemma}
 \begin{proof}
@@ -2385,7 +2386,7 @@ Let $(\widetilde{I}, D')$ be an output of $\round(I, \eps)$. Then
 \begin{align*}
 \Span(D') &\le \eps \Span(I) + \frac{6\epsSmall\nwwcHyp}{\epsLarge^2}
     \left(\frac{d+1}{\eps\epsLarge} + \frac{4}{\epsLarge^2} - \frac{4}{\epsLarge}\right)
-\\ &\le \eps \Span(I) + 6(d+5)\frac{\epsSmall\nwwcHyp}{\epsLarge^4}
+\\ &\le \eps \Span(I) + 6(d+5)\frac{\epsSmall\nwwcHyp}{\epsLarge^4}.
 \end{align*}
 \end{lemma}
 \begin{proof}
@@ -2396,12 +2397,12 @@ Since all items in $D$ come from $\partWide$, $D$ only contains non-dense items
 and $D = D_1 \cup D_2$.
 Let
 \[ \lambda \defeq n_{\wwc}(3\epsSmall)
-\left(\frac{d+1}{\eps\epsLarge} + \frac{4}{\epsLarge^2} - \frac{4}{\epsLarge}\right) \]
+\left(\frac{d+1}{\eps\epsLarge} + \frac{4}{\epsLarge^2} - \frac{4}{\epsLarge}\right). \]
 By \cref{lem:part-wide-discard},
 $h(D_1) \le \lambda$ and $w(D_2) \le \lambda$.
 \[ \Span(D_1) = \sum_{i \in D_1} \max(a(i), v_{\max}(i))
 \le \sum_{i \in D_1} \max\left(h(i), \frac{h(i)}{\epsLarge^2}\right)
-\le \sum_{i \in D_1} \frac{h(i)}{\epsLarge^2} \le \frac{\lambda}{\epsLarge^2} \]
+\le \sum_{i \in D_1} \frac{h(i)}{\epsLarge^2} \le \frac{\lambda}{\epsLarge^2}. \]
 Similarly, $\Span(D_2) \le \lambda/\epsLarge^2$.
 \end{proof}
 
@@ -2411,7 +2412,7 @@ Let $(\widetilde{I}, D)$ be an output of $\round(I, \eps)$.
 Then the number of types of items in $\widetilde{I}$ is at most a constant:
 \[ \frac{8(d+1)\nbwcHyp}{\eps\epsLarge^3}
 + 2\nwwcHyp\left(\frac{d+1}{\eps\epsLarge} + \frac{4}{\epsLarge^2}\right)
-+ \nswcHyp + 2(\nlwcHyp + \nhwcHyp) \]
++ \nswcHyp + 2(\nlwcHyp + \nhwcHyp). \]
 \end{lemma}
 \begin{proof}
 After applying \cref{trn:round-geom} to $\widehat{I} - D$,
@@ -2425,7 +2426,7 @@ From the definition of fine partitioning,
 the number of different partitions of non-dense items is at most
 \[ \frac{8n_{\bwc}}{\epsLarge^2\deltaLG}
 + 2n_{\wwc}\left(\frac{1}{\deltaLG} + \frac{4}{\epsLarge^2}\right)
-+ n_{\swc} \]
++ n_{\swc}. \]
 In each division, there are $n_{\hwc}$ distinct heavy dense items and $n_{\lwc}$ weight classes
 in light dense items by \cref{lem:round-up-heavy-n,lem:round-up-light-n}.
 \end{proof}
@@ -2652,7 +2653,7 @@ $1 + 2\sum_{i \in S}\Span'(i)$ bins that are $\mu$-slacked.
 Since $\epsCont = \eps\epsLarge^5/12 \le \eps\epsLarge^2/\nWCont$,
 the number of bins used to pack $S$ is at most
 \[ \frac{2\epsCont\nWCont}{(1-\mu)\epsLarge^2} m_1 + 1
-\le \frac{2\eps}{1-\mu} m_1 + 1 \]
+\le \frac{2\eps}{1-\mu} m_1 + 1. \]
 These bins are division-1 compartmental;
 they have just one wide compartment of width 1 and height 1.
 
@@ -2764,8 +2765,8 @@ Therefore, by iterating over
 \left(\frac{4(d+1)n_{\bwc}}{\eps\epsLarge^3} + 1\right)^{1/\epsLarge^2-1}
 \left(\frac{48}{\eps\epsLarge^7} + 1\right)^{\nWCont}
 \left(\left(\frac{(d+1)n_{\wwc}}{\eps\epsLarge}+1\right)^{1/\epsLarge-1}
-    \hspace{-1em}+ 1\right)^{\nTCont} \]
-values (a large constant), we can guess the set of big items, heavy items and compartments
+    \hspace{-1em}+ 1\right)^{\nTCont} \] values (a large constant),
+we can guess the set of big items, heavy items and compartments
 in a division-1 bin of normal slack type that does not have a dense compartment.
 For a bin that has a dense compartment, the number configurations to consider is
 $\nNConfs'(n_{\hwc} + 1)^{1/\epsLarge-1}$.
@@ -2905,7 +2906,7 @@ n_c &\defeq m(\nWCont + \nTCont + d + 1)
 \\ &\le \left(\frac{16}{\epsLarge^3} + d\right) m
 + 2n_{\wwc}\left(\frac{4}{\epsLarge^2} + \frac{d+1}{\eps\epsLarge} + 1\right)
 \tag{$2n_{\lwc} \le n_{\wwc}$ and $n_{\swc} \le n_{\wwc}$}
-\\ &\le \left(\frac{16}{\epsLarge^3} + d\right) m + 2(d+6)\frac{n_{\wwc}}{\epsLarge^2}
+\\ &\le \left(\frac{16}{\epsLarge^3} + d\right) m + 2(d+6)\frac{n_{\wwc}}{\epsLarge^2}.
 \end{align*}
 
 The number of variables and constraints in $\FP$ are linear in $m$.
@@ -2984,17 +2985,17 @@ We will pack these composite items into bins, where wide and tall items are pack
 
 Let $D$ be the set of all such discarded items. Then $|D| \le n_c$.
 For a composite item $i$, let
-\[ \Span'(i) \defeq \max\left(b(i), \min\left(\frac{v_{\max}(i)}{1-\mu}, 1\right)\right) \]
+\[ \Span'(i) \defeq \max\left(b(i), \min\left(\frac{v_{\max}(i)}{1-\mu}, 1\right)\right). \]
 Treat each composite item as a 1D item of size $\Span'(i)$.
 Then by \cref{lem:bot-slack-pack}, we can use Next-Fit to pack these items
 into $2\Span'(D) + 2$ $\mu$-slacked bins, where wide and tall items are packed separately.
 \[ \Span'(i) \le \max\left(b(i), \frac{v_{\max}(i)}{1-\mu}\right)
 \le \max\left(\epsSmall, \frac{\epsSmall}{\epsLarge^2(1-\mu)}\right)
-\le \frac{\epsSmall}{\epsLarge^2(1-\mu)} \]
+\le \frac{\epsSmall}{\epsLarge^2(1-\mu)}. \]
 Therefore, the number of bins needed is
 \[ 2\Span'(D) + 2 \le 2\frac{\epsSmall}{\epsLarge^2(1-\mu)} n_c + 2
 \le \frac{2\epsSmall(16 + d\epsLarge^3)}{\epsLarge^5(1-\mu)}m
-    + \frac{4(d+6)}{1-\mu} \frac{\epsSmall n_{\wwc}}{\epsLarge^4} + 2 \]
+    + \frac{4(d+6)}{1-\mu} \frac{\epsSmall n_{\wwc}}{\epsLarge^4} + 2. \]
 Therefore, we choose
 $\epsSmall \le \eps\epsLarge^5/(16 + d\epsLarge^3)$
 so that the number of new bins needed is at most
@@ -3009,8 +3010,7 @@ In each bin, there are at most $\nWCont + \nTCont$ compartments and big items
 By \cref{lem:empty-to-rects}, the free space outside compartments can be partitioned into
 \[ 3(\nWCont + \nTCont) + 1
 \le 3\left(\frac{16}{\epsLarge^2}\left(\frac{1}{\epsLarge} - 1\right) + 1\right) + 1
-\le \frac{48}{\epsLarge^3} \]
-rectangular regions.
+\le \frac{48}{\epsLarge^3} \] rectangular regions.
 Suppose there are $p_i$ slots in bin $i$ for which $x_{j,C} > 0$.
 The sum of $p_i$ over all bins is equal to $n_c$, the number of constraints in $\FP$.
 Each slot may give us a free rectangular region in the compartment.
@@ -3067,7 +3067,7 @@ Algorithm $\packSmall(I, M)$ doesn't fail at line \ref{alg-line:pack-small:nfdh}
 Since all items have area at most $\epsSmall^2$,
 \[ a(T) < a(r) - 2\epsSmall + \epsSmall^2
 \le a(r) - (w(r) + h(r))\epsSmall + \epsSmall^2
-= (w(r) - \epsSmall)(h(r) - \epsSmall) \]
+= (w(r) - \epsSmall)(h(r) - \epsSmall). \]
 Therefore, by \cref{thm:nfdh-small}, we get that $T$ can be packed into $r$.
 \end{proof}
 
@@ -3080,7 +3080,7 @@ that are neither packed nor discarded.
 Therefore, for each bin $i$, at \cref{alg-line:pack-small:select},
 $a(S_{i,p}) \ge y_{i,p}$. Therefore, the total area of all items from $S_p$
 that are either packed or discarded is at least
-\[ \sum_{i \in M} y_{i,p} = a(S_p)  \tag{by conservation constraint in $\FP$} \]
+\[ \sum_{i \in M} y_{i,p} = a(S_p),  \tag{by conservation constraint in $\FP$} \]
 which means that all items have been packed or discarded, which is a contradiction.
 \end{proof}
 
@@ -3105,7 +3105,7 @@ Therefore, the items discarded during bin $i$ have area at most
 $a(\widehat{S}) - a(R_i) + 2\epsSmall|R_i| \le 2\epsSmall|R_i|$.
 Therefore,
 \[ a(D_2) \le 2\epsSmall\sum_{i \in M}|R_i|
-\le 2\epsSmall\left(\frac{64}{\epsLarge^3} + d\right) m \qedhere \]
+\le 2\epsSmall\left(\frac{64}{\epsLarge^3} + d\right) m \qedhere. \]
 \end{proof}
 
 \begin{lemma}
@@ -3128,7 +3128,7 @@ We choose
 $\epsSmall \le \eps\epsLarge^2/\left(n_{\swc} + 128/\epsLarge^3 + 2d\right)$.
 Therefore, the number of bins needed is at most
 \[ 2\Span'(D) + 1 \le \frac{2a(D)}{\epsLarge^2(1-\mu)} + 1
-\le \frac{2\eps}{1-\mu} m + 1 \qedhere \]
+\le \frac{2\eps}{1-\mu} m + 1 \qedhere. \]
 \end{proof}
 
 The time taken to pack small items is $O(n_S \log n_S)$, where $n_S$ is the
@@ -3186,7 +3186,7 @@ $\epsSmall \in O(\epsLarge^{-5} + \eps^{-d}\epsLarge^{-(2d+2)})$.
 So, the parameter $f$ in $\remMedHyp(I, \eps, f, \delta_0)$ is
 \begin{equation} \label{eqn:remmed-f} f(x) = \ceil{\max\left(
     \frac{\nlwcHyp}{\eps}, \frac{16 + d^3}{\eps x^5},
-    \frac{128 + x^3(\left(8/x^2\eps\right)^d + 2d)}{\eps x^5}\right)}^{-1}
+    \frac{128 + x^3(\left(8/x^2\eps\right)^d + 2d)}{\eps x^5}\right)}^{-1}.
     \tag*{}
 \end{equation}
 

@@ -183,7 +183,7 @@ a(J_1) &= \sum_{j=1}^{m_1} (a(X_j) + a(Y_j))
 \\ &\ge \sum_{j=1}^{m_1} \left(\frac{\ell_{j+1}}{2} + \frac{1}{4}
     + \frac{1}{2} - \frac{\ell_j}{2}\right)  \tag{$\ell_{j+1} \ge 1/2$}
 \\ &= \frac{3m_1}{4} + \frac{1}{4} - \frac{\ell_1}{2}
-\ge \frac{3m_1-1}{4}
+\ge \frac{3m_1-1}{4}.
 \end{align*}
 Therefore, $m_1 \le 4a(J_1)/3 + 1/3$.
 % This is tight.
@@ -225,10 +225,10 @@ $|A_{j-1} - B_{j-1}| \le 1 \implies |A_j - B_j| \le 1$.
 Assume (for the sake of proof by contradiction) that $a_j < b_j$.
 Then $a_j < 1$, so we used up all of $\Wtild$ in the $j\Th$ bin.
 Therefore, $A_j = 0$ and $A_{j-1} = a_j$. Therefore,
-\[ A_{j-1} = a_j < b_j \le b_j + B_j = B_{j-1} \implies \bot \]
+\[ A_{j-1} = a_j < b_j \le b_j + B_j = B_{j-1} \implies \bot. \]
 Therefore, $a_j \ge b_j$. Since $A_{j-1} - B_{j-1} \in [0, 1]$
 and $a_j - b_j \in [0, 1]$, we get
-\[ A_j - B_j = (A_{j-1} - B_{j-1}) - (a_j - b_j) \in [-1, 1] \]
+\[ A_j - B_j = (A_{j-1} - B_{j-1}) - (a_j - b_j) \in [-1, 1]. \]
 Therefore, $|A_j - B_j| \le 1$.
 
 \textbf{Case 2:} $A_{j-1} - B_{j-1} \in [-1, 0)$.
@@ -245,13 +245,13 @@ $t_j \neq t_{j+1} \implies |A_{j-1} - B_{j-1}| \le 1$.
 & t_j = 1 \textrm{ and } t_{j+1} = 2
 \\ &\implies A_{j-1} \ge B_{j-1} \textrm{ and } A_j < B_j
 \\ &\implies B_{j-1} \le A_{j-1} < B_{j-1} + a_j - b_j
-\\ &\implies A_{j-1} - B_{j-1} \in \ropenInterval{0, 1}
+\\ &\implies A_{j-1} - B_{j-1} \in \ropenInterval{0, 1}.
 \end{align*}
 \begin{align*}
 & t_j = 2 \textrm{ and } t_{j+1} = 1
 \\ &\implies A_{j-1} < B_{j-1} \textrm{ and } A_j \ge B_j
 \\ &\implies A_{j-1} < B_{j-1} \le A_{j-1} + (b_j - a_j)
-\\ &\implies A_{j-1} - B_{j-1} \in \ropenInterval{-1, 0}
+\\ &\implies A_{j-1} - B_{j-1} \in \ropenInterval{-1, 0}.
 \qedhere \end{align*}
 \end{proof}
 
@@ -291,7 +291,7 @@ so there can be at most 2 non-full bins.
 \label{thm:greedy-pack-bins}
 The number of bins used by $\greedyPack$ is at most
 \[ \max\left(\smallceil{\hsum(\Wtild)}, \smallceil{\wsum(\Htild)},
-    \frac{4}{3}a(\Wtild \cup \Htild) + \frac{8}{3}\right) \]
+    \frac{4}{3}a(\Wtild \cup \Htild) + \frac{8}{3}\right). \]
 \end{theorem}
 \begin{proof}
 Let there be $m$ bins in the output of $\greedyPack(\Wtild, \Htild)$.
@@ -397,7 +397,7 @@ We can pack $\WhatLarge_1$ in a bin by stacking the items one-over-the-other.
 Let $w_L$ be the total width of items in $\HhatLarge$. The number of bins used is
 $\smallceil{\eps^2h_L} + \smallceil{\eps^2w_L}$. Also,
 \[ \opt(I) \ge \opt(\WLarge \cup \HLarge)
-\ge a(\WLarge) + a(\HLarge) \ge \eps(h_L + w_L) \]
+\ge a(\WLarge) + a(\HLarge) \ge \eps(h_L + w_L). \]
 Therefore,
 \begin{equation}
 \label{eqn:lingroup-2}
@@ -407,7 +407,8 @@ Therefore,
 On combining \eqref{eqn:lingroup-1} and \eqref{eqn:lingroup-2}, we get
 \[ \opt(\Ihat) \le \opt(\Ihat - (\WhatLarge_1 \cup \HhatLarge_1))
     + \opt(\WhatLarge_1 \cup \HhatLarge_1)
-< (1+\eps)\opt(I) + 2 \qedhere \]
+< (1+\eps)\opt(I) + 2.
+\qedhere \]
 \end{proof}
 
 \subsection{Creating Containers}
@@ -519,7 +520,7 @@ and $m+1/\eps^2$ vertical shelves into $m$ bins.
 By \cref{thm:greedy-pack-bins,thm:hw-opt,thm:area-eq}, we get that
 \[ m \le \max\left(\smallceil{h(\Wtild)}, \smallceil{w(\Htild)},
     \frac{4}{3}a(\Itild) + \frac{8}{3}\right)
-\le \frac{4}{3}\opt(\Ihat) + \frac{8}{3} \]
+\le \frac{4}{3}\opt(\Ihat) + \frac{8}{3}. \]
 
 \subsection{Packing Items Into Containers}
 \label{sec:bp-algo:pack-into-containers}
@@ -543,9 +544,9 @@ Let $P$ be a packing of $\Itild$ into $m$ bins, where we sliced horizontal shelv
 at most $m-1$ horizontal cuts and sliced vertical shelves by making at most $m-1$ vertical cuts.
 Then we can pack a large subset of items $I$ into the containers in $P$ such that
 the unpacked items from $W$ have area less than
-\[ \eps h(\Wtild) + \delta_H(1 + \eps)(m + 1/\eps^2) \]
+\[ \eps h(\Wtild) + \delta_H(1 + \eps)(m + 1/\eps^2), \]
 and the unpacked items from $H$ have area less than
-\[ \eps w(\Htild) + \delta_W(1 + \eps)(m + 1/\eps^2) \]
+\[ \eps w(\Htild) + \delta_W(1 + \eps)(m + 1/\eps^2). \]
 \end{lemma}
 \begin{proof}
 For each $j \in [1/\eps^2]$, number the type-$j$ wide containers arbitrarily,
@@ -579,7 +580,7 @@ After slicing the shelves in $\Itild$ to get $P$,
 we get at most $m + 1/\eps^2$ horizontal shelves
 and at most $m + 1/\eps^2$ vertical shelves.
 Therefore, the total area of discarded items from $W$ is less than
-\[ \eps h(\Wtild) + \delta_H(1 + \eps)(m + 1/\eps^2) \]
+\[ \eps h(\Wtild) + \delta_H(1 + \eps)(m + 1/\eps^2), \]
 and the total area of discarded items from $H$ is less than
 \[ \eps w(\Htild) + \delta_W(1 + \eps)(m + 1/\eps^2). \qedhere \]
 \end{proof}
@@ -644,15 +645,15 @@ Suppose $\greedyPack$ uses at most $m$ bins. Then by \cref{thm:greedy-pack-bins}
 \[ m \le 4\opt(\Ihat)/3 + 8/3. \]
 Let $W^d$ and $H^d$ be the unpacked items from $W$ and $H$, respectively.
 By \cref{thm:discard-area-ub,thm:hw-opt},
-\[ a(W^d) < \eps\opt(\Ihat) + \delta_H(1 + \eps)(m + 1/\eps^2) \]
-\[ a(H^d) < \eps\opt(\Ihat) + \delta_W(1 + \eps)(m + 1/\eps^2) \]
+\[ a(W^d) < \eps\opt(\Ihat) + \delta_H(1 + \eps)(m + 1/\eps^2), \]
+\[ a(H^d) < \eps\opt(\Ihat) + \delta_W(1 + \eps)(m + 1/\eps^2). \]
 By \cref{thm:nfdh-wide}, the number of bins used by $\thinGPack_{\eps}(I)$ is less than
 \begin{align*}
 & m + \frac{2a(W^d)+1}{1-\delta_H} + \frac{2a(H^d)+1}{1-\delta_W}
 \\ &\le (1 + 4\Delta(1+\eps))m + 4\eps(1+\Delta)\opt(\Ihat)
     + 2(1+\Delta) + 4\Delta(1+\eps)/\eps^2
 \\ &\le \alpha\opt(\Ihat) + 2(\beta - 1)
-< \alpha(1+\eps)\opt(I) + 2\beta
+< \alpha(1+\eps)\opt(I) + 2\beta.
 \tag{by \cref{thm:lingroup-opt-compare}}
 \end{align*}
 \end{proof}
