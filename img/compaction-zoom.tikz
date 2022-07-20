@@ -27,12 +27,12 @@
 }}
 \begin{tikzpicture}[
 item-boundary/.style={draw,semithick},
-item/.style={fill={black!25}},
+item/.style={fill={textColor!25!bgColor}},
 myarrow/.style={->,>={Stealth},thick},
 mybrace/.style = {decoration={amplitude=5pt,brace,mirror,raise=1pt},semithick,decorate},
 ]
 \begin{scope}
-\path[fill={black!10}]
+\path[fill={textColor!10!bgColor}]
     (-1\myu, 0\myu) rectangle (0\myu, 6\myu)
     (1\myu, 0\myu) rectangle (7\myu, 6\myu);
 \draw[very thin] (0\myu, 0\myu) -- (0\myu, 6\myu) (1\myu, 0\myu) -- (1\myu, 6\myu);
@@ -43,8 +43,8 @@ mybrace/.style = {decoration={amplitude=5pt,brace,mirror,raise=1pt},semithick,de
     node[pos=0.4,anchor=west,text width=4.5cm]
     {shift tall and small items leftwards by $\delta_j$};
 \begin{scope}[yshift={-7.2cm}]
-\path[fill={black!10}] (-1\myu, 0\myu) rectangle (7\myu, 6\myu);
-\draw[very thin,fill=white]
+\path[fill={textColor!10!bgColor}] (-1\myu, 0\myu) rectangle (7\myu, 6\myu);
+\draw[very thin,fill=bgColor]
     (2\myu, 1\myu) rectangle (3\myu, 1.5\myu)
     (3.8\myu, 2\myu) rectangle (4.8\myu, 2.5\myu)
     (3\myu, 3\myu) rectangle (4\myu, 3.5\myu);

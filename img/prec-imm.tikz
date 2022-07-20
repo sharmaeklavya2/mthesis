@@ -2,7 +2,7 @@
 \newcommand*{\yAlo}{0.5}
 \newcommand*{\yAhi}{1.5}
 \draw (0,0) rectangle (4,3.5);
-\draw[fill={black!5}] (0.5,\yAlo) rectangle (1.3,\yAhi) node[pos=0.5] {$A$}
+\draw[fill={textColor!5!bgColor}] (0.5,\yAlo) rectangle (1.3,\yAhi) node[pos=0.5] {$A$}
     (1.5,0.7) rectangle (2.3,2.8) node[pos=0.5] {$B$}
     (2.5,2.3) rectangle (3.5,3) node[pos=0.5] {$C$}
     (2.5,0.8) rectangle (3.5,1.7) node[pos=0.5] {$D$};

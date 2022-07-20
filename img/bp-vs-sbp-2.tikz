@@ -1,9 +1,9 @@
 \begin{tikzpicture}[
-witem/.style={draw,fill={black!20}},
-hitem/.style={draw,fill={black!10}},
+witem/.style={draw,fill={textColor!20!bgColor}},
+hitem/.style={draw,fill={textColor!10!bgColor}},
 bin/.style={draw,thick},
 myarrow/.style={->,>={Stealth},thick},
-cutline/.style={draw={black!50!red},dashed,semithick},
+cutline/.style={draw=textRed,dashed,semithick},
 ]
 \begin{scope}
 \node at (0.5, 2.0) {$\Wtild:$};

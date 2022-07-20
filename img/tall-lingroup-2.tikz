@@ -3,8 +3,8 @@
 \setlength{\pGameL}{0.3cm}
 \setlength{\pGameM}{0.1cm}
 \tikzset{bin/.style={draw,thick}}
-\tikzset{binGrid/.style={draw,xstep=1\pGameL,ystep=1\pGameM,{black!20}}}
-\tikzset{item/.style={draw,fill={black!20}}}
+\tikzset{binGrid/.style={draw,xstep=1\pGameL,ystep=1\pGameM,{textColor!20!bgColor}}}
+\tikzset{item/.style={draw,fill={textColor!20!bgColor}}}
 \tikzset{sepline/.style={draw,dashed,thick}}
 \tikzset{limline/.style={densely dashed,ultra thick}}
 \tikzset{myarrow/.style={->,>={Stealth},thick}}

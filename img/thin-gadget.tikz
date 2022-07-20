@@ -1,8 +1,8 @@
 \ifcsname pGameL\endcsname\else\newlength{\pGameL}\fi
 \setlength{\pGameL}{0.3cm}
 \tikzset{bin/.style={draw,thick}}
-%\tikzset{binGrid/.style={draw,step=1\pGameL,{black!20}}}
-\tikzset{item/.style={draw,fill={black!15}}}
+%\tikzset{binGrid/.style={draw,step=1\pGameL,{textColor!20!bgColor}}}
+\tikzset{item/.style={draw,fill={textColor!15!bgColor}}}
 \begin{tikzpicture}
 %\path[binGrid] (0\pGameL, 0\pGameL) grid (16\pGameL, 16\pGameL);
 \path[item] (7\pGameL, 15\pGameL) rectangle +(9\pGameL, 1\pGameL);

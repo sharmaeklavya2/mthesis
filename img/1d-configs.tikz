@@ -1,6 +1,6 @@
 \begin{tikzpicture}[
-item/.style = {draw={black!65},fill={black!8}},
-config-line/.style = {draw=black,dashed,semithick},
+item/.style = {draw={textColor!65!bgColor},fill={textColor!10!bgColor}},
+config-line/.style = {draw,dashed,semithick},
 myarrow/.style={->,>={Stealth},semithick},
 bin/.pic = {
     \path[item] (0,0) rectangle +(1.75,1.5) node[pos=0.5] {1};

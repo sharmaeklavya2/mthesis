@@ -5,19 +5,19 @@ every node/.style = {scale=0.8},
 scale=0.8
 ]
 \draw (0,0) rectangle +(3,3);
-\draw[fill={black!25}] (0,0) rectangle +(1.2,3);
-\draw[fill={black!10}] (3,0) rectangle +(-1.5,1.2);
-\draw[fill={black!10}] (3,1.2) rectangle +(-1.5,1.2);
+\draw[fill={textColor!25!bgColor}] (0,0) rectangle +(1.2,3);
+\draw[fill={textColor!10!bgColor}] (3,0) rectangle +(-1.5,1.2);
+\draw[fill={textColor!10!bgColor}] (3,1.2) rectangle +(-1.5,1.2);
 \draw[mybrace] (0,0) -- node[below=1pt] {0.4} +(1.2,0);
 \draw[mybrace] (1.5,0) -- node[below=1pt] {0.5} +(1.5,0);
 \draw[mybrace] (3,0) -- node[right=2pt] {0.4} +(0,1.2);
 \draw[mybrace] (3,1.2) -- node[right=2pt] {0.4} +(0,1.2);
 
-\draw[fill={black!25}] (-8,0) rectangle +(1.2,3);
+\draw[fill={textColor!25!bgColor}] (-8,0) rectangle +(1.2,3);
 \path (-8,0) -- node[below=0pt] {0.4} +(1.2,0);
 \path (-8,0) -- node[left=0pt] {1} +(0,3);
 \node at (-6.2,1.5) {+};
-\draw[fill={black!10}] (-5,1) rectangle +(3,1.2);
+\draw[fill={textColor!10!bgColor}] (-5,1) rectangle +(3,1.2);
 \path (-5,1) -- node[left=0pt] {0.4} +(0,1.2);
 \draw[dashed] (-3.5,2.5) -- (-3.5,0.5);
 \node[rotate=90,transform shape] at (-3.5,0.3) {\large\ding{34}};

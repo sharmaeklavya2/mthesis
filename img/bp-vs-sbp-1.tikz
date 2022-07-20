@@ -1,6 +1,6 @@
 \begin{tikzpicture}[
-witem/.style={draw,fill={black!20}},
-hitem/.style={draw,fill={black!10}},
+witem/.style={draw,fill={textColor!20!bgColor}},
+hitem/.style={draw,fill={textColor!10!bgColor}},
 bin/.style={draw,thick},
 myarrow/.style={->,>={Stealth},thick},
 ]

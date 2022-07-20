@@ -15,7 +15,7 @@ See \cref{fig:thincpack} for a visual overview of $\thinCPack$.
 \hbadness=10000
 \begin{subfigure}[t]{0.3\textwidth}
 \centering
-\tikzset{compartment/.style={draw,thick,fill={black!10}},
+\tikzset{compartment/.style={draw,thick,fill={textColor!10!bgColor}},
 container/.style={},item/.style={}}
 \input{img/thincpack.tikz}
 \caption{Guess the packing of empty compartments in each bin (\cref{sec:enum-configs}).}
@@ -24,7 +24,7 @@ container/.style={},item/.style={}}
 \begin{subfigure}[t]{0.3\textwidth}
 \centering
 \tikzset{compartment/.style={draw,thick},
-container/.style={draw,fill={black!25}},
+container/.style={draw,fill={textColor!25!bgColor}},
 item/.style={}}
 \input{img/thincpack.tikz}
 \caption{Fractionally pack wide and tall items into compartments.
@@ -35,7 +35,7 @@ This partitions each compartment into \emph{containers} (\cref{sec:feas-lp}).}
 \centering
 \tikzset{compartment/.style={draw,ultra thick},
 container/.style={draw,thick},
-item/.style={draw,very thin,fill={black!25}}}
+item/.style={draw,very thin,fill={textColor!25!bgColor}}}
 \input{img/thincpack.tikz}
 \caption{Pack the items non-fractionally (\cref{sec:greedy-cont}).}
 \end{subfigure}

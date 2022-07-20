@@ -1,6 +1,6 @@
 \begin{tikzpicture}[scale=1.25, transform shape,
-dense/.style = {draw=black,fill={black!65}},
-ndense/.style = {draw=black,fill={black!8}},
+dense/.style = {draw,fill={textColor!65!bgColor}},
+ndense/.style = {draw,fill={textColor!10!bgColor}},
 bigbrace/.style = {decoration={brace,amplitude=10pt},line width=1pt,decorate},
 smallbrace/.style = {decoration={brace,mirror,raise=1pt},semithick,decorate},
 bin1-dense-items/.pic = {
@@ -97,8 +97,8 @@ strip-items/.pic = {
     \path[ndense] (-0.1,2) rectangle +(0.1,2);
 },
 bin/.pic = {
-    \draw[{black!40},xstep=0.25,ystep=4,line width=0.3pt,densely dotted] (0,0) grid (4,4);
-    \draw[{black!60}] (3.5,-0.1) -- (3.5,4.1);
+    \draw[{textColor!40!bgColor},xstep=0.25,ystep=4,line width=0.3pt,densely dotted] (0,0) grid (4,4);
+    \draw[{textColor!60!bgColor}] (3.5,-0.1) -- (3.5,4.1);
     \draw (0,0) rectangle (4,4);
 }]
 

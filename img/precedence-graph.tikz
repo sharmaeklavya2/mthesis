@@ -1,11 +1,11 @@
 \ifcsname pGameL\endcsname\else\newlength{\pGameL}\fi
 \setlength{\pGameL}{0.3cm}
 \tikzset{bin/.style={draw,thick}}
-\tikzset{item/.style={draw,fill={black!15}}}
+\tikzset{item/.style={draw,fill={textColor!15!bgColor}}}
 \tikzset{myarrow/.style={draw,->,>={Stealth}}}
-\tikzset{mynode/.style={pos=0.5,inner sep=0,minimum size=0.5cm,shape=circle,thick,draw=black}}
+\tikzset{mynode/.style={pos=0.5,inner sep=0,minimum size=0.5cm,shape=circle,thick,draw}}
 \tikzset{cutline/.style={draw,dashed}}
-%\tikzset{binGrid/.style={draw,step=1\pGameL,{black!20}}}
+%\tikzset{binGrid/.style={draw,step=1\pGameL,{textColor!20!bgColor}}}
 \begin{tikzpicture}
 %\path[binGrid] (0\pGameL, 0\pGameL) grid (20\pGameL, 20\pGameL);
 

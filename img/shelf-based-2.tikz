@@ -1,8 +1,8 @@
 \begin{tikzpicture}[scale=0.8,
-shelf-line/.style = {draw={black!30}},
-item/.style = {fill={black!10}}
+shelf-line/.style = {draw={textColor!30!bgColor}},
+item/.style = {fill={textColor!10!bgColor}}
 ]
-%\fill[black!7.5] (0,3.5) -- (4,4);
+%\fill[textColor!8!bgColor] (0,3.5) -- (4,4);
 \draw[shelf-line] (0,1.5) -- (4,1.5);
 \draw[shelf-line] (0,2.7) -- (4,2.7);
 \draw[shelf-line] (0,3.5) -- (4,3.5);

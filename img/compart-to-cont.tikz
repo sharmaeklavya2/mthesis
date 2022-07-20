@@ -1,4 +1,4 @@
-\begin{tikzpicture}[draw={black!70},fill={black!10}]
+\begin{tikzpicture}[draw={textColor!70!bgColor},fill={textColor!10!bgColor}]
 \filldraw (0,0) rectangle +(3,1)
     (3,0) rectangle +(3,1);
 \draw[dashed] (6,1) -- +(2,0);

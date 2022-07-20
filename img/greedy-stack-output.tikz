@@ -1,6 +1,6 @@
 \begin{tikzpicture}[
-discard/.style={fill={black!60}},
-pack/.style={fill={black!10}},
+discard/.style={fill={textColor!60!bgColor}},
+pack/.style={fill={textColor!10!bgColor}},
 box/.style={thick},
 box-top/.style={thick,dashed}]
 

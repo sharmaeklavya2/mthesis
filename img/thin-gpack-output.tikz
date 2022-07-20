@@ -5,10 +5,10 @@
 \tikzset{halfsepline/.style={draw}}
 \tikzset{wShelf/.style={draw,thick}}
 \tikzset{hShelf/.style={draw,thick}}
-\tikzset{wItem/.style={draw,fill={black!20},very thin}}
-\tikzset{hItem/.style={draw,fill={black!10},very thin}}
+\tikzset{wItem/.style={draw,fill={textColor!20!bgColor},very thin}}
+\tikzset{hItem/.style={draw,fill={textColor!10!bgColor},very thin}}
 \tikzset{bin/.style={draw,thick}}
-\tikzset{binGrid/.style={draw,step=1\myu,{black!20}}}
+\tikzset{binGrid/.style={draw,step=1\myu,{textColor!20!bgColor}}}
 \begin{tikzpicture}[mytransform]
 %\path[binGrid] (0\myu, 0\myu) grid (20\myu, 20\myu);
 

@@ -1,7 +1,7 @@
 \ifcsname myu\endcsname\else\newlength{\myu}\fi
 \setlength{\myu}{0.8cm}
 \begin{tikzpicture}[
-item/.style={draw,fill={black!15}},
+item/.style={draw,fill={textColor!15!bgColor}},
 cutline/.style={draw,dashed},
 ]
 \path[item] (1\myu, 1\myu) rectangle (3\myu, 2\myu);

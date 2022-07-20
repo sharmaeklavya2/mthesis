@@ -1,5 +1,5 @@
 \begin{tikzpicture}[
-item/.style={fill={black!10},draw},
+item/.style={fill={textColor!10!bgColor},draw},
 bin/.style={draw,thick},
 ]
 \path[item]

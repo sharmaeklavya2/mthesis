@@ -7,7 +7,7 @@
 \definecolor{myblue}{Hsb}{240,0.8,0.6}
 \definecolor{mypink}{Hsb}{300,0.8,0.6}
 \begin{tikzpicture}[
-item/.style={fill={black!10},draw},
+item/.style={fill={textColor!10!bgColor},draw},
 myarrow/.style={->,>={Stealth},thick},
 bin/.style={draw,thick},
 vertex/.style={draw,shape=circle,semithick,inner sep=0,minimum size=0.7cm},

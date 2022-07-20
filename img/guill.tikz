@@ -56,10 +56,10 @@
 \path[cutline0] (2.4, -0.2) -- (2.4, 4.2);
 }}}
 \begin{tikzpicture}[
-item/.style={fill={black!10},draw},
+item/.style={fill={textColor!10!bgColor},draw},
 myarrow/.style={->,>={Stealth},thick},
 bin/.style={draw,thick},
-cutline/.style={draw={black!50!red},densely dashed,line width=1.1pt},
+cutline/.style={draw={textRed},densely dashed,line width=1.1pt},
 bin0/.style={},
 bin1/.style={},
 bin2/.style={},

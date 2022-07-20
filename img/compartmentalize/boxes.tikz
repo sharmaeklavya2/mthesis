@@ -2,11 +2,11 @@
 \setlength{\pGameL}{0.2cm}
 \input{img/compartmentalize/colors.tex}
 \tikzset{bin/.style={draw,thick}}
-\tikzset{binGrid/.style={draw,step=1\pGameL,{black!20}}}
-\tikzset{witem/.style={draw={black!40},fill=shadedLightGreen}}
-\tikzset{hitem/.style={draw={black!30},fill=myLightBlue}}
+\tikzset{binGrid/.style={draw,step=1\pGameL,{textColor!20!bgColor}}}
+\tikzset{witem/.style={draw={textColor!40!bgColor},fill=shadedLightGreen}}
+\tikzset{hitem/.style={draw={textColor!30!bgColor},fill=myLightBlue}}
 \tikzset{tcell/.style={draw}}
-\tikzset{box/.style={fill={black!10}}}
+\tikzset{box/.style={fill={textColor!10!bgColor}}}
 \tikzset{box2/.style={draw,thick}}
 \begin{tikzpicture}
 %\path[binGrid] (0\pGameL, 0\pGameL) grid (30\pGameL, 30\pGameL);

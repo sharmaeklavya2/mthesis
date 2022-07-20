@@ -2,9 +2,9 @@
 \setlength{\pGameL}{0.2cm}
 \input{img/compartmentalize/colors.tex}
 \tikzset{bin/.style={draw,thick}}
-\tikzset{binGrid/.style={draw,step=1\pGameL,{black!20}}}
-\tikzset{witem/.style={draw={black!30},fill=myLightGreen}}
-\tikzset{hitem/.style={draw={black!30},fill=myLightBlue}}
+\tikzset{binGrid/.style={draw,step=1\pGameL,{textColor!20!bgColor}}}
+\tikzset{witem/.style={draw={textColor!30!bgColor},fill=myLightGreen}}
+\tikzset{hitem/.style={draw={textColor!30!bgColor},fill=myLightBlue}}
 \tikzset{tcell/.style={draw,semithick}}
 \tikzset{box2/.style={draw}}
 \begin{tikzpicture}

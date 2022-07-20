@@ -1,10 +1,10 @@
 \ifcsname pGameL\endcsname\else\newlength{\pGameL}\fi
 \setlength{\pGameL}{0.3cm}
 \tikzset{bin/.style={draw,thick}}
-%\tikzset{binGrid/.style={draw,step=1\pGameL,{black!20}}}
-\tikzset{item/.style={draw,fill={black!15}}}
+%\tikzset{binGrid/.style={draw,step=1\pGameL,{textColor!20!bgColor}}}
+\tikzset{item/.style={draw,fill={textColor!15!bgColor}}}
 \tikzset{myarrow/.style={->,>={Stealth}}}
-\tikzset{gsep/.style={draw,dashed,semithick,fill={black!85}}}
+\tikzset{gsep/.style={draw,dashed,semithick,fill={textColor!85!bgColor}}}
 \begin{tikzpicture}
 \begin{scope}
 %\path[binGrid] (0\pGameL, 0\pGameL) grid (16\pGameL, 16\pGameL);

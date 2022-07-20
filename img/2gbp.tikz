@@ -2,7 +2,7 @@
 \setlength{\pGameL}{0.325cm}
 \begin{tikzpicture}[scale=0.8,
 bin/.style={draw,thick},
-binGrid/.style={draw,step=1\pGameL,{black!20}},
+binGrid/.style={draw,step=1\pGameL,{textColor!20!bgColor}},
 item/.style={draw},
 myarrow/.style={->,>={Stealth},thick},
 ]

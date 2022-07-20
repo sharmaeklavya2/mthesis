@@ -2,15 +2,15 @@
 \setlength{\pGameL}{0.4cm}
 \begin{tikzpicture}[
 bin/.style={draw,thick},
-binGrid/.style={draw,step=1\pGameL,{black!20}},
-item/.style={draw,fill={black!15}},
-cutline/.style={draw={black!50!red},densely dashed,line width=1.1pt},
+binGrid/.style={draw,step=1\pGameL,{textColor!20!bgColor}},
+item/.style={draw,fill={textColor!15!bgColor}},
+cutline/.style={draw={textRed},densely dashed,line width=1.1pt},
 myarrow/.style={->,>={Stealth},thick},
 mylabel/.style={pos=0.5,scale=0.8},
 ]
-\definecolor{betterRed}{rgb}{0.97,0.73,0.7}
-\definecolor{betterGreen}{rgb}{0.7,0.95,0.7}
-\definecolor{betterBlue}{rgb}{0.65,0.7,0.99}
+\colorlet{betterRed}{red!25!bgColor}
+\colorlet{betterGreen}{green!25!bgColor}
+\colorlet{betterBlue}{blue!25!bgColor}
 \begin{scope}
 %\path[binGrid] (0\pGameL, 0\pGameL) grid (13\pGameL, 14\pGameL);
 \path[item] (0\pGameL, 4\pGameL) rectangle +(1\pGameL, 10\pGameL) node[mylabel] {1};

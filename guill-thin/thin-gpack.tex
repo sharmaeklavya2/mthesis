@@ -69,8 +69,8 @@ See \cref{algo:greedyPack} for a more precise description of $\greedyPack$.
 \begin{subfigure}{0.45\textwidth}
     \centering
     \tikzset{mytransform/.style={}}
-    \tikzset{wItem/.style={draw,fill={black!20}}}
-    \tikzset{hItem/.style={draw,fill={black!10}}}
+    \tikzset{wItem/.style={draw,fill={textColor!20!bgColor}}}
+    \tikzset{hItem/.style={draw,fill={textColor!10!bgColor}}}
     \input{img/greedy-pack.tikz}
     \caption{A type-1 bin. Wide items are packed on the right. Tall items are packed on the left.}%
 \label{fig:greedy-pack:1}
@@ -79,8 +79,8 @@ See \cref{algo:greedyPack} for a more precise description of $\greedyPack$.
 \begin{subfigure}{0.45\textwidth}
     \centering
     \tikzset{mytransform/.style={xscale=-1,rotate=90}}
-    \tikzset{wItem/.style={draw,fill={black!10}}}
-    \tikzset{hItem/.style={draw,fill={black!20}}}
+    \tikzset{wItem/.style={draw,fill={textColor!10!bgColor}}}
+    \tikzset{hItem/.style={draw,fill={textColor!20!bgColor}}}
     \input{img/greedy-pack.tikz}
     \caption{A type-2 bin. Tall items are packed above. Wide items are packed below.}%
 \label{fig:greedy-pack:2}
